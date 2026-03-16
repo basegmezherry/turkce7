@@ -318,15 +318,16 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
         <button class="rtab" onclick="pickRole('student',this)">🎓 Öğrenci</button>
       </div>
       <div id="tlogin">
-        <input class="l-fi" type="text" id="tuser" placeholder="Kullanıcı adı" autocomplete="off" spellcheck="false">
-        <input class="l-fi" type="password" id="tpass" placeholder="Şifre">
+        <input class="l-fi" type="email" id="tuser" placeholder="Email adresiniz" autocomplete="email" spellcheck="false">
+        <input class="l-fi" type="password" id="tpass" placeholder="Şifre" autocomplete="current-password">
       </div>
       <div id="slogin" style="display:none">
-        <input class="l-fi" type="number" id="snum" placeholder="Öğrenci numarası" autocomplete="off" inputmode="numeric">
-        <input class="l-fi" type="password" id="spass" placeholder="Şifre (numaranız)">
+        <input class="l-fi" type="number" id="snum" placeholder="Okul numaranız" autocomplete="off" inputmode="numeric">
+        <input class="l-fi" type="password" id="spass" placeholder="Şifre">
       </div>
-      <button class="l-btn" onclick="doLogin()">Giriş Yap</button>
-      <div class="l-hint">Öğretmen: hayri / 1234<br>Öğrenci: okul numarası / şifre</div>
+      <button class="l-btn" id="loginBtn" onclick="doLogin()">Giriş Yap</button>
+      <div id="loginErr" style="margin-top:12px;font-family:var(--ff-d);font-size:9px;letter-spacing:1.5px;color:#ff9898;min-height:16px;text-align:center"></div>
+      <div class="l-hint">Öğretmen: Firebase email ile giriş<br>Öğrenci: okul numarası + şifre</div>
     </div>
   </div>
 </div>
@@ -529,7 +530,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="fg3"><label class="fl2">Ad Soyad</label><input class="fld" type="text" id="nSN" placeholder="Örn: Ayşe Yılmaz" oninput="previewStId()"></div>
     <div class="f2b">
       <div class="fg3"><label class="fl2">Şube</label><select class="fls" id="nSC"><option>7-A</option><option>7-B</option><option>7-C</option></select></div>
-      <div class="fg3"><label class="fl2">Özel Şifre</label><input class="fld" type="text" id="nSP" placeholder="Boş = numara"></div>
+      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: NUMARA@turkce7.com</div></div>
     </div>
     <div id="stPreview" style="display:none;background:var(--gold-a12);border:1px solid var(--border2);border-radius:var(--r);padding:12px;margin-bottom:12px">
       <div style="font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px">ÖNİZLEME</div>
@@ -595,7 +596,7 @@ const FIREBASE_CONFIG = {
   messagingSenderId: "562835448653",
   appId: "1:562835448653:web:e9aaa70a165b8c60fa0d04"
 };
-const TUSER='hayri', TPASS='1234', TNAME='Hayri Basegmez';
+const TNAME='Hayri Basegmez'; /* Ogretmen adi - Firebaseden gelir */
 const TOPICS=['Okuma Anlama','Dil Bilgisi','Yazim Kurallari','Sozcuk Bilgisi','Metin Turleri','Noktalama','Fiil Cekimi','Cumle Analizi','Paragraf','Soz Sanatlari','Karma','Genel Tekrar'];
 
 /* ═══════════════════════════════
@@ -722,7 +723,7 @@ window.addEventListener('DOMContentLoaded',()=>startApp());
 /* ═══════════════════════════════
    FIREBASE
 ═══════════════════════════════ */
-let db=null,fbReady=false,_fbTries=0;
+let db=null,fbAuth=null,fbReady=false,_fbTries=0;
 function initFirebase(){
   _fbTries++;
   try{
@@ -732,14 +733,40 @@ function initFirebase(){
     }
     if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
     db=firebase.firestore();
+    fbAuth=firebase.auth();
     fbReady=true;
     _fbTries=0;
     const b=document.getElementById('fbStatusBadge');if(b)b.textContent='Firebase Bagli';
     const d=document.getElementById('fbDot');if(d)d.classList.add('active');
+    /* Auth state listener - sayfa yenilenince oturumu koru */
+    fbAuth.onAuthStateChanged(user=>{
+      if(user&&!S.role){
+        /* Sayfa yenilendi, oturum hala acik - sessizce giris yap */
+        _restoreSession(user);
+      }
+    });
   }catch(e){
     console.warn('Firebase init:',e.code||e.message);
     if(_fbTries<10)setTimeout(initFirebase,2000);
   }
+}
+
+async function _restoreSession(user){
+  try{
+    const snap=await db.collection('users').doc(user.uid).get();
+    if(!snap.exists)return;
+    const data=snap.data();
+    if(data.role==='teacher'){
+      S.role='teacher';
+      S.user={name:data.name||user.email,email:user.email,uid:user.uid};
+      enterApp();
+    }else if(data.role==='student'){
+      const stuSnap=await db.collection('students').doc(String(data.studentId)).get();
+      if(!stuSnap.exists)return;
+      const stuLocal=S.students.find(s=>String(s.id)===String(data.studentId));
+      if(stuLocal){S.role='student';S.user=stuLocal;enterApp();}
+    }
+  }catch(e){console.warn('Session restore:',e);}
 }
 
 /* ═══════════════════════════════
@@ -848,8 +875,8 @@ document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{if(e.
 
 /* ═══════════════════════════════
    LOGIN
-   - Ogretmen: kullanici adi + sifre (local, degistirilebilir)
-   - Ogrenci: okul numarasi + sifre (local, numarasi = varsayilan sifre)
+   Ogretmen : Firebase Auth (email + sifre)
+   Ogrenci  : Firebase Auth (numara@turkce7.com + sifre)
 ═══════════════════════════════ */
 let _rl='teacher';
 function pickRole(r,btn){
@@ -858,28 +885,116 @@ function pickRole(r,btn){
   btn.classList.add('on');
   document.getElementById('tlogin').style.display=r==='teacher'?'block':'none';
   document.getElementById('slogin').style.display=r==='student'?'block':'none';
+  setLoginErr('');
 }
 
-function doLogin(){
+function setLoginErr(msg){
+  const el=document.getElementById('loginErr');
+  if(el)el.textContent=msg;
+}
+
+function setLoginLoading(on){
+  const btn=document.getElementById('loginBtn');
+  if(!btn)return;
+  btn.disabled=on;
+  btn.textContent=on?'Giris Yapiliyor...':'Giris Yap';
+}
+
+async function doLogin(){
+  setLoginErr('');
+  if(!fbReady||!fbAuth){
+    setLoginErr('Firebase baglaniyor, lutfen bekleyin...');
+    setTimeout(doLogin,1200);
+    return;
+  }
+
   if(_rl==='teacher'){
-    const u=document.getElementById('tuser').value.trim();
-    const p=document.getElementById('tpass').value;
-    if(u===TUSER&&p===(window._tPass||TPASS)){
-      S.role='teacher';S.user={name:TNAME};enterApp();
-    }else toast('Hatali kullanici adi veya sifre!','err');
+    const email=document.getElementById('tuser').value.trim();
+    const pass=document.getElementById('tpass').value;
+    if(!email||!pass){setLoginErr('Email ve sifre giriniz!');return;}
+    setLoginLoading(true);
+    try{
+      const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
+      const uid=cred.user.uid;
+      /* Firestore'dan rol kontrol et */
+      let displayName=cred.user.displayName||email.split('@')[0];
+      try{
+        const snap=await db.collection('users').doc(uid).get();
+        if(snap.exists){
+          const d=snap.data();
+          if(d.role!=='teacher'){setLoginErr('Bu hesap ogretmen hesabi degil!');fbAuth.signOut();setLoginLoading(false);return;}
+          if(d.name)displayName=d.name;
+        }else{
+          /* users koleksiyonunda kayit yok - ilk giris, otomatik olustur */
+          await db.collection('users').doc(uid).set({role:'teacher',name:displayName,email:email,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+        }
+      }catch(_){}
+      S.role='teacher';
+      S.user={name:displayName,email:email,uid:uid};
+      enterApp();
+    }catch(e){
+      setLoginLoading(false);
+      if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
+        setLoginErr('Email veya sifre hatali!');
+      }else if(e.code==='auth/invalid-email'){
+        setLoginErr('Gecersiz email adresi!');
+      }else if(e.code==='auth/too-many-requests'){
+        setLoginErr('Cok fazla deneme. Lutfen bekleyin.');
+      }else{
+        setLoginErr('Giris hatasi: '+e.code);
+      }
+    }
+
   }else{
-    /* Ogrenci numarasi ile giris */
+    /* Ogrenci girisi: numara@turkce7.com */
     const num=String(document.getElementById('snum').value).trim();
-    const pw=document.getElementById('spass').value.trim();
-    if(!num){toast('Ogrenci numarasi giriniz!','err');return;}
-    const stu=S.students.find(s=>String(s.id)===num);
-    if(!stu){toast('Bu numara kayitli degil!','err');return;}
-    if(stu.password!==pw){toast('Sifre hatali!','err');return;}
-    S.role='student';S.user=stu;enterApp();
+    const pass=document.getElementById('spass').value.trim();
+    if(!num){setLoginErr('Okul numaranizi giriniz!');return;}
+    if(!pass){setLoginErr('Sifrenizi giriniz!');return;}
+    const email=num+'@turkce7.com';
+    setLoginLoading(true);
+    try{
+      const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
+      const uid=cred.user.uid;
+      /* Firestore'dan ogrenci bilgisi al */
+      let stuLocal=S.students.find(s=>String(s.id)===num);
+      try{
+        const snap=await db.collection('users').doc(uid).get();
+        if(snap.exists){
+          const d=snap.data();
+          if(d.role!=='student'){setLoginErr('Bu hesap ogrenci hesabi degil!');fbAuth.signOut();setLoginLoading(false);return;}
+          /* Firestore'daki guncel ogrenci verisini al */
+          const stuSnap=await db.collection('students').doc(num).get();
+          if(stuSnap.exists){
+            const fbStu=stuSnap.data();
+            /* Local listeyi guncelle */
+            const idx=S.students.findIndex(s=>String(s.id)===num);
+            if(idx>=0)S.students[idx]={...S.students[idx],...fbStu};
+            stuLocal=S.students.find(s=>String(s.id)===num)||{id:+num,name:fbStu.name||('Ogrenci '+num),class:fbStu.class||'7-A',weekData:fbStu.weekData||{}};
+          }
+        }
+      }catch(_){}
+      if(!stuLocal){setLoginErr('Ogrenci bulunamadi! Ogretmeninizle iletisime gecin.');fbAuth.signOut();setLoginLoading(false);return;}
+      S.role='student';
+      S.user=stuLocal;
+      enterApp();
+    }catch(e){
+      setLoginLoading(false);
+      if(e.code==='auth/user-not-found'){
+        setLoginErr('Bu numara sisteme kayitli degil!');
+      }else if(e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
+        setLoginErr('Sifre hatali!');
+      }else if(e.code==='auth/too-many-requests'){
+        setLoginErr('Cok fazla deneme. Lutfen bekleyin.');
+      }else{
+        setLoginErr('Giris hatasi: '+e.code);
+      }
+    }
   }
 }
 
 function enterApp(){
+  setLoginLoading(false);
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('app').classList.add('vis');
   document.getElementById('hName').textContent=S.user.name;
@@ -897,7 +1012,10 @@ function enterApp(){
   if(online&&fbReady)syncFromFirebase();
 }
 
-function doLogout(){location.reload();}
+async function doLogout(){
+  try{if(fbAuth)await fbAuth.signOut();}catch(_){}
+  location.reload();
+}
 
 /* ═══════════════════════════════
    SIFRE DEGISTIR
@@ -916,22 +1034,38 @@ function openChangePassSt(id){
   document.getElementById('cpOld').value='';document.getElementById('cpNew').value='';document.getElementById('cpNew2').value='';
   openMo('mChangePass');
 }
-function saveChangePass(){
+async function saveChangePass(){
   const old=document.getElementById('cpOld').value;
   const nw=document.getElementById('cpNew').value.trim();
   const nw2=document.getElementById('cpNew2').value.trim();
-  if(!nw||nw.length<3){toast('En az 3 karakter!','err');return;}
+  if(!nw||nw.length<4){toast('En az 4 karakter!','err');return;}
   if(nw!==nw2){toast('Sifreler eslesmiyor!','err');return;}
-  if(_cpTarget==='teacher'){
-    if(old!==(window._tPass||TPASS)){toast('Mevcut sifre yanlis!','err');return;}
-    window._tPass=nw;toast('Sifre guncellendi');
-  }else{
-    const s=S.students.find(x=>x.id===_cpTarget);
-    if(!s)return;
-    if(old!==s.password){toast('Mevcut sifre yanlis!','err');return;}
-    s.password=nw;persist();toast(s.name+' sifresi guncellendi');
+  if(!fbReady||!fbAuth){toast('Firebase bagli degil!','err');return;}
+
+  try{
+    const user=fbAuth.currentUser;
+    if(!user){toast('Oturum bulunamadi!','err');return;}
+    /* Mevcut sifre ile yeniden dogrula */
+    const cred=firebase.auth.EmailAuthProvider.credential(user.email,old);
+    await user.reauthenticateWithCredential(cred);
+    await user.updatePassword(nw);
+
+    if(_cpTarget!=='teacher'){
+      /* Ogrenci local sifresini de guncelle */
+      const s=S.students.find(x=>x.id===_cpTarget);
+      if(s){s.password=nw;persist();}
+      /* Firestore'da da guncelle */
+      try{await db.collection('students').doc(String(_cpTarget)).update({password:nw});}catch(_){}
+    }
+    toast('Sifre Firebasede guncellendi');
+    closeMo('mChangePass');
+  }catch(e){
+    if(e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
+      toast('Mevcut sifre yanlis!','err');
+    }else{
+      toast('Sifre guncellenemedi: '+e.code,'err');
+    }
   }
-  closeMo('mChangePass');
 }
 
 /* ═══════════════════════════════
@@ -1051,15 +1185,60 @@ function previewStId(){
   document.getElementById('prevName').textContent=n;
   document.getElementById('prevPass').textContent=pw;
 }
-function saveSt(){
+async function saveSt(){
   const n=document.getElementById('nSN').value.trim();
   if(!n){toast('Ad soyad giriniz!','err');return;}
   const cls=document.getElementById('nSC').value;
   const newId=Math.max(...S.students.map(s=>s.id),100)+1;
   const pw=document.getElementById('nSP').value.trim()||String(newId);
   const wd={};for(let w=1;w<=12;w++)wd[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
-  S.students.push({id:newId,name:n,class:cls,password:pw,weekData:wd});
-  persist();closeMo('mAddSt');renderSt();toast(n+' eklendi (#'+newId+')');
+  const newStu={id:newId,name:n,class:cls,password:pw,weekData:wd};
+
+  /* Firebase Auth'da hesap olustur: numara@turkce7.com */
+  if(fbReady&&fbAuth){
+    toast('Firebase hesabi olusturuluyor...','info');
+    try{
+      const email=String(newId)+'@turkce7.com';
+      /* Admin SDK olmadigi icin signInWithEmailAndPassword ile degil,
+         createUserWithEmailAndPassword ile olusturuyoruz.
+         Bu islem mevcut oturumu degistirmez - sonra ogretmen tekrar giris yapar */
+      const tempAuth=firebase.auth();
+      const cred=await tempAuth.createUserWithEmailAndPassword(email,pw);
+      const uid=cred.user.uid;
+      /* users koleksiyonuna rol kaydet */
+      await db.collection('users').doc(uid).set({
+        role:'student',
+        studentId:newId,
+        name:n,
+        class:cls,
+        email:email,
+        createdAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+      /* students koleksiyonuna veri kaydet */
+      await db.collection('students').doc(String(newId)).set({
+        ...newStu,
+        uid:uid,
+        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+      });
+      /* Ogretmen oturumunu geri yukle */
+      if(S.user&&S.user.email){
+        /* Ogretmen oturumu korundu - createUserWithEmailAndPassword mevcut oturumu bozmaz */
+      }
+      toast(n+' eklendi ve Firebase hesabi olusturuldu (#'+newId+')');
+    }catch(e){
+      if(e.code==='auth/email-already-in-use'){
+        toast(n+' zaten sistemde kayitli (#'+newId+')','info');
+      }else{
+        toast('Firebase hatasi: '+e.code,'err');
+        console.warn('saveSt Firebase error:',e);
+      }
+    }
+  }else{
+    toast(n+' eklendi (Firebase yok, sadece local) #'+newId,'info');
+  }
+
+  S.students.push(newStu);
+  persist();closeMo('mAddSt');renderSt();
   document.getElementById('nSN').value='';document.getElementById('nSP').value='';document.getElementById('stPreview').style.display='none';
 }
 function openStDet(id){
