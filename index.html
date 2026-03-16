@@ -530,7 +530,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="fg3"><label class="fl2">Ad Soyad</label><input class="fld" type="text" id="nSN" placeholder="Örn: Ayşe Yılmaz" oninput="previewStId()"></div>
     <div class="f2b">
       <div class="fg3"><label class="fl2">Şube</label><select class="fls" id="nSC"><option>7-A</option><option>7-B</option><option>7-C</option></select></div>
-      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: NUMARA@turkce7.com</div></div>
+      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6628332b273427261213140d0503514805090b">[email&#160;protected]</a></div></div>
     </div>
     <div id="stPreview" style="display:none;background:var(--gold-a12);border:1px solid var(--border2);border-radius:var(--r);padding:12px;margin-bottom:12px">
       <div style="font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px">ÖNİZLEME</div>
@@ -582,7 +582,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 'use strict';
 
 /* ═══════════════════════════════
@@ -803,7 +803,7 @@ function idbGet(){return new Promise((ok,fail)=>{if(!_idb){fail();return;}const 
 function addToSyncQueue(op){if(!_idb)return;const tx=_idb.transaction('syncQueue','readwrite');tx.objectStore('syncQueue').add({...op,ts:Date.now()});}
 
 async function persist(){
-  const d={students:S.students,questions:S.questions,locks:S.locks,lastSync:Date.now()};
+  const d={students:S.students,questions:S.questions,locks:S.locks,quiz:S.quiz,lastSync:Date.now()};
   try{await idbSet(d);}catch{try{localStorage.setItem('hb_tr_v6',JSON.stringify(d));}catch{}}
   updateSyncTime(d.lastSync);
   if(online&&fbReady)await pushToFirebase(d);
@@ -813,7 +813,7 @@ async function restoreData(){
   let d=null;
   try{d=await idbGet();}catch{}
   if(!d){try{const r=localStorage.getItem('hb_tr_v6');if(r)d=JSON.parse(r);}catch{}}
-  if(d){if(d.students)S.students=d.students;if(d.questions)S.questions=d.questions;if(d.locks)S.locks=d.locks;if(d.lastSync)updateSyncTime(d.lastSync);}
+  if(d){if(d.students)S.students=d.students;if(d.questions)S.questions=d.questions;if(d.locks)S.locks=d.locks;if(d.lastSync)updateSyncTime(d.lastSync);if(d.quiz&&d.quiz.week&&!d.quiz.done)S.quiz=d.quiz;}
   if(online&&fbReady)syncFromFirebase();
 }
 function updateSyncTime(ts){const el=document.getElementById('syncTxt');if(el&&ts){const d=new Date(ts);el.textContent='Son: '+d.toLocaleTimeString('tr-TR');}}
@@ -951,46 +951,74 @@ async function doLogin(){
     const pass=document.getElementById('spass').value.trim();
     if(!num){setLoginErr('Okul numaranizi giriniz!');return;}
     if(!pass){setLoginErr('Sifrenizi giriniz!');return;}
-    const email=num+'@turkce7.com';
     setLoginLoading(true);
-    try{
-      const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
-      const uid=cred.user.uid;
-      /* Firestore'dan ogrenci bilgisi al */
-      let stuLocal=S.students.find(s=>String(s.id)===num);
-      try{
-        const snap=await db.collection('users').doc(uid).get();
-        if(snap.exists){
-          const d=snap.data();
-          if(d.role!=='student'){setLoginErr('Bu hesap ogrenci hesabi degil!');fbAuth.signOut();setLoginLoading(false);return;}
-          /* Firestore'daki guncel ogrenci verisini al */
-          const stuSnap=await db.collection('students').doc(num).get();
-          if(stuSnap.exists){
-            const fbStu=stuSnap.data();
-            /* Local listeyi guncelle */
-            const idx=S.students.findIndex(s=>String(s.id)===num);
-            if(idx>=0)S.students[idx]={...S.students[idx],...fbStu};
-            stuLocal=S.students.find(s=>String(s.id)===num)||{id:+num,name:fbStu.name||('Ogrenci '+num),class:fbStu.class||'7-A',weekData:fbStu.weekData||{}};
-          }
-        }
-      }catch(_){}
-      if(!stuLocal){setLoginErr('Ogrenci bulunamadi! Ogretmeninizle iletisime gecin.');fbAuth.signOut();setLoginLoading(false);return;}
-      S.role='student';
-      S.user=stuLocal;
-      enterApp();
-    }catch(e){
-      setLoginLoading(false);
-      if(e.code==='auth/user-not-found'){
-        setLoginErr('Bu numara sisteme kayitli degil!');
-      }else if(e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
-        setLoginErr('Sifre hatali!');
-      }else if(e.code==='auth/too-many-requests'){
-        setLoginErr('Cok fazla deneme. Lutfen bekleyin.');
-      }else{
-        setLoginErr('Giris hatasi: '+e.code);
-      }
+    _doStudentLogin(num,pass);
+  }
+}
+
+/* Ogrenci girisi ayri fonksiyon - ic ice try/catch sorununu onler */
+async function _doStudentLogin(num,pass){
+  const email=num+'@turkce7.com';
+  try{
+    const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
+    await _loadStudentAndEnter(num,cred.user.uid);
+  }catch(e){
+    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
+      /* Ilk giris: Firestore'dan sifre kontrol et, dogru ise hesap ac */
+      await _firstTimeStudentLogin(num,pass,email);
+    }else if(e.code==='auth/wrong-password'){
+      setLoginErr('Sifre hatali!');setLoginLoading(false);
+    }else if(e.code==='auth/too-many-requests'){
+      setLoginErr('Cok fazla deneme. Lutfen bekleyin.');setLoginLoading(false);
+    }else{
+      setLoginErr('Giris hatasi: '+e.code);setLoginLoading(false);
     }
   }
+}
+
+async function _firstTimeStudentLogin(num,pass,email){
+  try{
+    const stuSnap=await db.collection('students').doc(num).get();
+    if(!stuSnap.exists){
+      setLoginErr('Bu numara kayitli degil! Ogretmeninize basvurun.');
+      setLoginLoading(false);return;
+    }
+    const stuData=stuSnap.data();
+    if(stuData.password!==pass){
+      setLoginErr('Sifre hatali!');setLoginLoading(false);return;
+    }
+    /* Sifre dogru - Firebase Auth hesabi olustur */
+    const cred=await fbAuth.createUserWithEmailAndPassword(email,pass);
+    await db.collection('users').doc(cred.user.uid).set({
+      role:'student',studentId:+num,
+      name:stuData.name,class:stuData.class,email:email,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await db.collection('students').doc(num).update({registered:true,uid:cred.user.uid});
+    await _loadStudentAndEnter(num,cred.user.uid);
+  }catch(e){
+    setLoginErr('Giris hatasi: '+(e.code||e.message));
+    setLoginLoading(false);
+  }
+}
+
+async function _loadStudentAndEnter(num,uid){
+  try{
+    const stuSnap=await db.collection('students').doc(num).get();
+    if(stuSnap.exists){
+      const fbStu=stuSnap.data();
+      const idx=S.students.findIndex(s=>String(s.id)===num);
+      if(idx>=0)S.students[idx]={...S.students[idx],...fbStu};
+      else S.students.push({id:+num,...fbStu});
+    }
+  }catch(e){ console.warn('loadStudent:',e); }
+  const stuLocal=S.students.find(s=>String(s.id)===num);
+  if(!stuLocal){
+    setLoginErr('Ogrenci verisi bulunamadi!');
+    fbAuth.signOut();setLoginLoading(false);return;
+  }
+  S.role='student';S.user=stuLocal;
+  enterApp();
 }
 
 function enterApp(){
@@ -1191,55 +1219,34 @@ async function saveSt(){
   const cls=document.getElementById('nSC').value;
   const newId=Math.max(...S.students.map(s=>s.id),100)+1;
   const pw=document.getElementById('nSP').value.trim()||String(newId);
-  const wd={};for(let w=1;w<=12;w++)wd[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
+  const wd={};
+  for(let w=1;w<=12;w++)wd[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
   const newStu={id:newId,name:n,class:cls,password:pw,weekData:wd};
-
-  /* Firebase Auth'da hesap olustur: numara@turkce7.com */
-  if(fbReady&&fbAuth){
-    toast('Firebase hesabi olusturuluyor...','info');
+  S.students.push(newStu);
+  /* Firestore'a kaydet - Auth KULLANMA (ogretmen oturumu kesilir) */
+  /* Ogrenci ilk giriste numara@turkce7.com + sifre ile kendi hesabini acar */
+  if(fbReady&&db){
     try{
-      const email=String(newId)+'@turkce7.com';
-      /* Admin SDK olmadigi icin signInWithEmailAndPassword ile degil,
-         createUserWithEmailAndPassword ile olusturuyoruz.
-         Bu islem mevcut oturumu degistirmez - sonra ogretmen tekrar giris yapar */
-      const tempAuth=firebase.auth();
-      const cred=await tempAuth.createUserWithEmailAndPassword(email,pw);
-      const uid=cred.user.uid;
-      /* users koleksiyonuna rol kaydet */
-      await db.collection('users').doc(uid).set({
-        role:'student',
-        studentId:newId,
-        name:n,
-        class:cls,
-        email:email,
-        createdAt:firebase.firestore.FieldValue.serverTimestamp()
-      });
-      /* students koleksiyonuna veri kaydet */
       await db.collection('students').doc(String(newId)).set({
-        ...newStu,
-        uid:uid,
+        id:newId,name:n,class:cls,password:pw,weekData:wd,
+        email:String(newId)+'@turkce7.com',
+        registered:false,
         updatedAt:firebase.firestore.FieldValue.serverTimestamp()
       });
-      /* Ogretmen oturumunu geri yukle */
-      if(S.user&&S.user.email){
-        /* Ogretmen oturumu korundu - createUserWithEmailAndPassword mevcut oturumu bozmaz */
-      }
-      toast(n+' eklendi ve Firebase hesabi olusturuldu (#'+newId+')');
+      toast(n+' eklendi. Numara:'+newId+' Sifre:'+pw);
     }catch(e){
-      if(e.code==='auth/email-already-in-use'){
-        toast(n+' zaten sistemde kayitli (#'+newId+')','info');
-      }else{
-        toast('Firebase hatasi: '+e.code,'err');
-        console.warn('saveSt Firebase error:',e);
-      }
+      console.warn('Firestore saveSt:',e);
+      toast(n+' local olarak eklendi #'+newId);
     }
   }else{
-    toast(n+' eklendi (Firebase yok, sadece local) #'+newId,'info');
+    toast(n+' eklendi #'+newId);
   }
-
-  S.students.push(newStu);
-  persist();closeMo('mAddSt');renderSt();
-  document.getElementById('nSN').value='';document.getElementById('nSP').value='';document.getElementById('stPreview').style.display='none';
+  persist();
+  closeMo('mAddSt');
+  renderSt();
+  document.getElementById('nSN').value='';
+  document.getElementById('nSP').value='';
+  document.getElementById('stPreview').style.display='none';
 }
 function openStDet(id){
   const s=S.students.find(x=>x.id===id);if(!s)return;
@@ -1470,7 +1477,8 @@ function renderSDash(){
   const st=document.getElementById('sStart2');
   if(S.selWeek&&!S.locks[S.selWeek].locked&&!s.weekData[S.selWeek].completed){
     st.style.display='flex';
-    document.getElementById('sWkInfo').textContent='HAFTA '+S.selWeek+' · '+TOPICS[S.selWeek-1].toUpperCase()+' · 100 SORU';
+    const devam=S.quiz&&S.quiz.week===S.selWeek&&S.quiz.cur>0&&!S.quiz.done;
+    document.getElementById('sWkInfo').textContent=devam?('KALDIGI YERDEN DEVAM - Soru '+(S.quiz.cur+1)+'/'+S.quiz.questions.length):('HAFTA '+S.selWeek+' - 100 SORU');
   }else st.style.display='none';
 }
 function selWeek(w){
@@ -1486,9 +1494,22 @@ function selWeek(w){
 let _sel=null;
 function startQuiz(){
   const w=S.selWeek;
+  /* Ayni hafta devam eden quiz var mi? */
+  if(S.quiz&&S.quiz.week===w&&S.quiz.cur>0&&!S.quiz.done){
+    toast('Kaldigi yerden devam ediliyor: Soru '+(S.quiz.cur+1),'info');
+    _sel=null;
+    showSPg('quiz');
+    document.getElementById('qzBadge').textContent='HAFTA '+w;
+    document.getElementById('qzTitle').textContent=TOPICS[w-1];
+    document.getElementById('qzRes').style.display='none';
+    document.getElementById('qzArea').style.display='block';
+    renderQz();
+    return;
+  }
   const qs=S.questions.filter(q=>q.week===w).slice(0,100);
   if(!qs.length){toast('Soru bulunamadi!','err');return;}
-  S.quiz={week:w,questions:qs,cur:0,correct:0,wrong:0};_sel=null;
+  S.quiz={week:w,questions:qs,cur:0,correct:0,wrong:0,done:false};
+  _sel=null;persist();
   showSPg('quiz');
   document.getElementById('qzBadge').textContent='HAFTA '+w;
   document.getElementById('qzTitle').textContent=TOPICS[w-1];
@@ -1521,12 +1542,13 @@ function pickOpt(i,correct){
     document.getElementById('nxtBtn').style.display='inline-flex';
   },380);
 }
-function nextQz(){S.quiz.cur++;renderQz();}
+function nextQz(){S.quiz.cur++;persist();renderQz();}
 
 async function finishQuiz(){
   const qz=S.quiz;
   const score=Math.round(qz.correct/qz.questions.length*100);
   S.user.weekData[qz.week]={completed:true,score,correct:qz.correct,wrong:qz.wrong,total:qz.questions.length,ts:Date.now()};
+  S.quiz={...S.quiz,done:true};
   await persist();
   if(online&&fbReady&&db){
     try{await db.collection('students').doc(String(S.user.id)).set({weekData:S.user.weekData,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}
@@ -1548,7 +1570,7 @@ async function finishQuiz(){
     `<button class="btn btn-j" style="padding:13px 36px;font-size:10px;letter-spacing:3px" onclick="backHome()">Ana Sayfaya Don</button>`+
     `</div>`;
 }
-function backHome(){S.selWeek=null;showSPg('sdash');renderSDash();}
+function backHome(){S.selWeek=null;if(S.quiz&&S.quiz.done)S.quiz=null;showSPg('sdash');renderSDash();}
 
 /* ═══════════════════════════════
    STUDENT PERF
@@ -1577,10 +1599,4 @@ function renderSPerf(){
 /* ═══════════════════════════════
    KEYBOARD
 ═══════════════════════════════ */
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')document.querySelectorAll('.mo.on').forEach(m=>m.classList.remove('on'));
-  if(e.key==='Enter'&&document.getElementById('loginScreen').classList.contains('vis'))doLogin();
-});
-</script>
-</body>
-</html>
+document.addEventListener('keydown',
