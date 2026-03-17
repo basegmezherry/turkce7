@@ -271,22 +271,139 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .wres-cell{font-family:var(--ff-d);font-size:11px;text-align:center;}
 .wres-wrap{overflow-x:auto;}
 
-/* MOBILE */
-@media(max-width:480px){
-  .sc-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
-  .sc{padding:12px 8px;}
+/* MOBILE — Tam responsive, üst üste binme yok */
+@media(max-width:600px){
+  /* Stat kartları: 2 kolon */
+  .sc-grid{grid-template-columns:repeat(2,1fr)!important;gap:8px;}
+  .sc{padding:12px 8px;min-width:0;}
   .sc-n{font-size:20px;}
-  .wgrid{grid-template-columns:repeat(3,1fr);gap:6px;}
-  .wc{padding:10px 7px;}
-  .wc-n{font-size:17px;}
+  .sc-l{font-size:6px;letter-spacing:1.5px;}
+
+  /* Hafta grid: 3 kolon */
+  .wgrid{grid-template-columns:repeat(3,1fr)!important;gap:6px;}
+  .wc{padding:9px 6px;}
+  .wc-n{font-size:16px;}
+  .wc-tp{font-size:6px;}
+
+  /* Skor sonuç ekranı */
+  .rgrid{gap:16px;}
+  .ri-n{font-size:24px;}
+  .rcircle{width:110px;height:110px;}
+  .rscore{font-size:38px;}
+
+  /* Form 2 kolon → 1 kolon */
   .f2b{grid-template-columns:1fr;}
-  .lcard-frame{padding:36px 24px 28px;}
+
+  /* Login kart */
+  .lcard-frame{padding:32px 18px 24px;}
+  .l-name{font-size:15px;letter-spacing:2px;}
+
+  /* Başlık alanı */
   .ph{flex-direction:column;gap:8px;}
+  .ph-actions{flex-wrap:wrap;gap:6px;}
+
+  /* Bar satırları */
   .brow{gap:6px;}
   .blbl{width:90px;font-size:11px;}
   .bval{width:28px;font-size:9px;}
+
+  /* Liderlik */
   .lb-bar-wrap{display:none;}
+  .lb-score{font-size:16px;}
+
+  /* Haftalık tablo */
   .wres-hdr,.wres-row{grid-template-columns:2fr repeat(3,1fr);}
+  .wres-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+
+  /* Header */
+  .hdr-uname{display:none;}
+  .hdr-nav{gap:2px;}
+  .nb{padding:5px 7px;font-size:9px;letter-spacing:1px;}
+
+  /* Page padding */
+  .page{padding:14px 12px;}
+
+  /* Stat card 4 kutu için tek satır scroll yerine 2x2 grid */
+  #sStats.sc-grid,#dStats.sc-grid{grid-template-columns:repeat(2,1fr)!important;}
+
+  /* Modal */
+  .modal{padding:22px 16px;}
+  .mttl{font-size:11px;}
+  
+  /* Buttons */
+  .btn{padding:7px 12px;font-size:8px;}
+  .big-add-btn{padding:10px 18px;font-size:10px;}
+  
+  /* Öğrenci satırı */
+  .strow{padding:10px 12px;gap:10px;}
+  .stname{font-size:13px;}
+
+  /* Swcard hafta listesi */
+  .swcard{padding:11px 12px;gap:10px;}
+  .sw-num2{font-size:18px;width:26px;}
+  .sw-topic{font-size:13px;}
+  .sw-score2{font-size:15px;}
+}
+
+@media(max-width:380px){
+  .sc-grid{grid-template-columns:repeat(2,1fr)!important;gap:6px;}
+  .wgrid{grid-template-columns:repeat(2,1fr)!important;gap:5px;}
+  .nb{padding:4px 6px;font-size:8px;}
+  .hdr-av{display:none;}
+  .lcard-frame{padding:28px 14px 20px;}
+}
+
+/* ── YÖNETİM PANELİ ── */
+.admin-overlay{position:fixed;inset:0;z-index:600;background:var(--obsidian);display:none;flex-direction:column;overflow:hidden;}
+.admin-overlay.vis{display:flex;}
+.admin-hdr{height:52px;background:linear-gradient(90deg,var(--obsidian2),var(--obsidian4),var(--obsidian2));border-bottom:1px solid var(--border2);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;}
+.admin-hdr-title{font-family:var(--ff-d);font-size:13px;font-weight:700;color:var(--gold2);letter-spacing:3px;text-transform:uppercase;flex:1;}
+.admin-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);flex-shrink:0;overflow-x:auto;}
+.admin-tabs::-webkit-scrollbar{display:none;}
+.atab{padding:11px 18px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--ivory3);font-family:var(--ff-d);font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.atab:hover{color:var(--ivory);background:var(--gold-a12);}
+.atab.on{border-bottom-color:var(--gold3);color:var(--gold3);background:var(--gold-a12);}
+.admin-body{flex:1;overflow-y:auto;padding:20px 16px;}
+.apanel{display:none;}
+.apanel.on{display:block;}
+.acard{background:linear-gradient(160deg,rgba(35,16,16,.5),rgba(14,6,6,.8));border:1px solid var(--border);border-radius:var(--r2);padding:18px;margin-bottom:14px;}
+.acard-title{font-family:var(--ff-d);font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.alist{list-style:none;}
+.alist li{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--ivory2);}
+.alist li:last-child{border-bottom:none;}
+.alist li .li-badge{margin-left:auto;font-family:var(--ff-d);font-size:8px;letter-spacing:1.5px;padding:3px 9px;border-radius:var(--r);}
+/* Toplu öğrenci ekleme */
+.bulk-area{width:100%;min-height:140px;padding:12px;background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r);color:var(--ivory);font-family:var(--ff-b);font-size:14px;outline:none;resize:vertical;line-height:1.7;}
+.bulk-area:focus{border-color:var(--border3);}
+.bulk-area::placeholder{color:var(--ivory4);}
+.bulk-result{margin-top:10px;font-family:var(--ff-d);font-size:9px;letter-spacing:1.5px;}
+.bulk-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.bulk-row .br-id{font-family:var(--ff-d);font-size:11px;color:var(--gold3);width:40px;}
+.bulk-row .br-name{flex:1;color:var(--ivory);}
+.bulk-row .br-cls{font-family:var(--ff-d);font-size:9px;color:var(--ivory3);width:36px;}
+.bulk-row .br-pw{font-family:var(--ff-d);font-size:10px;color:var(--jade4);width:60px;}
+.bulk-row .br-st{font-family:var(--ff-d);font-size:9px;}
+.progress-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin:8px 0;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--jade2),var(--jade4));border-radius:3px;transition:width .3s var(--ease);}
+/* Firebase kullanıcı listesi */
+.fbu-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(14,6,6,.6);border:1px solid var(--border);border-radius:var(--r);margin-bottom:6px;}
+.fbu-av{width:30px;height:30px;border-radius:50%;background:rgba(107,17,17,.4);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--ff-d);font-size:11px;color:var(--gold3);flex-shrink:0;}
+.fbu-info{flex:1;min-width:0;}
+.fbu-name{font-size:13px;color:var(--ivory);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fbu-meta{font-family:var(--ff-d);font-size:8px;letter-spacing:1.5px;color:var(--ivory4);margin-top:2px;}
+/* Ayarlar */
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:14px;color:var(--ivory2);}
+.setting-desc{font-family:var(--ff-d);font-size:8px;letter-spacing:1.5px;color:var(--ivory4);margin-top:3px;}
+.toggle-sw{width:44px;height:24px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid var(--border2);position:relative;cursor:pointer;transition:background .2s;}
+.toggle-sw.on{background:rgba(28,94,58,.6);border-color:rgba(61,166,104,.5);}
+.toggle-sw::after{content:'';position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ivory3);transition:transform .2s;}
+.toggle-sw.on::after{transform:translateX(20px);background:var(--jade4);}
+@media(max-width:600px){
+  .admin-hdr-title{font-size:11px;letter-spacing:2px;}
+  .atab{padding:9px 12px;font-size:8px;}
+  .admin-body{padding:14px 12px;}
 }
 </style>
 </head>
@@ -343,6 +460,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       <div class="pulse-dot" id="pDot"></div>
       <div class="hdr-uname" id="hName"></div>
       <div class="hdr-av" id="hAv"></div>
+      <button class="hdr-logout" id="adminBtn" onclick="openAdmin()" title="Yönetim Paneli" style="font-size:15px;display:none">⚙️</button>
       <button class="hdr-logout" onclick="openChangePass()" title="Şifre" style="font-size:15px">🔑</button>
       <button class="hdr-logout" onclick="doLogout()">⏻</button>
     </div>
@@ -360,6 +478,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
             <span class="badge badge-fb" id="fbStatusBadge">☁ Firebase</span>
             <span id="syncTxt"></span>
             <button class="btn btn-sm btn-p" onclick="fbPushConfig()">☁ Sync</button>
+            <button class="btn btn-sm btn-r" onclick="clearLocalData()" title="Yerel veriyi sifirla">🗑 Temizle</button>
           </div>
         </div>
         <div class="sc-grid" id="dStats"></div>
@@ -497,6 +616,127 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   </div>
 </div>
 
+<!-- ═══ YÖNETİM PANELİ OVERLAY ═══ -->
+<div id="adminOverlay" class="admin-overlay">
+  <div class="admin-hdr">
+    <div class="hdr-seal">⚙️</div>
+    <div class="admin-hdr-title">Yönetim Paneli</div>
+    <button class="hdr-logout" onclick="closeAdmin()" style="font-size:18px;color:var(--gold2)">✕</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="atab on" onclick="adminTab('genel',this)">📊 Genel</button>
+    <button class="atab" onclick="adminTab('bulk',this)">➕ Toplu Ekle</button>
+    <button class="atab" onclick="adminTab('users',this)">👥 Kullanıcılar</button>
+    <button class="atab" onclick="adminTab('ayarlar',this)">⚙️ Ayarlar</button>
+    <button class="atab" onclick="adminTab('log',this)">📋 Log</button>
+  </div>
+  <div class="admin-body">
+
+    <!-- GENEL PANELİ -->
+    <div class="apanel on" id="ap-genel">
+      <div class="acard">
+        <div class="acard-title">SİSTEM İSTATİSTİKLERİ
+          <button class="btn btn-sm btn-p" onclick="Admin.refreshStats()">↻ Yenile</button>
+        </div>
+        <div id="adminStats" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px"></div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">FİREBASE DURUMU</div>
+        <div id="adminFbStatus"></div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">ŞUBE DAĞILIMI</div>
+        <div id="adminClsDist"></div>
+      </div>
+    </div>
+
+    <!-- TOPLU ÖĞRENCİ EKLEME -->
+    <div class="apanel" id="ap-bulk">
+      <div class="acard">
+        <div class="acard-title">TOPLU ÖĞRENCİ EKLE
+          <span style="font-family:var(--ff-d);font-size:8px;color:var(--ivory4)">Firebase Auth + Firestore otomatik</span>
+        </div>
+        <div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1.5px;color:var(--ivory4);margin-bottom:10px;line-height:2">
+          Her satıra bir öğrenci: <strong style="color:var(--gold2)">Ad Soyad, Şube, Şifre(isteğe bağlı)</strong><br>
+          Örnek: Ayşe Yılmaz, 7-A, sifre123<br>
+          Şifre boş bırakılırsa otomatik numara atanır.
+        </div>
+        <div class="fg3">
+          <label class="fl2">Öğrenci Listesi (her satır bir öğrenci)</label>
+          <textarea class="bulk-area" id="bulkInput" placeholder="Ayşe Yılmaz, 7-A, sifre123&#10;Mehmet Demir, 7-B&#10;Zeynep Kaya, 7-C, pass456"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+          <button class="btn btn-p" onclick="Admin.parseBulk()">👁 Önizle</button>
+          <button class="btn btn-j" id="bulkAddBtn" onclick="Admin.addBulk()" style="display:none">⚡ Tümünü Ekle</button>
+          <button class="btn btn-r" onclick="Admin.clearBulk()">✕ Temizle</button>
+        </div>
+        <div class="progress-bar" id="bulkProgress" style="display:none"><div class="progress-fill" id="bulkFill" style="width:0%"></div></div>
+        <div id="bulkStatus" style="font-family:var(--ff-d);font-size:9px;letter-spacing:1.5px;color:var(--jade4);min-height:16px"></div>
+        <div id="bulkPreview"></div>
+      </div>
+    </div>
+
+    <!-- KULLANICI LİSTESİ -->
+    <div class="apanel" id="ap-users">
+      <div class="acard">
+        <div class="acard-title">FİRESTORE ÖĞRENCİLER
+          <button class="btn btn-sm btn-p" onclick="Admin.loadUsers()">↻ Yükle</button>
+        </div>
+        <div style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap">
+          <input class="fld" type="text" id="adminUserSearch" placeholder="🔍 Ad veya numara ara…" oninput="Admin.filterUsers(this.value)" style="flex:1;min-width:140px">
+          <select class="fls" style="width:auto" onchange="Admin.filterUsers('',this.value)" id="adminUserCls">
+            <option value="">Tüm Şubeler</option><option>7-A</option><option>7-B</option><option>7-C</option>
+          </select>
+        </div>
+        <div id="adminUserList"><div style="color:var(--ivory4);font-size:13px;padding:20px;text-align:center">Yüklemek için ↻ butonuna tıklayın</div></div>
+        <div id="adminUserPager" style="display:flex;gap:8px;margin-top:12px;justify-content:center"></div>
+      </div>
+    </div>
+
+    <!-- AYARLAR -->
+    <div class="apanel" id="ap-ayarlar">
+      <div class="acard">
+        <div class="acard-title">UYGULAMA AYARLARI</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Tüm Haftaları Kilitle</div><div class="setting-desc">Öğrenciler quiz çözemez</div></div>
+          <div class="toggle-sw" id="swLockAll" onclick="Admin.toggleLockAll(this)"></div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Liderlik Tablosunu Gizle</div><div class="setting-desc">Öğrenciler sıralamayı göremez</div></div>
+          <div class="toggle-sw" id="swHideLb" onclick="Admin.toggleSetting('hideLb',this)"></div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Otomatik Firebase Sync</div><div class="setting-desc">Her kayıtta Firebase'e yaz</div></div>
+          <div class="toggle-sw on" id="swAutoSync" onclick="Admin.toggleSetting('autoSync',this)"></div>
+        </div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">HAFTA KİLİT YÖNETİMİ</div>
+        <div id="adminWeekLocks"></div>
+      </div>
+      <div class="acard">
+        <div class="acard-title">TEHLİKELİ BÖLGE</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+          <button class="btn btn-r" onclick="Admin.resetAllStudentData()">⚠️ Tüm Öğrenci Verilerini Sıfırla</button>
+          <button class="btn btn-r" onclick="clearLocalData()">🗑 Yerel Veriyi Temizle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOG PANELİ -->
+    <div class="apanel" id="ap-log">
+      <div class="acard">
+        <div class="acard-title">SİSTEM LOGU
+          <button class="btn btn-sm" onclick="Admin.clearLog()">Temizle</button>
+        </div>
+        <div id="adminLog" style="font-family:monospace;font-size:11px;color:var(--ivory3);line-height:1.8;max-height:400px;overflow-y:auto"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
 <!-- MODALS -->
 <div class="mo" id="mConfirm">
   <div class="modal" style="max-width:400px;text-align:center">
@@ -531,7 +771,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="fg3"><label class="fl2">Ad Soyad</label><input class="fld" type="text" id="nSN" placeholder="Örn: Ayşe Yılmaz" oninput="previewStId()"></div>
     <div class="f2b">
       <div class="fg3"><label class="fl2">Şube</label><select class="fls" id="nSC"><option>7-A</option><option>7-B</option><option>7-C</option></select></div>
-      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: NUMARA@turkce7.com</div></div>
+      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a5ebf0e8e4f7e4e5d1d0d7cec6c0928bc6cac8">[email&#160;protected]</a></div></div>
     </div>
     <div id="stPreview" style="display:none;background:var(--gold-a12);border:1px solid var(--border2);border-radius:var(--r);padding:12px;margin-bottom:12px">
       <div style="font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px">ÖNİZLEME</div>
@@ -583,7 +823,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const QB=[
   {t:'Dil Bilgisi',q:'Asagidaki cumlelerin hangisinde "ki" baglaci ayri yazilmalidir?',o:['Biliyorki yarin gelecek.','Sunu bilki her sey gecer.','Anladim ki yanilmisim.','Oyle saniyorumki dogrudur.'],a:2},
   {t:'Dil Bilgisi',q:'"Guzellik" sozcugunde toplam kac ek vardir?',o:['1','2','3','4'],a:1},
@@ -959,7 +1199,10 @@ async function restoreData() {
     if (d.quiz && d.quiz.week && !d.quiz.done) S.quiz = d.quiz;
     if (d.lastSync)  updateSyncTime(d.lastSync);
   }
-  if (Net.online && FB.ready) FB.sync();
+  /* Firebase bağlıysa sync et — Firebase verisi lokal veriyi ezer (eski sahte veri temizlenir) */
+  if (Net.online && FB.ready) {
+    await FB.sync();
+  }
 }
 
 function updateSyncTime(ts) {
@@ -1456,6 +1699,7 @@ function enterApp() {
   if (S.role === 'teacher') {
     DOM.show('tApp', true);
     DOM.show('sApp', false);
+    DOM.show('adminBtn', true);
     buildTNav();
     showPg('dash');
     Teacher.renderDash();
@@ -1638,7 +1882,7 @@ const Teacher = {
   },
 
   async saveSt() {
-    /* Validation — Validator katmanı */
+    /* Validation */
     const nameR = Validator.name(DOM.val('nSN'));
     if (!nameR.ok) { UI.toast(nameR.err, 'err'); return; }
     const clsR = Validator.cls(DOM.val('nSC'));
@@ -1648,31 +1892,78 @@ const Teacher = {
     const pw = rawPw || String(newId);
     const pwR = Validator.password(pw, 4);
     if (!pwR.ok) { UI.toast(pwR.err, 'err'); return; }
+
+    /* Butonu kilitle */
+    const saveBtn = document.querySelector('#mAddSt .btn-j');
+    if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'Olusturuluyor...'; }
+
+    const email = String(newId) + '@turkce7.com';
     const wd = mkWD();
     const newStu = { id:newId, name:nameR.val, class:clsR.val, password:pwR.val, weekData:wd };
+
+    let authCreated = false;
+    let authUid = null;
+
+    /* ── Firebase Auth: Ikinci gecici uygulama ile hesap ac (ogretmen oturumu bozulmaz) ── */
+    if (FB.ready) {
+      try {
+        const tempAppName = 'tempStu_' + newId;
+        let tempApp;
+        try { tempApp = firebase.app(tempAppName); }
+        catch { tempApp = firebase.initializeApp(CFG.firebase, tempAppName); }
+        const tempAuth = firebase.auth(tempApp);
+        const cred = await tempAuth.createUserWithEmailAndPassword(email, pw);
+        authUid = cred.user ? cred.user.uid : null;
+        await tempAuth.signOut();
+        await tempApp.delete();
+        authCreated = true;
+      } catch (authErr) {
+        if (authErr.code === 'auth/email-already-in-use') {
+          authCreated = true; /* Zaten kayitli */
+        } else {
+          console.warn('[saveSt Auth]', authErr.code, authErr.message);
+        }
+      }
+    }
+
+    /* ── Firestore: Ogrenci dokumanini yaz ── */
     S.students.push(newStu);
     if (FB.ready && FB.db) {
       try {
-        await FB.db.collection('students').doc(String(newId)).set({
-          ...newStu,
-          email: String(newId) + '@turkce7.com',
-          registered: false,
+        const fsData = {
+          ...newStu, email,
+          registered: authCreated,
           updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        UI.toast(nameR.val + ' eklendi! #' + newId + ' Sifre: ' + pwR.val);
+        };
+        if (authUid) fsData.uid = authUid;
+        await FB.db.collection('students').doc(String(newId)).set(fsData);
+
+        /* users/ koleksiyonuna kaydet (oturum geri yukleme icin) */
+        if (authUid) {
+          await FB.db.collection('users').doc(authUid).set({
+            role:'student', studentId:newId,
+            name:nameR.val, class:clsR.val, email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+
+        const authMsg = authCreated ? ' | Auth+Firestore OK' : ' | yalnizca Firestore';
+        UI.toast(nameR.val + ' eklendi! #' + newId + ' Sifre: ' + pwR.val + authMsg);
       } catch (e) {
-        console.warn('[saveSt]', e);
-        UI.toast(nameR.val + ' local olarak eklendi #' + newId, 'info');
+        console.warn('[saveSt Firestore]', e);
+        UI.toast(nameR.val + ' yerel olarak eklendi #' + newId, 'info');
       }
     } else {
-      UI.toast(nameR.val + ' eklendi #' + newId);
+      UI.toast(nameR.val + ' eklendi #' + newId + ' (cevrimdisi)');
     }
+
     persist();
     UI.closeModal('mAddSt');
     this.renderSt();
     DOM.setVal('nSN', ''); DOM.setVal('nSP', '');
     const prev = DOM.get('stPreview');
     if (prev) prev.style.display = 'none';
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Kaydet'; }
   },
 
   openStDet(id) {
@@ -2180,6 +2471,31 @@ document.addEventListener('keydown', e => {
 function openMo(id)     { UI.openModal(id); }
 function closeMo(id)    { UI.closeModal(id); }
 function fbPushConfig() { FB.pushConfig(); }
+
+/* Yerel veri temizleme — eski sahte öğrencileri siler */
+async function clearLocalData() {
+  UI.confirm(
+    'Yerel Veriyi Temizle',
+    'Telefon/tarayıcıdaki tüm yerel veriler silinecek. Firebase verileri korunur. Sayfa yeniden yüklenecek. Emin misiniz?',
+    'Evet, Temizle',
+    async () => {
+      /* IndexedDB temizle */
+      try {
+        const dbs = await indexedDB.databases();
+        for (const db of dbs) indexedDB.deleteDatabase(db.name);
+      } catch {
+        /* eski tarayıcılar databases() desteklemez */
+        indexedDB.deleteDatabase('hb_v8');
+        indexedDB.deleteDatabase('hb_db');
+      }
+      /* localStorage temizle */
+      try { localStorage.clear(); } catch { /* */ }
+      UI.toast('Yerel veri silindi, yükleniyor...', 'info');
+      setTimeout(() => location.reload(), 800);
+    },
+    true
+  );
+}
 function toggleLock(w)  { Teacher.toggleLock(w); }
 function renderSt(q,cls){ Teacher.renderSt(q,cls); }
 function openStDet(id)  { Teacher.openStDet(id); }
@@ -2193,264 +2509,317 @@ function saveQ(addNew)  { Q.save(addNew); }
 function pickAns(btn)   { Q.pickAns(btn); }
 function startQuiz()    { Quiz.start(); }
 function backHome()     { Quiz.backHome(); }
-function renderSDash()  { Student.renderDash(); }
-function renderSPerf()  { Student.renderPerf(); }
-function renderSLb()    { Student.renderLb(); }
-function selWeek(w)     { Student.selWeek(w); }
+function resetQForm()  { Q.resetForm && Q.resetForm(); }
+function openAdmin()    { Admin.open(); }
+function closeAdmin()   { Admin.close(); }
+function adminTab(id,btn){ Admin.tab(id,btn); }
 
-</script>
+/* ════════════════════════════════════════════════════════
+  21. ADMIN MODULE
+════════════════════════════════════════════════════════ */
+const Admin = {
+  _logLines: [],
+  _users: [],
+  _usersFiltered: [],
+  _userPage: 0,
+  _usersPerPage: 30,
 
-<!-- ADMIN BUTTON -->
-<button onclick="adminGiris()">Admin Giriş</button>
+  log(msg, type='info') {
+    const ts = new Date().toLocaleTimeString('tr-TR');
+    const color = type==='ok'?'#5cc285':type==='err'?'#ff9898':type==='warn'?'#dba832':'#a8c8ff';
+    this._logLines.unshift(`<span style="color:var(--ivory4)">[${ts}]</span> <span style="color:${color}">${msg}</span>`);
+    if (this._logLines.length > 200) this._logLines.pop();
+    const el = document.getElementById('adminLog');
+    if (el) el.innerHTML = this._logLines.join('<br>');
+  },
 
-<!-- ADMIN PANEL -->
-<div id="adminPanel" style="display:none;padding:20px;">
-  <h2>Admin Panel</h2>
+  open() {
+    if (!Auth.checkRole('teacher')) return;
+    const ov = document.getElementById('adminOverlay');
+    if (ov) ov.classList.add('vis');
+    this.refreshStats();
+    this.renderWeekLocks();
+    this.log('Yönetim paneli açıldı');
+  },
 
-  <input id="ogrenciAd" placeholder="Öğrenci Adı">
-  <input id="ogrenciNo" placeholder="Numara">
-  <button onclick="ogrenciEkle()">Ekle</button>
+  close() {
+    const ov = document.getElementById('adminOverlay');
+    if (ov) ov.classList.remove('vis');
+  },
 
-  <h3>Öğrenciler</h3>
-  <ul id="ogrenciListe"></ul>
+  tab(id, btn) {
+    document.querySelectorAll('.apanel').forEach(p=>p.classList.remove('on'));
+    document.querySelectorAll('.atab').forEach(b=>b.classList.remove('on'));
+    const panel = document.getElementById('ap-'+id);
+    if (panel) panel.classList.add('on');
+    if (btn) btn.classList.add('on');
+    if (id==='users') this.loadUsers();
+    if (id==='genel') this.refreshStats();
+    if (id==='ayarlar') this.renderWeekLocks();
+  },
 
-  <hr>
-  <h3>Toplu Öğrenci Ekle</h3>
-  <textarea id="topluVeri" rows="8" placeholder="Ad,Numara"></textarea><br>
-  <button onclick="topluEkle()">Toplu Ekle</button>
-</div>
+  refreshStats() {
+    const st = S.students;
+    const totalQ = st.reduce((a,x)=>a+stTotal(x),0);
+    const active = st.filter(x=>stDone(x)>0).length;
+    const allSc  = st.flatMap(x=>Object.values(x.weekData||{}).filter(w=>w.completed).map(w=>w.score));
+    const avgSc  = avg(allSc);
+    const regCount = st.filter(s=>s.registered).length;
+    DOM.setHtml('adminStats',
+      `<div class="sc"><div class="sc-n">${st.length}</div><div class="sc-l">Toplam Öğrenci</div></div>`+
+      `<div class="sc"><div class="sc-n">${regCount}</div><div class="sc-l">Kayıtlı Auth</div></div>`+
+      `<div class="sc"><div class="sc-n">${active}</div><div class="sc-l">Aktif</div></div>`+
+      `<div class="sc"><div class="sc-n" style="color:${sc(avgSc)}">%${avgSc}</div><div class="sc-l">Ortalama</div></div>`+
+      `<div class="sc"><div class="sc-n">${totalQ.toLocaleString('tr-TR')}</div><div class="sc-l">Çözülen Soru</div></div>`+
+      `<div class="sc"><div class="sc-n">${S.questions.length}</div><div class="sc-l">Soru Bankası</div></div>`
+    );
+    const fbOk = FB.ready && FB.db;
+    DOM.setHtml('adminFbStatus',
+      `<div style="display:flex;align-items:center;gap:10px;padding:10px 0">`+
+      `<div style="width:10px;height:10px;border-radius:50%;background:${fbOk?'var(--jade4)':'#ff7070'};box-shadow:0 0 8px ${fbOk?'var(--jade4)':'#ff7070'}"></div>`+
+      `<div style="font-size:14px;color:var(--ivory2)">${fbOk?'Firebase Bağlı ve Hazır':'Firebase Bağlı Değil'}</div>`+
+      `<div style="margin-left:auto;font-family:var(--ff-d);font-size:8px;color:var(--ivory4)">${fbOk?CFG.firebase.projectId:'—'}</div></div>`
+    );
+    const clsCounts = CFG.VALID_CLS.map(c=>({ cls:c, count:st.filter(s=>s.class===c).length }));
+    DOM.setHtml('adminClsDist',
+      clsCounts.map(({cls,count})=>{
+        const pct = st.length ? Math.round(count/st.length*100) : 0;
+        return `<div class="brow"><div class="blbl" style="width:50px">${cls}</div>`+
+          `<div class="btrack"><div class="bfill" style="width:${pct}%"></div></div>`+
+          `<div class="bval">${count}</div></div>`;
+      }).join('')
+    );
+  },
 
-<script>
-const db = firebase.firestore();
+  /* ── TOPLU ÖĞRENCİ EKLEME ── */
+  _bulkParsed: [],
 
-function adminGiris(){
-  firebase.auth().signInWithEmailAndPassword("admin@gmail.com","123456")
-  .then(()=>{
-    console.log("giriş ok");
-    document.getElementById("adminPanel").style.display = "block";
-    ogrencileriGetir();
-  })
-  .catch(err=>{
-    alert(err.message);
-  });
-}
-
-firebase.auth().onAuthStateChanged(user=>{
-  if(user){
-    document.getElementById("adminPanel").style.display = "block";
-  }
-});
-
-function ogrenciEkle(){
-  const ad = document.getElementById("ogrenciAd").value;
-  const no = document.getElementById("ogrenciNo").value;
-
-  db.collection("ogrenciler").add({ad,no}).then(()=>{
-    ogrencileriGetir();
-  });
-}
-
-function ogrencileriGetir(){
-  const liste = document.getElementById("ogrenciListe");
-  if(!liste) return;
-  liste.innerHTML = "";
-
-  db.collection("ogrenciler").get().then(snap=>{
-    snap.forEach(doc=>{
-      const d = doc.data();
-      const li = document.createElement("li");
-      li.innerHTML = d.ad + " - " + d.no +
-      ` <button onclick="sil('${doc.id}')">Sil</button>`;
-      liste.appendChild(li);
+  parseBulk() {
+    const raw = (document.getElementById('bulkInput')||{value:''}).value;
+    const lines = raw.split('\n').map(l=>l.trim()).filter(Boolean);
+    const startId = Math.max(...S.students.map(s=>s.id), 100) + 1;
+    this._bulkParsed = [];
+    let html = `<div style="font-family:var(--ff-d);font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:8px">${lines.length} ÖĞRENCI HAZIR</div>`;
+    html += `<div style="max-height:280px;overflow-y:auto">`;
+    lines.forEach((line, i) => {
+      const parts = line.split(',').map(p=>p.trim());
+      const name  = parts[0]||'';
+      const cls   = CFG.VALID_CLS.includes(parts[1]) ? parts[1] : '7-A';
+      const id    = startId + i;
+      const pw    = (parts[2]||'').length>=4 ? parts[2] : String(id);
+      const nameOk = name.length>=2;
+      this._bulkParsed.push({ id, name, cls, pw, ok: nameOk });
+      const color = nameOk ? 'var(--jade4)' : '#ff9898';
+      html += `<div class="bulk-row">`+
+        `<div class="br-id">#${id}</div>`+
+        `<div class="br-name" style="color:${color}">${name||'⚠️ Ad gerekli'}</div>`+
+        `<div class="br-cls">${cls}</div>`+
+        `<div class="br-pw">${pw}</div>`+
+        `<div class="br-st" style="color:${color}">${nameOk?'✓':'✗'}</div></div>`;
     });
-  });
-}
+    html += `</div>`;
+    DOM.setHtml('bulkPreview', html);
+    const addBtn = document.getElementById('bulkAddBtn');
+    if (addBtn) addBtn.style.display = this._bulkParsed.filter(x=>x.ok).length>0 ? '' : 'none';
+    this.log(`${lines.length} satır önizlendi, ${this._bulkParsed.filter(x=>x.ok).length} geçerli`);
+  },
 
-function sil(id){
-  db.collection("ogrenciler").doc(id).delete().then(()=>{
-    ogrencileriGetir();
-  });
-}
-
-function topluEkle(){
-  const veri = document.getElementById("topluVeri").value.split("\n");
-  veri.forEach(v=>{
-    const p = v.split(",");
-    if(p.length>=2){
-      db.collection("ogrenciler").add({
-        ad:p[0].trim(),
-        no:p[1].trim()
-      });
+  async addBulk() {
+    const valid = this._bulkParsed.filter(x=>x.ok);
+    if (!valid.length) { UI.toast('Eklenecek geçerli öğrenci yok!','err'); return; }
+    const addBtn = document.getElementById('bulkAddBtn');
+    if (addBtn) { addBtn.disabled=true; addBtn.textContent='⏳ Ekleniyor...'; }
+    const prog = document.getElementById('bulkProgress');
+    const fill = document.getElementById('bulkFill');
+    const status = document.getElementById('bulkStatus');
+    if (prog) prog.style.display='';
+    let done=0, okCount=0, errCount=0;
+    for (const stu of valid) {
+      if (status) status.textContent = `${done+1}/${valid.length} — ${stu.name} ekleniyor…`;
+      const email = String(stu.id)+'@turkce7.com';
+      const wd = mkWD();
+      const newStu = { id:stu.id, name:stu.name, class:stu.cls, password:stu.pw, weekData:wd };
+      let authUid=null, authOk=false;
+      if (FB.ready) {
+        try {
+          const tempName = 'bulk_'+stu.id;
+          let tApp;
+          try { tApp=firebase.app(tempName); } catch { tApp=firebase.initializeApp(CFG.firebase,tempName); }
+          const tAuth = firebase.auth(tApp);
+          const cred = await tAuth.createUserWithEmailAndPassword(email, stu.pw);
+          authUid = cred.user?cred.user.uid:null;
+          await tAuth.signOut();
+          await tApp.delete();
+          authOk = true;
+        } catch(e) {
+          if(e.code==='auth/email-already-in-use'){ authOk=true; }
+          else { this.log(`Auth hata: ${stu.name} — ${e.code}`,'warn'); }
+        }
+      }
+      S.students.push({...newStu, registered:authOk});
+      if (FB.ready && FB.db) {
+        try {
+          const fsData={...newStu,email,registered:authOk,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+          if(authUid) fsData.uid=authUid;
+          await FB.db.collection('students').doc(String(stu.id)).set(fsData);
+          if(authUid) {
+            await FB.db.collection('users').doc(authUid).set({
+              role:'student',studentId:stu.id,name:stu.name,class:stu.cls,email,
+              createdAt:firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+          okCount++;
+          this.log(`✓ ${stu.name} #${stu.id} — Auth:${authOk?'✓':'—'}`,'ok');
+        } catch(e) {
+          errCount++;
+          this.log(`✗ Firestore hata: ${stu.name} — ${e.message}`,'err');
+        }
+      } else { okCount++; }
+      done++;
+      if (fill) fill.style.width = Math.round(done/valid.length*100)+'%';
+      /* Her 5 öğrencide bir persist */
+      if(done%5===0) await persist();
     }
-  });
-  alert("bitti");
-  ogrencileriGetir();
-}
-</script>
-<div style="padding:20px; border:2px solid red; margin-top:20px;">
-  <h2>🔥 TOPLU 135 ÖĞRENCİ EKLE</h2>
+    await persist();
+    if (status) status.textContent = `✓ ${okCount} öğrenci eklendi, ${errCount} hata`;
+    if (addBtn) { addBtn.disabled=false; addBtn.textContent='⚡ Tümünü Ekle'; }
+    this.log(`Toplu ekleme tamamlandı: ${okCount} başarılı, ${errCount} hatalı`,'ok');
+    UI.toast(okCount+' öğrenci eklendi!');
+    Teacher.renderDash();
+    Teacher.renderSt();
+    setTimeout(()=>{ if(prog) prog.style.display='none'; if(fill) fill.style.width='0%'; },3000);
+  },
 
-  <textarea id="topluVeri" rows="10" style="width:100%;" placeholder="Ad,Numara
-Ali,1001
-Veli,1002"></textarea>
+  clearBulk() {
+    DOM.setVal('bulkInput','');
+    DOM.setHtml('bulkPreview','');
+    DOM.setText('bulkStatus','');
+    const addBtn=document.getElementById('bulkAddBtn');
+    if(addBtn) addBtn.style.display='none';
+    this._bulkParsed=[];
+  },
 
-  <br><br>
-  <button onclick="topluEkle()" style="padding:10px;">TOPLU EKLE</button>
-</div>
+  /* ── KULLANICI LİSTESİ ── */
+  async loadUsers() {
+    if (!FB.ready||!FB.db) { DOM.setHtml('adminUserList','<div style="color:#ff9898;padding:20px">Firebase bağlı değil</div>'); return; }
+    DOM.setHtml('adminUserList','<div style="color:var(--ivory4);padding:20px;text-align:center">Yükleniyor…</div>');
+    try {
+      const snap = await FB.db.collection('students').orderBy('id').get();
+      this._users = [];
+      snap.forEach(doc=>{ const d=doc.data(); if(d.id) this._users.push(d); });
+      this._usersFiltered = [...this._users];
+      this._userPage = 0;
+      this.renderUserList();
+      this.log(`${this._users.length} öğrenci yüklendi`,'ok');
+    } catch(e) { DOM.setHtml('adminUserList',`<div style="color:#ff9898;padding:20px">Hata: ${e.message}</div>`); this.log(`Kullanıcı yükleme hatası: ${e.message}`,'err'); }
+  },
 
-<!-- ===== FIXED ADMIN PANEL + BULK ===== -->
-<div id="fixedPanel" style="display:none;position:fixed;bottom:0;left:0;width:100%;background:#fff;border-top:3px solid #000;padding:15px;z-index:9999;">
-  <h3>ADMIN PANEL (FIXED)</h3>
+  filterUsers(q='', cls='') {
+    const sq = (q||document.getElementById('adminUserSearch')?.value||'').toLowerCase();
+    const sc2 = (cls||document.getElementById('adminUserCls')?.value||'');
+    this._usersFiltered = this._users.filter(u=>{
+      const nameOk = !sq || u.name?.toLowerCase().includes(sq) || String(u.id).includes(sq);
+      const clsOk  = !sc2 || u.class===sc2;
+      return nameOk&&clsOk;
+    });
+    this._userPage=0;
+    this.renderUserList();
+  },
 
-  <input id="f_ad" placeholder="Ad">
-  <input id="f_no" placeholder="Numara">
-  <button onclick="f_ekle()">Ekle</button>
+  renderUserList() {
+    const total = Math.ceil(this._usersFiltered.length/this._usersPerPage)||1;
+    if(this._userPage>=total) this._userPage=total-1;
+    const slice = this._usersFiltered.slice(this._userPage*this._usersPerPage,(this._userPage+1)*this._usersPerPage);
+    DOM.setHtml('adminUserList', slice.length
+      ? slice.map(u=>{
+          const a=stAvg(u), isReg=u.registered;
+          return `<div class="fbu-row">`+
+            `<div class="fbu-av">${(u.name||'?')[0]}</div>`+
+            `<div class="fbu-info"><div class="fbu-name">${u.name} <span style="font-family:var(--ff-d);font-size:8px;color:var(--ivory4)">#${u.id}</span></div>`+
+            `<div class="fbu-meta">${u.class||'—'} · ${isReg?'Auth:✓':'Auth:—'} · Ort:%${a}</div></div>`+
+            `<div style="display:flex;gap:6px">`+
+            `<span class="badge ${isReg?'bj':'by'}" style="font-size:7px">${isReg?'Kayıtlı':'Bekliyor'}</span>`+
+            `<button class="btn btn-r btn-sm" onclick="Admin.deleteUser(${u.id})" style="padding:3px 8px">Sil</button></div></div>`;
+        }).join('')
+      : '<div style="color:var(--ivory4);font-size:13px;padding:20px">Öğrenci bulunamadı.</div>'
+    );
+    /* Pager */
+    DOM.setHtml('adminUserPager', total>1
+      ? `<button class="btn btn-sm" onclick="Admin._userPage=Math.max(0,Admin._userPage-1);Admin.renderUserList()" ${this._userPage===0?'disabled':''}>◀</button>`+
+        `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${this._userPage+1}/${total} · ${this._usersFiltered.length} öğrenci</span>`+
+        `<button class="btn btn-sm" onclick="Admin._userPage=Math.min(${total-1},Admin._userPage+1);Admin.renderUserList()" ${this._userPage===total-1?'disabled':''}>▶</button>`
+      : `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${this._usersFiltered.length} öğrenci</span>`
+    );
+  },
 
-  <h4>Toplu 135 Öğrenci</h4>
-  <textarea id="f_toplu" rows="6" style="width:100%;" placeholder="Ali,1001"></textarea>
-  <button onclick="f_topluEkle()">Toplu Ekle</button>
-</div>
+  deleteUser(id) {
+    const s = S.students.find(x=>x.id===id);
+    if (!s) return;
+    UI.confirm('Sil', s.name+' silinsin mi? (Firestore)', 'Evet, Sil', async()=>{
+      S.students = S.students.filter(x=>x.id!==id);
+      this._users = this._users.filter(x=>x.id!==id);
+      this._usersFiltered = this._usersFiltered.filter(x=>x.id!==id);
+      if (FB.ready&&FB.db) FB.db.collection('students').doc(String(id)).delete().catch(()=>{});
+      persist();
+      this.renderUserList();
+      Teacher.renderSt();
+      UI.toast(s.name+' silindi','err');
+      this.log(`Silindi: ${s.name} #${id}`,'warn');
+    });
+  },
 
-<script>
-function showFixed(){
- document.getElementById("fixedPanel").style.display="block";
-}
+  /* ── AYARLAR ── */
+  renderWeekLocks() {
+    let h = '';
+    for(let w=1;w<=12;w++){
+      const lk=S.locks[w]?.locked;
+      h+=`<div class="setting-row">`+
+        `<div><div class="setting-label">Hafta ${w} — ${CFG.TOPICS[w-1]}</div></div>`+
+        `<div class="toggle-sw ${lk?'':'on'}" id="swW${w}" onclick="Admin.toggleWeek(${w},this)"></div></div>`;
+    }
+    DOM.setHtml('adminWeekLocks', h);
+  },
 
-firebase.auth().onAuthStateChanged(user=>{
- if(user){ showFixed(); }
-});
+  toggleWeek(w, el) {
+    S.locks[w].locked = !S.locks[w].locked;
+    el.classList.toggle('on', !S.locks[w].locked);
+    persist();
+    Teacher.renderDash();
+    this.log(`Hafta ${w} ${S.locks[w].locked?'kilitlendi':'açıldı'}`,'ok');
+  },
 
-function f_ekle(){
- const ad=document.getElementById("f_ad").value;
- const no=document.getElementById("f_no").value;
- db.collection("ogrenciler").add({ad,no});
-}
+  toggleLockAll(el) {
+    const anyOpen = Object.values(S.locks).some(l=>!l.locked);
+    Object.keys(S.locks).forEach(w=>{ S.locks[w].locked = anyOpen; });
+    el.classList.toggle('on', !anyOpen);
+    persist();
+    this.renderWeekLocks();
+    Teacher.renderDash();
+    this.log(`Tüm haftalar ${anyOpen?'kilitlendi':'açıldı'}`,'warn');
+  },
 
-function f_topluEkle(){
- const rows=document.getElementById("f_toplu").value.split("\n");
- rows.forEach(r=>{
-  const p=r.split(",");
-  if(p.length>=2){
-   db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
+  toggleSetting(key, el) {
+    el.classList.toggle('on');
+    const isOn = el.classList.contains('on');
+    this.log(`Ayar: ${key} = ${isOn}`);
+  },
+
+  resetAllStudentData() {
+    UI.confirm('⚠️ Dikkat!','TÜM öğrenci verileri sıfırlansın mı? Bu işlem geri alınamaz!','Evet, Hepsini Sıfırla', async()=>{
+      S.students.forEach(s=>{ s.weekData=mkWD(); });
+      await persist();
+      this.log('Tüm öğrenci verileri sıfırlandı','warn');
+      UI.toast('Tüm veriler sıfırlandı','err');
+      Teacher.renderDash();
+    });
+  },
+
+  clearLog() {
+    this._logLines=[];
+    DOM.setHtml('adminLog','');
   }
- });
- alert("Toplu bitti");
-}
+};
+
 </script>
-
-
-<script>
-// FORCE PANEL SHOW AFTER LOGIN
-function forcePanel(){
-  let p = document.getElementById("adminPanel") || document.getElementById("panel") || document.getElementById("fixedPanel");
-  if(p){ p.style.display = "block"; }
-}
-
-// override login
-function adminGiris(){
- firebase.auth().signInWithEmailAndPassword("admin@gmail.com","123456")
- .then(()=>{
-   console.log("login ok");
-   forcePanel();
-   if(typeof ogrencileriGetir==="function"){ogrencileriGetir();}
- })
- .catch(e=>alert(e.message));
-}
-
-// ALWAYS SHOW AFTER AUTH
-firebase.auth().onAuthStateChanged(user=>{
- if(user){ forcePanel(); }
-});
-
-// GUARANTEED BULK UI
-window.addEventListener("load", ()=>{
- let div = document.createElement("div");
- div.innerHTML = `
- <div style="position:fixed;right:10px;top:10px;background:#fff;border:2px solid black;padding:10px;z-index:9999;">
-   <h4>135 EKLE</h4>
-   <textarea id="superToplu" rows="6" style="width:200px;" placeholder="Ali,1001"></textarea><br>
-   <button onclick="superTopluEkle()">EKLE</button>
- </div>`;
- document.body.appendChild(div);
-});
-
-function superTopluEkle(){
- let rows=document.getElementById("superToplu").value.split("\n");
- rows.forEach(r=>{
-  let p=r.split(",");
-  if(p.length>=2){
-    db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
-  }
- });
- alert("tamam");
-}
-</script>
-
-
-<!-- ===== TEK TEMİZ PANEL ===== -->
-<div id="tekPanel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
-background:#fff;padding:20px;border:2px solid #000;z-index:9999;width:300px;max-height:90vh;overflow:auto;">
-<h3>ÖĞRETMEN PANELİ</h3>
-
-<input id="t_ad" placeholder="Ad">
-<input id="t_no" placeholder="Numara">
-<button onclick="t_ekle()">Ekle</button>
-
-<h4>Öğrenciler</h4>
-<ul id="t_liste"></ul>
-
-<h4>135 Öğrenci Toplu</h4>
-<textarea id="t_toplu" rows="6" style="width:100%;" placeholder="Ali,1001"></textarea>
-<button onclick="t_topluEkle()">Toplu Ekle</button>
-</div>
-
-<script>
-function acPanel(){
- document.getElementById("tekPanel").style.display="block";
-}
-
-firebase.auth().onAuthStateChanged(user=>{
- if(user){ acPanel(); t_getir(); }
-});
-
-function t_ekle(){
- let ad=document.getElementById("t_ad").value;
- let no=document.getElementById("t_no").value;
- if(!ad||!no) return;
- db.collection("ogrenciler").add({ad,no}).then(t_getir);
-}
-
-function t_getir(){
- let l=document.getElementById("t_liste");
- if(!l) return;
- l.innerHTML="";
- db.collection("ogrenciler").get().then(s=>{
-  s.forEach(d=>{
-   let li=document.createElement("li");
-   let data=d.data();
-   li.innerHTML=data.ad+"-"+data.no+
-   ` <button onclick="t_sil('${d.id}')">Sil</button>`;
-   l.appendChild(li);
-  });
- });
-}
-
-function t_sil(id){
- db.collection("ogrenciler").doc(id).delete().then(t_getir);
-}
-
-function t_topluEkle(){
- let rows=document.getElementById("t_toplu").value.split("\n");
- rows.forEach(r=>{
-  let p=r.split(",");
-  if(p.length>=2){
-    db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
-  }
- });
- alert("135 ekleme tamam");
- t_getir();
-}
-</script>
-
 </body>
 </html>
