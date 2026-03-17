@@ -386,6 +386,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
           </select>
         </div>
         <div id="stList"></div>
+        <div id="stPager" style="display:flex;gap:8px;margin-top:12px;justify-content:center;align-items:center"></div>
       </div>
 
       <!-- Haftalık Sonuçlar -->
@@ -696,7 +697,32 @@ function buildStudents(){
 
 function buildLocks(){const lk={};for(let w=1;w<=12;w++)lk[w]={locked:w>6};return lk;}
 
-const S={students:[],questions:buildQs(),locks:buildLocks(),role:null,user:null,selWeek:null,quiz:null};
+/* ═══ MERKEZİ STATE ═══
+   S üzerinde yapılan tüm değişiklikler persist() ile kaydedilmeli.
+   Rol değişikliği sadece enterApp() ve doLogout() üzerinden yapılmalı. */
+const S={
+  students: buildStudents(),   /* Ogrenci listesi */
+  questions: buildQs(),        /* Soru bankasi - Firestore'dan gelir */
+  locks: buildLocks(),         /* Hafta kilitleri */
+  role: null,                  /* 'teacher' | 'student' | null */
+  user: null,                  /* Giris yapan kullanici */
+  selWeek: null,               /* Secili hafta */
+  quiz: null,                  /* Aktif quiz durumu */
+  ui: {                        /* UI state - persist edilmez */
+    stPage: 0,
+    qPage: 0,
+    lbFilter: 'all',
+    sLbFilter: 'all',
+    wkCls: '7-A',
+    wkWeek: 0,
+  }
+};
+
+/* State sıfırlama - logout sonrası */
+function resetState(){
+  S.role=null;S.user=null;S.selWeek=null;S.quiz=null;
+  S.ui={stPage:0,qPage:0,lbFilter:'all',sLbFilter:'all',wkCls:'7-A',wkWeek:0};
+}
 
 /* ═══════════════════════════════
    APP INIT
@@ -1021,27 +1047,43 @@ async function _loadStudentAndEnter(num,uid){
   enterApp();
 }
 
+/* ROL KORUMASI */
+function _checkRole(required){
+  if(!S.role||!S.user){doLogout();return false;}
+  if(S.role!==required){toast('Erisim reddedildi!','err');return false;}
+  return true;
+}
+
 function enterApp(){
   setLoginLoading(false);
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('app').classList.add('vis');
-  document.getElementById('hName').textContent=S.user.name;
-  document.getElementById('hAv').textContent=S.user.name[0].toUpperCase();
+  /* Rol doğrulama - eksik veya hatalı rol çıkış yaptırır */
+  if(!S.role||!S.user){doLogout();return;}
+  const ls=document.getElementById('loginScreen');
+  if(ls)ls.style.display='none';
+  const app=document.getElementById('app');
+  if(app)app.classList.add('vis');
+  $set('hName',S.user.name||'');
+  const av=document.getElementById('hAv');
+  if(av)av.textContent=(S.user.name||'?')[0].toUpperCase();
   netUpdate();
   if(S.role==='teacher'){
-    document.getElementById('tApp').style.display='block';
-    document.getElementById('sApp').style.display='none';
+    const ta=document.getElementById('tApp');if(ta)ta.style.display='block';
+    const sa=document.getElementById('sApp');if(sa)sa.style.display='none';
     buildTNav();showPg('dash');renderDash();
-  }else{
-    document.getElementById('tApp').style.display='none';
-    document.getElementById('sApp').style.display='block';
+  }else if(S.role==='student'){
+    const ta=document.getElementById('tApp');if(ta)ta.style.display='none';
+    const sa=document.getElementById('sApp');if(sa)sa.style.display='block';
     buildSNav();showSPg('sdash');renderSDash();
+  }else{
+    /* Bilinmeyen rol - güvenli çıkış */
+    doLogout();return;
   }
   if(online&&fbReady)syncFromFirebase();
 }
 
 async function doLogout(){
   try{if(fbAuth)await fbAuth.signOut();}catch(_){}
+  resetState();
   location.reload();
 }
 
@@ -1142,12 +1184,19 @@ function buildSNav(){
 }
 function showPg(id){document.querySelectorAll('#tApp .page').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id)?.classList.add('on');document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.p===id));document.getElementById('content').scrollTop=0;}
 function showSPg(id){document.querySelectorAll('#sApp .page').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id)?.classList.add('on');document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.p===id));document.getElementById('content').scrollTop=0;}
-function tNav(id){showPg(id);if(id==='dash')renderDash();else if(id==='students')renderSt();else if(id==='weekly')renderWk();else if(id==='leaderboard')renderLb();else if(id==='questions')renderQ();}
-function sNav(id){showSPg(id);if(id==='sdash')renderSDash();else if(id==='sstats')renderSPerf();else if(id==='slb')renderSLb();}
+function tNav(id){if(!_checkRole('teacher'))return;showPg(id);if(id==='dash')renderDash();else if(id==='students')renderSt();else if(id==='weekly')renderWk();else if(id==='leaderboard')renderLb();else if(id==='questions')renderQ();}
+function sNav(id){if(!_checkRole('student'))return;showSPg(id);if(id==='sdash')renderSDash();else if(id==='sstats')renderSPerf();else if(id==='slb')renderSLb();}
 
 /* ═══════════════════════════════
    HELPERS
 ═══════════════════════════════ */
+
+/* NULL-SAFE SELECTOR */
+function $(id){const el=document.getElementById(id);if(!el)console.warn('Element bulunamadi: #'+id);return el;}
+function $set(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+function $html(id,val){const el=document.getElementById(id);if(el)el.innerHTML=val;}
+function $show(id,show){const el=document.getElementById(id);if(el)el.style.display=show?'':'none';}
+
 function curW(){for(let w=1;w<=12;w++)if(!S.locks[w].locked)return w;return 1;}
 function avg(arr){return arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;}
 function sc(s){return s>=80?'var(--jade4)':s>=60?'var(--gold3)':s>0?'#ff9898':'var(--ivory4)';}
@@ -1191,16 +1240,37 @@ function toggleLock(w){S.locks[w].locked=!S.locks[w].locked;persist();renderDash
 /* ═══════════════════════════════
    STUDENTS
 ═══════════════════════════════ */
+let stPage=0;
+const ST_PER_PAGE=20;
+
 function renderSt(q='',cls=''){
   let list=S.students;
   if(q)list=list.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||String(s.id).includes(q));
   if(cls)list=list.filter(s=>s.class===cls);
-  document.getElementById('stList').innerHTML=list.length
-    ?list.map(s=>{
+  /* Sayfalama */
+  const total=Math.ceil(list.length/ST_PER_PAGE)||1;
+  if(stPage>=total)stPage=total-1;
+  if(stPage<0)stPage=0;
+  const slice=list.slice(stPage*ST_PER_PAGE,(stPage+1)*ST_PER_PAGE);
+  $html('stList',slice.length
+    ?slice.map(s=>{
       const a=stAvg(s),cnt=stDone(s);
       return`<div class="strow" onclick="openStDet(${s.id})"><div class="stav">${s.name[0]}</div><div class="stinfo"><div class="stname">${s.name}</div><div class="stmeta">${s.class} · #${s.id} · ${cnt} hafta</div></div><div class="stscore" style="color:${sc(a)}">${a?'%'+a:'—'}</div></div>`;
     }).join('')
-    :'<div style="color:var(--ivory4);font-size:13px;padding:20px">Ogrenci bulunamadi.</div>';
+    :'<div style="color:var(--ivory4);font-size:13px;padding:20px">Ogrenci bulunamadi.</div>'
+  );
+  /* Pager */
+  const pager=document.getElementById('stPager');
+  if(pager){
+    if(total>1){
+      pager.innerHTML=
+        `<button class="btn btn-sm" onclick="stPage=Math.max(0,stPage-1);renderSt()" ${stPage===0?'disabled':''}>&#9664;</button>`+
+        `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4);letter-spacing:2px">${stPage+1}/${total} (${list.length} ogrenci)</span>`+
+        `<button class="btn btn-sm" onclick="stPage=Math.min(${total-1},stPage+1);renderSt()" ${stPage===total-1?'disabled':''}>&#9654;</button>`;
+    }else{
+      pager.innerHTML=`<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${list.length} ogrenci</span>`;
+    }
+  }
 }
 function previewStId(){
   const n=document.getElementById('nSN').value.trim();
@@ -1213,12 +1283,17 @@ function previewStId(){
   document.getElementById('prevName').textContent=n;
   document.getElementById('prevPass').textContent=pw;
 }
+function sanitizeName(s){return s.replace(/<[^>]*>/g,'').replace(/[^a-zA-ZÀ-ɏ\s\-\.]/g,'').trim().substring(0,60);}
+
 async function saveSt(){
-  const n=document.getElementById('nSN').value.trim();
-  if(!n){toast('Ad soyad giriniz!','err');return;}
-  const cls=document.getElementById('nSC').value;
+  const raw=(document.getElementById('nSN')||{value:''}).value.trim();
+  const n=sanitizeName(raw);
+  if(!n||n.length<2){toast('Gecerli ad soyad giriniz (min 2 karakter)!','err');return;}
+  const cls=(document.getElementById('nSC')||{value:'7-A'}).value;
+  if(!['7-A','7-B','7-C'].includes(cls)){toast('Gecersiz sube secimi!','err');return;}
   const newId=Math.max(...S.students.map(s=>s.id),100)+1;
-  const pw=document.getElementById('nSP').value.trim()||String(newId);
+  const pw=(document.getElementById('nSP')||{value:''}).value.trim()||String(newId);
+  if(pw.length<4){toast('Sifre en az 4 karakter olmali!','err');return;}
   const wd={};
   for(let w=1;w<=12;w++)wd[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
   const newStu={id:newId,name:n,class:cls,password:pw,weekData:wd};
@@ -1351,15 +1426,15 @@ function renderWk(cls='7-A', wk=0){
 /* ═══════════════════════════════
    LEADERBOARD (Teacher)
 ═══════════════════════════════ */
-let _lbFilter='all';
+/* _lbFilter -> S.ui.lbFilter */
 function setLbFilter(f,btn){
-  _lbFilter=f;
+  S.ui.lbFilter=f;
   document.querySelectorAll('#lbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   renderLb();
 }
 function renderLb(){
-  let list=_lbFilter==='all'?S.students:S.students.filter(s=>s.class===_lbFilter);
+  let list=S.ui.lbFilter==='all'?S.students:S.students.filter(s=>s.class===S.ui.lbFilter);
   list=[...list].sort((a,b)=>stAvg(b)-stAvg(a));
   const maxAvg=stAvg(list[0])||1;
   document.getElementById('lbList').innerHTML=list.length?list.map((s,i)=>{
@@ -1378,15 +1453,15 @@ function renderLb(){
 /* ═══════════════════════════════
    LEADERBOARD (Student)
 ═══════════════════════════════ */
-let _sLbFilter='all';
+/* _sLbFilter -> S.ui.sLbFilter */
 function setSLbFilter(f,btn){
-  _sLbFilter=f;
+  S.ui.sLbFilter=f;
   document.querySelectorAll('#sLbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   renderSLb();
 }
 function renderSLb(){
-  let list=_sLbFilter==='all'?S.students:S.students.filter(s=>s.class===_sLbFilter);
+  let list=S.ui.sLbFilter==='all'?S.students:S.students.filter(s=>s.class===S.ui.sLbFilter);
   list=[...list].sort((a,b)=>stAvg(b)-stAvg(a));
   const myIdx=list.findIndex(s=>s.id===S.user.id);
   const maxAvg=stAvg(list[0])||1;
@@ -1415,20 +1490,20 @@ function renderSLb(){
 /* ═══════════════════════════════
    QUESTIONS
 ═══════════════════════════════ */
-let qPage=0,editQ=null;
+let editQ=null;
 function renderQ(q='',wk=0){
   let list=S.questions;
   if(q)list=list.filter(x=>x.text.toLowerCase().includes(q.toLowerCase())||x.topic.toLowerCase().includes(q.toLowerCase()));
   if(wk)list=list.filter(x=>x.week===wk);
   document.getElementById('qCount').textContent=S.questions.length+' SORU BANKADA';
   const pg=10,total=Math.ceil(list.length/pg);
-  if(qPage>=total)qPage=Math.max(0,total-1);
-  const slice=list.slice(qPage*pg,(qPage+1)*pg);
+  if(S.ui.qPage>=total)S.ui.qPage=Math.max(0,total-1);
+  const slice=list.slice(S.ui.S.ui.qPage*pg,(qPage+1)*pg);
   document.getElementById('qList').innerHTML=slice.length
     ?slice.map(q=>`<div class="qitem"><div class="qi-meta"><span>HAFTA ${q.week}</span><span>·</span><span>${q.topic}</span><span style="margin-left:auto;color:var(--jade4)">Cevap: ${['A','B','C','D'][q.answer]}</span><button class="btn btn-r btn-sm" onclick="event.stopPropagation();confirmDelete('q',${q.id},'Bu soru')" style="padding:2px 8px;font-size:9px">Sil</button></div><div onclick="editQItem(${q.id})" style="cursor:pointer"><div class="qi-txt">${q.text}</div><div class="omini-grid" style="margin-top:8px">${q.options.map((o,i)=>`<div class="omini" style="background:${i===q.answer?'rgba(28,94,58,.25)':'rgba(0,0,0,.2)'};border:1px solid ${i===q.answer?'rgba(61,166,104,.4)':'var(--border)'}"><span style="font-family:var(--ff-d);font-size:9px;color:${i===q.answer?'var(--jade4)':'var(--gold2)'}">${['A','B','C','D'][i]}</span> ${o}</div>`).join('')}</div></div></div>`).join('')
     :'<div style="color:var(--ivory4);font-size:13px;padding:20px">Soru bulunamadi.</div>';
   document.getElementById('qPager').innerHTML=total>1
-    ?`<button class="btn btn-sm" onclick="qPage=Math.max(0,qPage-1);renderQ()" ${qPage===0?'disabled':''}>Onceki</button><span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${qPage+1}/${total}</span><button class="btn btn-sm" onclick="qPage=Math.min(${total-1},qPage+1);renderQ()" ${qPage===total-1?'disabled':''}>Sonraki</button>`:'';
+    ?`<button class="btn btn-sm" onclick="S.ui.qPage=Math.max(0,S.ui.qPage-1);renderQ()" ${S.ui.qPage===0?'disabled':''}>Onceki</button><span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${S.ui.qPage+1}/${total}</span><button class="btn btn-sm" onclick="S.ui.qPage=Math.min(${total-1},(S.ui.qPage+1));renderQ()" ${S.ui.qPage===total-1?'disabled':''}>Sonraki</button>`:'';
 }
 function editQItem(id){
   const q=S.questions.find(x=>x.id===id);if(!q)return;
@@ -1442,14 +1517,34 @@ function editQItem(id){
 }
 function resetQForm(){document.getElementById('mQT').textContent='Soru Ekle';document.getElementById('nQTx').value='';['A','B','C','D'].forEach(l=>document.getElementById('nQ'+l).value='');document.querySelectorAll('#mQ .ans-btn').forEach((b,i)=>b.classList.toggle('on',i===0));document.getElementById('nQAn').value='0';}
 function pickAns(btn){document.querySelectorAll('#mQ .ans-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('nQAn').value=btn.dataset.v;}
-function saveQ(addNew){
-  const tx=document.getElementById('nQTx').value.trim();
-  const opts=['A','B','C','D'].map(l=>document.getElementById('nQ'+l).value.trim());
-  if(!tx||opts.some(o=>!o)){toast('Tum alanlari doldurunuz!','err');return;}
-  const an=+document.getElementById('nQAn').value,w=+document.getElementById('nQW').value,tp=document.getElementById('nQTp').value;
-  if(editQ){Object.assign(editQ,{text:tx,options:opts,answer:an,week:w,topic:tp});toast('Soru guncellendi');editQ=null;}
-  else{S.questions.push({id:Date.now(),week:w,topic:tp,text:tx,options:opts,answer:an});toast('Soru eklendi');}
-  persist();qPage=0;renderQ();
+async function saveQ(addNew){
+  const tx=(document.getElementById('nQTx')||{value:''}).value.trim();
+  if(!tx||tx.length<5){toast('Soru metni en az 5 karakter olmali!','err');return;}
+  const opts=['A','B','C','D'].map(l=>(document.getElementById('nQ'+l)||{value:''}).value.trim());
+  if(opts.some(o=>!o)){toast('Tum sik alanlari doldurunuz!','err');return;}
+  const dupOpts=opts.filter((o,i)=>opts.indexOf(o)!==i);
+  if(dupOpts.length){toast('Sik seçenekler birbirinden farkli olmali!','err');return;}
+  const an=+(document.getElementById('nQAn')||{value:'0'}).value;
+  const w=+(document.getElementById('nQW')||{value:'1'}).value;
+  const tp=(document.getElementById('nQTp')||{value:''}).value;
+  if(!w||w<1||w>12){toast('Gecerli hafta secin!','err');return;}
+  if(editQ){
+    Object.assign(editQ,{text:tx,options:opts,answer:an,week:w,topic:tp});
+    toast('Soru guncellendi');editQ=null;
+  }else{
+    S.questions.push({id:Date.now(),week:w,topic:tp,text:tx,options:opts,answer:an});
+    toast('Soru eklendi');
+  }
+  /* Firebase'e direkt yaz */
+  if(fbReady&&db){
+    try{
+      await db.collection('config').doc('main').set(
+        {questions:S.questions,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
+        {merge:true}
+      );
+    }catch(e){console.warn('saveQ Firebase:',e);}
+  }
+  persist();S.ui.qPage=0;renderQ();
   if(addNew)resetQForm();else closeMo('mQ');
 }
 
@@ -1605,5 +1700,62 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Enter'&&document.getElementById('loginScreen').classList.contains('vis'))doLogin();
 });
 </script>
+
+<script>
+// ROLE SYSTEM (SECURE)
+let currentUserRole = null;
+
+auth.onAuthStateChanged(async (user)=>{
+  if(user){
+    const doc = await db.collection("users").doc(user.uid).get();
+    currentUserRole = doc.data()?.role;
+
+    if(currentUserRole === "teacher"){
+      document.getElementById("adminPanel")?.removeAttribute("hidden");
+    }
+  }
+});
+
+// SAFE ADD WITH ROLE CHECK
+async function addQuestionSecure(btn){
+  if(currentUserRole !== "teacher"){
+    alert("Yetkin yok!");
+    return;
+  }
+
+  try{
+    btn.disabled = true;
+
+    const text = document.getElementById("qText")?.value || "";
+    const options = [...document.querySelectorAll(".opt")].map(i=>i.value.trim()).filter(Boolean);
+    const correct = Number(document.getElementById("correct")?.value);
+
+    if(!text || options.length < 2){
+      alert("Eksik veri");
+      return;
+    }
+
+    if(correct >= options.length){
+      alert("Doğru index hatalı");
+      return;
+    }
+
+    await db.collection("questions").add({
+      text,
+      options,
+      correct,
+      createdAt: new Date()
+    });
+
+    alert("Eklendi");
+
+  }catch(e){
+    alert("Hata: " + e.message);
+  }finally{
+    btn.disabled = false;
+  }
+}
+</script>
+
 </body>
 </html>
