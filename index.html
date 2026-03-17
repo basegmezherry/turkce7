@@ -531,7 +531,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="fg3"><label class="fl2">Ad Soyad</label><input class="fld" type="text" id="nSN" placeholder="Örn: Ayşe Yılmaz" oninput="previewStId()"></div>
     <div class="f2b">
       <div class="fg3"><label class="fl2">Şube</label><select class="fls" id="nSC"><option>7-A</option><option>7-B</option><option>7-C</option></select></div>
-      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6628332b273427261213140d0503514805090b">[email&#160;protected]</a></div></div>
+      <div class="fg3"><label class="fl2">Şifre (boş = numara)</label><input class="fld" type="text" id="nSP" placeholder="Boş bırakılırsa numara olur"><div style="font-family:var(--ff-d);font-size:8px;letter-spacing:1px;color:var(--jade4);margin-top:4px">Firebase hesabı otomatik açılır: NUMARA@turkce7.com</div></div>
     </div>
     <div id="stPreview" style="display:none;background:var(--gold-a12);border:1px solid var(--border2);border-radius:var(--r);padding:12px;margin-bottom:12px">
       <div style="font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:6px">ÖNİZLEME</div>
@@ -584,25 +584,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 </div>
 
 <script>
-'use strict';
-
-/* ═══════════════════════════════
-   CONFIG
-═══════════════════════════════ */
-const FIREBASE_CONFIG = {
-  apiKey: "AIzaSyCZC-BLvpUcfhbx5Y_--aHwY8vZV5epc6U",
-  authDomain: "turkcequiz-6e36b.firebaseapp.com",
-  projectId: "turkcequiz-6e36b",
-  storageBucket: "turkcequiz-6e36b.firebasestorage.app",
-  messagingSenderId: "562835448653",
-  appId: "1:562835448653:web:e9aaa70a165b8c60fa0d04"
-};
-const TNAME='Hayri Basegmez'; /* Ogretmen adi - Firebaseden gelir */
-const TOPICS=['Okuma Anlama','Dil Bilgisi','Yazim Kurallari','Sozcuk Bilgisi','Metin Turleri','Noktalama','Fiil Cekimi','Cumle Analizi','Paragraf','Soz Sanatlari','Karma','Genel Tekrar'];
-
-/* ═══════════════════════════════
-   SORU BANKASI
-═══════════════════════════════ */
 const QB=[
   {t:'Dil Bilgisi',q:'Asagidaki cumlelerin hangisinde "ki" baglaci ayri yazilmalidir?',o:['Biliyorki yarin gelecek.','Sunu bilki her sey gecer.','Anladim ki yanilmisim.','Oyle saniyorumki dogrudur.'],a:2},
   {t:'Dil Bilgisi',q:'"Guzellik" sozcugunde toplam kac ek vardir?',o:['1','2','3','4'],a:1},
@@ -625,7 +606,7 @@ const QB=[
   {t:'Sozcuk Bilgisi',q:'Zit anlamli sozcuk cifti hangisidir?',o:['araba-otomobil','ev-konut','dost-dusman','sevinc-mutluluk'],a:2},
   {t:'Sozcuk Bilgisi',q:'Cok anlamliliya en iyi ornek hangisidir?',o:['bilgisayar','masa','kol','telefon'],a:2},
   {t:'Sozcuk Bilgisi',q:'"Agzi siki" deyimi ne anlama gelir?',o:['Hasta olan','Sir saklayan','Ac olan','Hircin olan'],a:1},
-  {t:'Sozcuk Bilgisi',q:'Asagidakilerden hangisi yabanci kokenlid r?',o:['yurt','ocak','masa','koy'],a:2},
+  {t:'Sozcuk Bilgisi',q:'Asagidakilerden hangisi yabanci kokenlidir?',o:['yurt','ocak','masa','koy'],a:2},
   {t:'Sozcuk Bilgisi',q:'"Damlaya damlaya gol olur." hangisidir?',o:['Deyim','Atasozi','Terim','Argo'],a:1},
   {t:'Sozcuk Bilgisi',q:'Es sesli sozcuk cifti hangisidir?',o:['gul(cicek)-gul(gulmek)','buyuk-kucuk','guzel-cirkin','hizli-yavas'],a:0},
   {t:'Metin Turleri',q:'Siirde dize nedir?',o:['Siirin tamami','Her bir satir','Siirin bolumleri','Kafiye duzeni'],a:1},
@@ -633,17 +614,17 @@ const QB=[
   {t:'Metin Turleri',q:'Deneme turunun temel ozelligi hangisidir?',o:['Kanitlama zorunlulugu','Kesin yargilar icermesi','Kisisel dusuncelerin samimi aktarimi','Bilimsel temellere dayanma'],a:2},
   {t:'Metin Turleri',q:'Masal turunun ayirt edici ozelligi nedir?',o:['Gercek kisiler icerir','Olaganustu kisi/olay ve kalip ifadeler','Belirli bir yazari var','Nazim seklinde'],a:1},
   {t:'Metin Turleri',q:'Hangi metin turu tamamen kurmacadir?',o:['Biyografi','Haber metni','Roman','Dilekce'],a:2},
-  {t:'Noktalama',q:'Hangi cumlede noktalama yanlis kullanilmistir?',o:['"Yarin gelecegim" dedi.','Turk.nin baskenti Ankara.dir.','Lutfen, kapiyi kapat.','Aferin!'],a:2},
+  {t:'Noktalama',q:'Hangi cumlede noktalama yanlis kullanilmistir?',o:['"Yarin gelecegim" dedi.','Turkiye baskenti Ankara.','Lutfen, kapiyi kapat.','Aferin!'],a:2},
   {t:'Noktalama',q:'Virgul hangi durumda kullanilmaz?',o:['Sirali cumleler','Uzun cumleler','Fiilden hemen once','Ara sozleri ayirmada'],a:2},
-  {t:'Noktalama',q:'Iki nokta (:) ne zaman kullanilir?',o:['Soru cumlelerinde','Aciklama, ornek veya liste oncesinde','Heyecan bildirmede','Her cumle sonunda'],a:1},
+  {t:'Noktalama',q:'Iki nokta (:) ne zaman kullanilir?',o:['Soru cumlelerinde','Aciklama veya liste oncesinde','Heyecan bildirmede','Her cumle sonunda'],a:1},
   {t:'Noktalama',q:'Uc nokta (...) ne anlama gelir?',o:['Cumle bitti','Soz atland ya da yarim birakildi','Soru soruldu','Alinti yapildi'],a:1},
-  {t:'Noktalama',q:'Tirnak isareti ("") nerede kullanilir?',o:['Sayilarda','Alinti sozler ve eser adlarinda','Her cumlede','Soru sormada'],a:1},
-  {t:'Fiil Cekimi',q:'"Yazacaktim" sozcugunde hangi zaman eki vardir?',o:['Genis zaman','Simdiki zaman','Gelecek zaman + hikaye','Gecmis zaman'],a:2},
+  {t:'Noktalama',q:'Tirnak isareti nerede kullanilir?',o:['Sayilarda','Alinti sozler ve eser adlarinda','Her cumlede','Soru sormada'],a:1},
+  {t:'Fiil Cekimi',q:'"Yazacaktim" sozcugunde hangi zaman eki vardir?',o:['Genis zaman','Simdiki zaman','Gelecek zaman+hikaye','Gecmis zaman'],a:2},
   {t:'Fiil Cekimi',q:'"-yor" eki hangi zamani bildirir?',o:['Genis zaman','Simdiki zaman','Gecmis zaman','Gelecek zaman'],a:1},
   {t:'Fiil Cekimi',q:'"Okusa" sozcugu hangi kiptedir?',o:['Sart','Emir','Istek','Gereklilik'],a:0},
   {t:'Fiil Cekimi',q:'"Gelmeliyim" sozcugundeki kip nedir?',o:['Sart','Dilek','Gereklilik','Istek'],a:2},
   {t:'Fiil Cekimi',q:'"Calisirdi" hangi birlesik zamandir?',o:['Hikaye','Rivayet','Sart','Dilek'],a:0},
-  {t:'Fiil Cekimi',q:'"-mis" ekiyle kurulan gecmis zaman ne anlama gelir?',o:['Kesin bilgi','Duyulan/aktarilan gecmis','Suren eylem','Gelecek eylem'],a:1},
+  {t:'Fiil Cekimi',q:'"-mis" ekiyle kurulan gecmis zaman ne anlama gelir?',o:['Kesin bilgi','Duyulan gecmis','Suren eylem','Gelecek eylem'],a:1},
   {t:'Cumle Analizi',q:'Yuklem cumlede hangi gorevi ustlenir?',o:['Zaman belirtir','Eylemin ne oldugunu bildirir','Ozneyi tanimlar','Yer bildirir'],a:1},
   {t:'Cumle Analizi',q:'Nesne alan fiiller ne tur fiillerdir?',o:['Gecissiz','Gecisli','Donuslu','Ettirgen'],a:1},
   {t:'Cumle Analizi',q:'Dolayli tumles nedir?',o:['Belirtili nesne','Yer/yon/bulunma bildiren tumles','Ozne','Yuklem'],a:1},
@@ -652,1108 +633,1658 @@ const QB=[
   {t:'Paragraf',q:'Paragrafin ana fikri genellikle nerede bulunur?',o:['Ortasinda','Basinda ya da sonunda','Yalnizca baslikta','Hicbir yerde'],a:1},
   {t:'Paragraf',q:'"Giris paragrafi" ne ise yarar?',o:['Konuyu sonuclandirir','Konuyu tanitir ve okuyucuyu ceker','Ornekler verir','Yalnizca tanim yapar'],a:1},
   {t:'Paragraf',q:'Sonuc paragrafinda genellikle ne yapilir?',o:['Yeni bilgiler verilir','Konuya giris yapilir','Konu ozetlenir ya da yargiya varilir','Ornekler siralanir'],a:2},
-  {t:'Paragraf',q:'Paragrafta "gecis cumlesi" ne ise yarar?',o:['Ana fikri tekrar etmek','Paragraflar arasi baglanti saglamak','Yeni konu acmak','Tanim vermek'],a:1},
-  {t:'Soz Sanatlari',q:'Tesbih (benzetme) sanatinda kac temel unsur vardir?',o:['2','3','4','5'],a:2},
+  {t:'Paragraf',q:'Paragrafta gecis cumlesi ne ise yarar?',o:['Ana fikri tekrar etmek','Paragraflar arasi baglanti saglamak','Yeni konu acmak','Tanim vermek'],a:1},
+  {t:'Soz Sanatlari',q:'Tesbih sanatinda kac temel unsur vardir?',o:['2','3','4','5'],a:2},
   {t:'Soz Sanatlari',q:'"Aslan gibi savasti." cumlesinde hangi soz sanati vardir?',o:['Istiare','Tesbih','Kisilestirme','Abartma'],a:1},
-  {t:'Soz Sanatlari',q:'"Daglar agliyor." cumlesinde hangi sanat vardir?',o:['Tesbih','Istiare','Kisilestirme (teshis)','Abartma'],a:2},
+  {t:'Soz Sanatlari',q:'"Daglar agliyor." cumlesinde hangi sanat vardir?',o:['Tesbih','Istiare','Kisilestirme','Abartma'],a:2},
   {t:'Soz Sanatlari',q:'Abartma sanati ornegi hangisidir?',o:['Guzel bir kiz','Sesleri gogu deldi.','Hizli kostu.','Yoruldu ve uyudu.'],a:1},
   {t:'Soz Sanatlari',q:'Tezat sanati nedir?',o:['Benzetme yapma','Birbirine zit kavramlari bir arada kullanmak','Ses tekrari','Kisilestirme'],a:1},
   {t:'Soz Sanatlari',q:'Aliterasyon nedir?',o:['Anlam tekrari','Ayni sessiz harfin bir dizede sik tekrarlanmasi','Uyak','Redif'],a:1},
   {t:'Soz Sanatlari',q:'Husn-i talil ne demektir?',o:['Abartma','Gercek nedeni birakip guzel bir neden soyleme','Kisilestirme','Zitlik'],a:1},
 ];
 
-function buildQs(){
-  const qs=[];
-  for(let w=1;w<=12;w++){
-    const mix=[...QB].sort((_,__,i=0)=>{i++;return Math.sin(w*7.3+i*1.9)-.5;});
-    for(let i=0;i<100;i++){const b=mix[i%mix.length];qs.push({id:qs.length+1,week:w,topic:b.t,text:b.q,options:[...b.o],answer:b.a});}
+/* ================================================================
+   TURKCE 7 — APP CORE
+   Mimarı: Modüler JS, tek sorumluluk, güvenli, async-safe
+   ================================================================
+
+   MODUL SIRASI:
+   1. CONFIG
+   2. DOM — null-safe selector katmanı
+   3. VALIDATION — tüm input doğrulama
+   4. STATE — merkezi state yönetimi
+   5. STORAGE — IDB + localStorage + Firebase sync
+   6. AUTH — Firebase Auth, oturum, rol sistemi
+   7. FIREBASE — Firestore CRUD
+   8. NETWORK — online/offline
+   9. UI/TOAST — bildirimler, modal
+  10. NAV — sayfa geçişleri, rol koruması
+  11. TEACHER — dashboard, öğrenci, hafta, liderlik
+  12. QUESTIONS — soru bankası, pagination
+  13. STUDENT — dashboard, hafta listesi
+  14. QUIZ — test akışı, devam özelliği
+  15. KEYBOARD
+================================================================ */
+
+/* ════════════════════════════════════════════════════════
+   1. CONFIG
+════════════════════════════════════════════════════════ */
+
+/*
+  FİRESTORE GÜVENLİK KURALLARI — Firebase Console > Firestore > Rules:
+  rules_version = '2';
+  service cloud.firestore {
+    match /databases/{database}/documents {
+      function isAuth(){ return request.auth != null; }
+      function isTeacher(){ return isAuth() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'teacher'; }
+      function isOwner(sid){ return isAuth() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.studentId == int(sid); }
+      match /config/{doc}   { allow read: if isAuth(); allow write: if isTeacher(); }
+      match /students/{sid} { allow read,write: if isTeacher() || isOwner(sid); }
+      match /users/{uid}    { allow read,write: if isAuth() && request.auth.uid == uid; allow read: if isTeacher(); }
+    }
+  }
+*/
+const CFG = {
+  firebase: {
+    apiKey:            "AIzaSyCZC-BLvpUcfhbx5Y_--aHwY8vZV5epc6U",
+    authDomain:        "turkcequiz-6e36b.firebaseapp.com",
+    projectId:         "turkcequiz-6e36b",
+    storageBucket:     "turkcequiz-6e36b.firebasestorage.app",
+    messagingSenderId: "562835448653",
+    appId:             "1:562835448653:web:e9aaa70a165b8c60fa0d04"
+  },
+  idb:          { name:'hb_v8', store:'data', key:'state', ver:3 },
+  local:        'hb_tr_v8',
+  stuPerPage:   20,
+  qPerPage:     10,
+  batchSize:    400,
+  rateLimit:    { max:8, window:60000 },
+  VALID_CLS:    ['7-A','7-B','7-C'],
+  TOPICS: [
+    'Okuma Anlama','Dil Bilgisi','Yazim Kurallari','Sozcuk Bilgisi',
+    'Metin Turleri','Noktalama','Fiil Cekimi','Cumle Analizi',
+    'Paragraf','Soz Sanatlari','Karma','Genel Tekrar'
+  ]
+};
+
+/* ════════════════════════════════════════════════════════
+   2. DOM — NULL-SAFE SELECTOR KATMANI
+   Problem: getElementById her yerde çağrılıyor, null kontrolü yok.
+   Çözüm: merkezi, null-safe, log'lu wrapper.
+════════════════════════════════════════════════════════ */
+const DOM = {
+  get(id) {
+    const el = document.getElementById(id);
+    if (!el) console.warn('[DOM] #' + id + ' bulunamadi');
+    return el;
+  },
+  setText(id, val) {
+    const el = this.get(id);
+    if (el) el.textContent = String(val);
+  },
+  setHtml(id, val) {
+    const el = this.get(id);
+    if (el) el.innerHTML = val;
+  },
+  show(id, visible) {
+    const el = this.get(id);
+    if (el) el.style.display = visible ? '' : 'none';
+  },
+  addClass(id, cls) {
+    const el = this.get(id);
+    if (el) el.classList.add(cls);
+  },
+  removeClass(id, cls) {
+    const el = this.get(id);
+    if (el) el.classList.remove(cls);
+  },
+  toggle(id, cls, force) {
+    const el = this.get(id);
+    if (el) el.classList.toggle(cls, force);
+  },
+  val(id, fallback = '') {
+    const el = this.get(id);
+    return el ? el.value : fallback;
+  },
+  setVal(id, val) {
+    const el = this.get(id);
+    if (el) el.value = val;
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   3. VALIDATION — TÜM INPUT DOĞRULAMA
+   Problem: Her fonksiyonda dağınık if kontrolleri var.
+   Çözüm: Merkezi Validator, tip güvenli, tekrar kullanılabilir.
+════════════════════════════════════════════════════════ */
+const Validator = {
+  sanitizeText(s) {
+    return String(s || '').replace(/[<>&"']/g, c =>
+      ({ '<':'&lt;', '>':'&gt;', '&':'&amp;', '"':'&quot;', "'":'&#39;' }[c])
+    ).trim().slice(0, 200);
+  },
+
+  sanitizeName(s) {
+    return String(s || '')
+      .replace(/[<>]/g, '')
+      .trim()
+      .slice(0, 60);
+  },
+
+  name(raw) {
+    const v = this.sanitizeName(raw);
+    if (!v || v.length < 2) return { ok: false, err: 'Ad soyad en az 2 karakter olmali!' };
+    if (v.length > 60)      return { ok: false, err: 'Ad soyad en fazla 60 karakter!' };
+    return { ok: true, val: v };
+  },
+
+  cls(raw) {
+    if (!CFG.VALID_CLS.includes(raw)) return { ok: false, err: 'Gecersiz sube! (7-A, 7-B veya 7-C)' };
+    return { ok: true, val: raw };
+  },
+
+  password(raw, min = 4) {
+    const v = String(raw || '').trim();
+    if (v.length < min) return { ok: false, err: 'Sifre en az ' + min + ' karakter olmali!' };
+    return { ok: true, val: v };
+  },
+
+  email(raw) {
+    const v = String(raw || '').trim().toLowerCase();
+    if (!v) return { ok: false, err: 'Email giriniz!' };
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return { ok: false, err: 'Gecersiz email!' };
+    return { ok: true, val: v };
+  },
+
+  studentId(raw) {
+    const v = String(raw || '').trim();
+    if (!v) return { ok: false, err: 'Ogrenci numarasi giriniz!' };
+    if (!/^\d+$/.test(v)) return { ok: false, err: 'Numara sadece rakam olmali!' };
+    return { ok: true, val: v };
+  },
+
+  questionText(raw) {
+    const v = this.sanitizeText(raw);
+    if (!v || v.length < 5) return { ok: false, err: 'Soru metni en az 5 karakter olmali!' };
+    return { ok: true, val: v };
+  },
+
+  questionOptions(opts) {
+    const cleaned = opts.map(o => this.sanitizeText(o));
+    if (cleaned.some(o => !o)) return { ok: false, err: 'Tum sik alanlari doldurunuz!' };
+    const uniq = new Set(cleaned);
+    if (uniq.size !== cleaned.length) return { ok: false, err: 'Sik secenekler birbirinden farkli olmali!' };
+    return { ok: true, val: cleaned };
+  },
+
+  week(raw) {
+    const v = parseInt(raw, 10);
+    if (isNaN(v) || v < 1 || v > 12) return { ok: false, err: 'Gecerli hafta secin (1-12)!' };
+    return { ok: true, val: v };
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   4. STATE — MERKEZİ STATE YÖNETİMİ
+   Problem: S objesi dağınık, UI state JS değişkenlerinde.
+   Çözüm: Merkezi S, saf UI state ayrımı, resetState().
+════════════════════════════════════════════════════════ */
+function mkWD() {
+  const d = {};
+  for (let w = 1; w <= 12; w++)
+    d[w] = { completed: false, score: 0, total: 0, correct: 0, wrong: 0, ts: null };
+  return d;
+}
+function buildLocks() {
+  const lk = {};
+  for (let w = 1; w <= 12; w++) lk[w] = { locked: w > 6 };
+  return lk;
+}
+function buildQs() {
+  const qs = [];
+  for (let w = 1; w <= 12; w++) {
+    const mix = [...QB].sort((a, b, i = 0) => { i++; return Math.sin(w * 7.3 + i * 1.9) - 0.5; });
+    for (let i = 0; i < 100; i++) {
+      const b = mix[i % mix.length];
+      qs.push({ id: qs.length + 1, week: w, topic: b.t, text: b.q, options: [...b.o], answer: b.a });
+    }
   }
   return qs;
 }
 
-const NAMES=['Ahmet Yilmaz','Ayse Kaya','Mehmet Demir','Fatma Celik','Ali Sahin','Zeynep Arslan','Mustafa Dogan','Elif Yildiz','Hasan Ozturk','Merve Aydin','Ibrahim Koc','Selin Erdogan','Emre Gunes','Busra Korkmaz','Can Kilic','Esra Yalcin','Murat Polat','Gizem Ay','Oguz Aslan','Derya Cakir','Serkan Bozkurt','Hatice Simsek','Arda Tekin','Neslihan Avci','Kaan Bulut','Pinar Guler','Cem Demirci','Ozge Karatas','Baris Ozcan','Tugce Ergin','Volkan Sari','Melek Kaplan','Deniz Yurt','Sibel Gocmen','Furkan Albayrak','Dilan Ucar','Emrah Tan','Seda Koca','Tuncay Aktas','Gamze Ilhan','Kemal Duman','Burcu Guc','Yasin Efe','Aylin Toprak','Ramazan Bal'];
-
-function mkWD(){
-  const d={};
-  for(let w=1;w<=12;w++){
-    const done=w<=5&&Math.random()>.38;
-    const tot=done?100:0,cor=done?Math.floor(tot*(.5+Math.random()*.44)):0;
-    d[w]={completed:done,score:done?Math.round(cor/tot*100):0,total:tot,correct:cor,wrong:tot-cor,ts:done?Date.now()-Math.random()*8.64e7:null};
-  }
-  return d;
-}
-
-function buildStudents(){
-  const l=[];let id=100;
-  ['7-A','7-B','7-C'].forEach(cls=>{
-    for(let i=0;i<45;i++){
-      id++;
-      const name=NAMES[i%NAMES.length]+(i>=NAMES.length?' '+(Math.floor(i/NAMES.length)+2):'');
-      l.push({id,name,class:cls,password:String(id),weekData:mkWD()});
-    }
-  });
-  return l;
-}
-
-function buildLocks(){const lk={};for(let w=1;w<=12;w++)lk[w]={locked:w>6};return lk;}
-
-/* ═══ MERKEZİ STATE ═══
-   S üzerinde yapılan tüm değişiklikler persist() ile kaydedilmeli.
-   Rol değişikliği sadece enterApp() ve doLogout() üzerinden yapılmalı. */
-const S={
-  students: buildStudents(),   /* Ogrenci listesi */
-  questions: buildQs(),        /* Soru bankasi - Firestore'dan gelir */
-  locks: buildLocks(),         /* Hafta kilitleri */
-  role: null,                  /* 'teacher' | 'student' | null */
-  user: null,                  /* Giris yapan kullanici */
-  selWeek: null,               /* Secili hafta */
-  quiz: null,                  /* Aktif quiz durumu */
-  ui: {                        /* UI state - persist edilmez */
-    stPage: 0,
-    qPage: 0,
+const S = {
+  /* Veriler */
+  students:  [],
+  questions: buildQs(),
+  locks:     buildLocks(),
+  /* Oturum */
+  role:      null,
+  user:      null,
+  /* Quiz */
+  selWeek:   null,
+  quiz:      null,
+  /* UI — persist edilmez */
+  ui: {
+    stPage: 0, stQuery: '', stCls: '',
+    qPage:  0, qQuery:  '', qWeek:  0,
     lbFilter: 'all',
     sLbFilter: 'all',
-    wkCls: '7-A',
-    wkWeek: 0,
   }
 };
 
-/* State sıfırlama - logout sonrası */
-function resetState(){
-  S.role=null;S.user=null;S.selWeek=null;S.quiz=null;
-  S.ui={stPage:0,qPage:0,lbFilter:'all',sLbFilter:'all',wkCls:'7-A',wkWeek:0};
+function resetState() {
+  S.role = null; S.user = null; S.selWeek = null; S.quiz = null;
+  S.ui = { stPage:0, stQuery:'', stCls:'', qPage:0, qQuery:'', qWeek:0, lbFilter:'all', sLbFilter:'all' };
 }
 
-/* ═══════════════════════════════
-   APP INIT
-═══════════════════════════════ */
-let _appStarted=false;
-function startApp(){
-  if(_appStarted)return;
-  _appStarted=true;
-  document.getElementById('loader').style.display='flex';
-  netUpdate();
-  initFirebase();
-  openIDB().catch(()=>{}).then(()=>restoreData()).then(()=>{
-    setTimeout(()=>{
-      document.getElementById('loader').classList.add('gone');
-      setTimeout(()=>{
-        document.getElementById('loader').style.display='none';
-        document.getElementById('loginScreen').classList.add('vis');
-      },600);
-    },1400);
+/* ════════════════════════════════════════════════════════
+   5. STORAGE — IDB + LOCALSTORAGE + FIREBASE SYNC
+════════════════════════════════════════════════════════ */
+let _idb = null;
+
+function openIDB() {
+  return new Promise((ok, fail) => {
+    if (!window.indexedDB) { fail(new Error('IDB yok')); return; }
+    const r = indexedDB.open(CFG.idb.name, CFG.idb.ver);
+    r.onupgradeneeded = e => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(CFG.idb.store)) db.createObjectStore(CFG.idb.store);
+      if (!db.objectStoreNames.contains('syncQueue')) db.createObjectStore('syncQueue', { autoIncrement: true });
+    };
+    r.onsuccess = e => { _idb = e.target.result; ok(_idb); };
+    r.onerror   = () => fail(new Error('IDB acilamadi'));
   });
 }
-window.addEventListener('DOMContentLoaded',()=>startApp());
 
-/* ═══════════════════════════════
-   FIREBASE
-═══════════════════════════════ */
-let db=null,fbAuth=null,fbReady=false,_fbTries=0;
-function initFirebase(){
-  _fbTries++;
-  try{
-    if(typeof firebase==='undefined'){
-      if(_fbTries<20)setTimeout(initFirebase,500);
-      return;
-    }
-    if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
-    db=firebase.firestore();
-    fbAuth=firebase.auth();
-    fbReady=true;
-    _fbTries=0;
-    const b=document.getElementById('fbStatusBadge');if(b)b.textContent='Firebase Bagli';
-    const d=document.getElementById('fbDot');if(d)d.classList.add('active');
-    /* Auth state listener - sayfa yenilenince oturumu koru */
-    fbAuth.onAuthStateChanged(user=>{
-      if(user&&!S.role){
-        /* Sayfa yenilendi, oturum hala acik - sessizce giris yap */
-        _restoreSession(user);
-      }
-    });
-  }catch(e){
-    console.warn('Firebase init:',e.code||e.message);
-    if(_fbTries<10)setTimeout(initFirebase,2000);
+function idbSet(val) {
+  return new Promise((ok, fail) => {
+    if (!_idb) { fail(new Error('IDB hazir degil')); return; }
+    const tx = _idb.transaction(CFG.idb.store, 'readwrite');
+    tx.objectStore(CFG.idb.store).put(val, CFG.idb.key);
+    tx.oncomplete = ok;
+    tx.onerror    = fail;
+  });
+}
+
+function idbGet() {
+  return new Promise((ok, fail) => {
+    if (!_idb) { fail(new Error('IDB hazir degil')); return; }
+    const tx = _idb.transaction(CFG.idb.store, 'readonly');
+    const r  = tx.objectStore(CFG.idb.store).get(CFG.idb.key);
+    r.onsuccess = () => ok(r.result);
+    r.onerror   = fail;
+  });
+}
+
+function addToSyncQueue(op) {
+  if (!_idb) return;
+  try {
+    const tx = _idb.transaction('syncQueue', 'readwrite');
+    tx.objectStore('syncQueue').add({ ...op, ts: Date.now() });
+  } catch (e) { console.warn('[SyncQueue]', e); }
+}
+
+async function persist() {
+  const snapshot = {
+    students:  S.students,
+    questions: S.questions,
+    locks:     S.locks,
+    quiz:      S.quiz,
+    lastSync:  Date.now()
+  };
+  try {
+    await idbSet(snapshot);
+  } catch {
+    try { localStorage.setItem(CFG.local, JSON.stringify(snapshot)); } catch { /* storage dolu */ }
+  }
+  updateSyncTime(snapshot.lastSync);
+  if (Net.online && FB.ready) {
+    await FB.push(snapshot);
+  } else {
+    addToSyncQueue({ type: 'persist', data: snapshot });
+    Net.flashSync();
   }
 }
 
-async function _restoreSession(user){
-  try{
-    const snap=await db.collection('users').doc(user.uid).get();
-    if(!snap.exists)return;
-    const data=snap.data();
-    if(data.role==='teacher'){
-      S.role='teacher';
-      S.user={name:data.name||user.email,email:user.email,uid:user.uid};
-      enterApp();
-    }else if(data.role==='student'){
-      const stuSnap=await db.collection('students').doc(String(data.studentId)).get();
-      if(!stuSnap.exists)return;
-      const stuLocal=S.students.find(s=>String(s.id)===String(data.studentId));
-      if(stuLocal){S.role='student';S.user=stuLocal;enterApp();}
+async function restoreData() {
+  let d = null;
+  try { d = await idbGet(); } catch { /* IDB yok */ }
+  if (!d) {
+    try { const r = localStorage.getItem(CFG.local); if (r) d = JSON.parse(r); } catch { /* bozuk */ }
+  }
+  if (d) {
+    if (d.students  && d.students.length)  S.students  = d.students;
+    if (d.questions && d.questions.length) S.questions = d.questions;
+    if (d.locks)     S.locks = d.locks;
+    if (d.quiz && d.quiz.week && !d.quiz.done) S.quiz = d.quiz;
+    if (d.lastSync)  updateSyncTime(d.lastSync);
+  }
+  if (Net.online && FB.ready) FB.sync();
+}
+
+function updateSyncTime(ts) {
+  if (!ts) return;
+  DOM.setText('syncTxt', 'Son: ' + new Date(ts).toLocaleTimeString('tr-TR'));
+}
+
+async function drainSyncQueue() {
+  if (!_idb || !FB.ready || !Net.online) return;
+  const tx   = _idb.transaction('syncQueue', 'readwrite');
+  const store = tx.objectStore('syncQueue');
+  const req  = store.getAll();
+  req.onsuccess = async () => {
+    const items = req.result;
+    if (!items.length) return;
+    for (const item of items) {
+      if (item.type === 'persist') await FB.push(item.data);
     }
-  }catch(e){console.warn('Session restore:',e);}
-}
-
-/* ═══════════════════════════════
-   NETWORK
-═══════════════════════════════ */
-let online=navigator.onLine;
-function netUpdate(){
-  online=navigator.onLine;
-  document.getElementById('netBand').classList.toggle('show',!online);
-  const d=document.getElementById('pDot');
-  if(d){d.classList.toggle('off',!online);d.classList.toggle('on',online);}
-}
-window.addEventListener('online',()=>{netUpdate();if(S.role){flashSync();syncFromFirebase();}drainSyncQueue();});
-window.addEventListener('offline',netUpdate);
-function flashSync(){const b=document.getElementById('syncBand');b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2400);}
-function flashFb(msg){const b=document.getElementById('fbBand');b.textContent='Firebase: '+msg;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2400);}
-
-/* ═══════════════════════════════
-   STORAGE (IndexedDB + localStorage)
-═══════════════════════════════ */
-const IDB_NAME='hb_db',IDB_STORE='data',IDB_KEY='state';
-let _idb=null;
-function openIDB(){
-  return new Promise((ok,fail)=>{
-    if(!window.indexedDB){fail();return;}
-    const r=indexedDB.open(IDB_NAME,2);
-    r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains(IDB_STORE))d.createObjectStore(IDB_STORE);if(!d.objectStoreNames.contains('syncQueue'))d.createObjectStore('syncQueue',{autoIncrement:true});};
-    r.onsuccess=e=>{_idb=e.target.result;ok(_idb);};
-    r.onerror=()=>fail();
-  });
-}
-function idbSet(val){return new Promise((ok,fail)=>{if(!_idb){fail();return;}const tx=_idb.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(val,IDB_KEY);tx.oncomplete=ok;tx.onerror=fail;});}
-function idbGet(){return new Promise((ok,fail)=>{if(!_idb){fail();return;}const tx=_idb.transaction(IDB_STORE,'readonly');const r=tx.objectStore(IDB_STORE).get(IDB_KEY);r.onsuccess=()=>ok(r.result);r.onerror=fail;});}
-function addToSyncQueue(op){if(!_idb)return;const tx=_idb.transaction('syncQueue','readwrite');tx.objectStore('syncQueue').add({...op,ts:Date.now()});}
-
-async function persist(){
-  const d={students:S.students,questions:S.questions,locks:S.locks,quiz:S.quiz,lastSync:Date.now()};
-  try{await idbSet(d);}catch{try{localStorage.setItem('hb_tr_v6',JSON.stringify(d));}catch{}}
-  updateSyncTime(d.lastSync);
-  if(online&&fbReady)await pushToFirebase(d);
-  else{addToSyncQueue({type:'persist',data:d});flashSync();}
-}
-async function restoreData(){
-  let d=null;
-  try{d=await idbGet();}catch{}
-  if(!d){try{const r=localStorage.getItem('hb_tr_v6');if(r)d=JSON.parse(r);}catch{}}
-  if(d){if(d.students)S.students=d.students;if(d.questions)S.questions=d.questions;if(d.locks)S.locks=d.locks;if(d.lastSync)updateSyncTime(d.lastSync);if(d.quiz&&d.quiz.week&&!d.quiz.done)S.quiz=d.quiz;}
-  if(online&&fbReady)syncFromFirebase();
-}
-function updateSyncTime(ts){const el=document.getElementById('syncTxt');if(el&&ts){const d=new Date(ts);el.textContent='Son: '+d.toLocaleTimeString('tr-TR');}}
-
-/* ═══════════════════════════════
-   FIREBASE SYNC
-═══════════════════════════════ */
-async function pushToFirebase(data){
-  if(!fbReady||!db)return;
-  try{
-    document.getElementById('fbDot').classList.add('active');
-    const batch=db.batch();
-    batch.set(db.collection('config').doc('main'),{locks:data.locks,questions:data.questions,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    data.students.forEach(st=>{batch.set(db.collection('students').doc(String(st.id)),{...st,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});});
-    await batch.commit();
-    flashFb('Kaydedildi');
-  }catch(e){addToSyncQueue({type:'persist',data});}
-  finally{setTimeout(()=>{const d=document.getElementById('fbDot');if(d)d.classList.remove('active');},2000);}
-}
-async function syncFromFirebase(){
-  if(!fbReady||!db)return;
-  try{
-    flashFb('Yukleniyor...');
-    const cfgSnap=await db.collection('config').doc('main').get();
-    if(cfgSnap.exists){const cfg=cfgSnap.data();if(cfg.locks)S.locks=cfg.locks;if(cfg.questions)S.questions=cfg.questions;}
-    const stSnap=await db.collection('students').get();
-    if(!stSnap.empty){const fb=[];stSnap.forEach(doc=>fb.push(doc.data()));if(fb.length)S.students=fb;}
-    await idbSet({students:S.students,questions:S.questions,locks:S.locks,lastSync:Date.now()});
-    updateSyncTime(Date.now());
-    flashFb('Tamamlandi');
-    if(S.role==='teacher')renderDash();
-    else if(S.role==='student')renderSDash();
-  }catch(e){console.warn('Firebase sync:',e);}
-}
-async function fbPushConfig(){
-  if(!online){toast('Internet baglantisi gerekli!','err');return;}
-  if(!fbReady){toast('Firebase baglanamadi!','err');return;}
-  await persist();toast('Firebase senkronize edildi');
-}
-async function drainSyncQueue(){
-  if(!_idb||!fbReady||!online)return;
-  const tx=_idb.transaction('syncQueue','readwrite');const store=tx.objectStore('syncQueue');
-  const req=store.getAll();
-  req.onsuccess=async()=>{
-    const items=req.result;if(!items.length)return;
-    for(const item of items)if(item.type==='persist')await pushToFirebase(item.data);
-    const tx2=_idb.transaction('syncQueue','readwrite');tx2.objectStore('syncQueue').clear();
+    const tx2 = _idb.transaction('syncQueue', 'readwrite');
+    tx2.objectStore('syncQueue').clear();
   };
 }
 
-/* ═══════════════════════════════
-   TOAST & MODAL
-═══════════════════════════════ */
-let _tt;
-function toast(msg,type='ok'){const el=document.getElementById('toast');el.textContent=msg;el.className='on'+(type==='err'?' err':type==='info'?' info':'');clearTimeout(_tt);_tt=setTimeout(()=>el.className='',3200);}
-function openMo(id){document.getElementById(id).classList.add('on');}
-function closeMo(id){document.getElementById(id).classList.remove('on');}
-document.querySelectorAll('.mo').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('on');}));
+/* ════════════════════════════════════════════════════════
+   6. AUTH — FİREBASE AUTH + OTURUM + ROL SİSTEMİ
+   Problem: Rol kontrol yok, enterApp güvensiz.
+   Çözüm: _checkRole(), enterApp rol guard, tNav/sNav koruması.
+════════════════════════════════════════════════════════ */
+const Auth = {
+  /* Rate limiting — brute force önleme */
+  _attempts: { count: 0, reset: Date.now() },
+  checkRateLimit() {
+    const now = Date.now();
+    if (now - this._attempts.reset > CFG.rateLimit.window) {
+      this._attempts.count = 0;
+      this._attempts.reset = now;
+    }
+    this._attempts.count++;
+    if (this._attempts.count > CFG.rateLimit.max) {
+      const wait = Math.ceil((CFG.rateLimit.window - (now - this._attempts.reset)) / 1000);
+      setLoginErr(wait + ' saniye bekleyin (cok fazla giris denemesi)');
+      return false;
+    }
+    return true;
+  },
 
-/* ═══════════════════════════════
-   LOGIN
-   Ogretmen : Firebase Auth (email + sifre)
-   Ogrenci  : Firebase Auth (numara@turkce7.com + sifre)
-═══════════════════════════════ */
-let _rl='teacher';
-function pickRole(r,btn){
-  _rl=r;
-  document.querySelectorAll('.rtab').forEach(b=>b.classList.remove('on'));
+  /* Rol guard — her korumalı işlemde çağrılır */
+  checkRole(required) {
+    if (!S.role || !S.user) { Auth.logout(); return false; }
+    if (S.role !== required) { UI.toast('Erisim reddedildi!', 'err'); return false; }
+    return true;
+  },
+
+  async logout() {
+    try { if (FB.auth) await FB.auth.signOut(); } catch { /* zaten çıkmış */ }
+    resetState();
+    location.reload();
+  }
+};
+
+/* Oturum geri yükleme (sayfa yenileme sonrası) */
+async function _restoreSession(user) {
+  if (!FB.db) return;
+  try {
+    const snap = await FB.db.collection('users').doc(user.uid).get();
+    if (!snap.exists) return;
+    const data = snap.data();
+    if (data.role === 'teacher') {
+      S.role = 'teacher';
+      S.user = { name: data.name || user.email, email: user.email, uid: user.uid };
+      enterApp();
+    } else if (data.role === 'student') {
+      const stuSnap = await FB.db.collection('students').doc(String(data.studentId)).get();
+      if (!stuSnap.exists) return;
+      const stuData = stuSnap.data();
+      S.role = 'student';
+      S.user = stuData;
+      const idx = S.students.findIndex(s => String(s.id) === String(data.studentId));
+      if (idx >= 0) S.students[idx] = stuData;
+      else S.students.push(stuData);
+      enterApp();
+    }
+  } catch (e) { console.warn('[restoreSession]', e); }
+}
+
+/* ════════════════════════════════════════════════════════
+   7. FIREBASE — FIRESTORE CRUD
+════════════════════════════════════════════════════════ */
+const FB = {
+  db:    null,
+  auth:  null,
+  ready: false,
+  _tries: 0,
+
+  init() {
+    this._tries++;
+    try {
+      if (typeof firebase === 'undefined') {
+        if (this._tries < 20) setTimeout(() => FB.init(), 500);
+        return;
+      }
+      if (!firebase.apps.length) firebase.initializeApp(CFG.firebase);
+      this.db   = firebase.firestore();
+      this.auth = firebase.auth();
+      this.ready = true;
+      this._tries = 0;
+      DOM.setText('fbStatusBadge', 'Firebase Bagli');
+      DOM.addClass('fbDot', 'active');
+      this.auth.onAuthStateChanged(user => {
+        if (user && !S.role) _restoreSession(user);
+      });
+    } catch (e) {
+      console.warn('[FB.init]', e.code || e.message);
+      if (this._tries < 10) setTimeout(() => FB.init(), 2000);
+    }
+  },
+
+  flashFb(msg) {
+    const b = DOM.get('fbBand');
+    if (!b) return;
+    b.textContent = msg;
+    b.classList.add('show');
+    setTimeout(() => b.classList.remove('show'), 2400);
+  },
+
+  async push(data) {
+    if (!this.ready || !this.db) return;
+    DOM.addClass('fbDot', 'active');
+    try {
+      /* Config: kilitler + sorular */
+      const cfgBatch = this.db.batch();
+      cfgBatch.set(this.db.collection('config').doc('main'), {
+        locks:     data.locks,
+        questions: data.questions,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      await cfgBatch.commit();
+      /* Öğrenciler: 400'er chunk (500 batch limiti) */
+      for (let i = 0; i < data.students.length; i += CFG.batchSize) {
+        const batch = this.db.batch();
+        data.students.slice(i, i + CFG.batchSize).forEach(st => {
+          batch.set(
+            this.db.collection('students').doc(String(st.id)),
+            { ...st, updatedAt: firebase.firestore.FieldValue.serverTimestamp() },
+            { merge: true }
+          );
+        });
+        await batch.commit();
+      }
+      this.flashFb('Kaydedildi');
+    } catch (e) {
+      console.warn('[FB.push]', e);
+      addToSyncQueue({ type: 'persist', data });
+    } finally {
+      setTimeout(() => DOM.removeClass('fbDot', 'active'), 2000);
+    }
+  },
+
+  async sync() {
+    if (!this.ready || !this.db) return;
+    try {
+      this.flashFb('Yukleniyor...');
+      /* Config */
+      const cfgSnap = await this.db.collection('config').doc('main').get();
+      if (cfgSnap.exists) {
+        const cfg = cfgSnap.data();
+        if (cfg.locks) S.locks = cfg.locks;
+        if (cfg.questions && cfg.questions.length) S.questions = cfg.questions;
+      }
+      /* Öğrenciler */
+      const stSnap = await this.db.collection('students').get();
+      if (!stSnap.empty) {
+        const list = [];
+        stSnap.forEach(doc => {
+          const d = doc.data();
+          if (!d.weekData) d.weekData = mkWD();
+          list.push(d);
+        });
+        if (list.length) S.students = list;
+      }
+      await idbSet({ students:S.students, questions:S.questions, locks:S.locks, quiz:S.quiz, lastSync:Date.now() });
+      updateSyncTime(Date.now());
+      this.flashFb('Tamamlandi');
+      if (S.role === 'teacher')      Teacher.renderDash();
+      else if (S.role === 'student') Student.renderDash();
+    } catch (e) { console.warn('[FB.sync]', e); }
+  },
+
+  async pushConfig() {
+    if (!Net.online) { UI.toast('Internet baglantisi gerekli!', 'err'); return; }
+    if (!this.ready) { UI.toast('Firebase baglanamadi!', 'err'); return; }
+    await persist();
+    UI.toast('Firebase senkronize edildi');
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+   8. NETWORK
+════════════════════════════════════════════════════════ */
+const Net = {
+  online: navigator.onLine,
+
+  update() {
+    this.online = navigator.onLine;
+    DOM.toggle('netBand', 'show', !this.online);
+    DOM.toggle('pDot', 'off', !this.online);
+    DOM.toggle('pDot', 'on',   this.online);
+  },
+
+  flashSync() {
+    const b = DOM.get('syncBand');
+    if (!b) return;
+    b.classList.add('show');
+    setTimeout(() => b.classList.remove('show'), 2400);
+  }
+};
+
+window.addEventListener('online',  () => { Net.update(); if (S.role) { Net.flashSync(); FB.sync(); } drainSyncQueue(); });
+window.addEventListener('offline', () => Net.update());
+
+/* ════════════════════════════════════════════════════════
+   9. UI — TOAST, MODAL
+════════════════════════════════════════════════════════ */
+const UI = {
+  _toastTimer: null,
+
+  toast(msg, type = 'ok') {
+    const el = DOM.get('toast');
+    if (!el) return;
+    el.textContent = String(msg);
+    el.className = 'on' + (type === 'err' ? ' err' : type === 'info' ? ' info' : '');
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => { el.className = ''; }, 3200);
+  },
+
+  openModal(id)  { DOM.addClass(id, 'on'); },
+  closeModal(id) { DOM.removeClass(id, 'on'); },
+
+  confirm(title, msg, okLabel, cb, danger = true) {
+    DOM.setText('mConfirmTitle', title);
+    DOM.setText('mConfirmMsg', msg);
+    const btn = DOM.get('mConfirmOk');
+    if (!btn) return;
+    btn.textContent = okLabel;
+    btn.style.background   = danger ? 'rgba(176,16,32,.35)' : 'rgba(28,94,58,.4)';
+    btn.style.borderColor  = danger ? 'rgba(212,32,48,.6)'  : 'rgba(61,166,104,.5)';
+    btn.onclick = () => { this.closeModal('mConfirm'); btn.style.cssText=''; cb(); };
+    this.openModal('mConfirm');
+  }
+};
+
+/* Modal dışına tıklayınca kapat */
+document.querySelectorAll('.mo').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('on'); })
+);
+
+/* ════════════════════════════════════════════════════════
+  10. NAV — SAYFA GEÇİŞLERİ + ROL KORUMASI
+════════════════════════════════════════════════════════ */
+function showPg(id) {
+  document.querySelectorAll('#tApp .page').forEach(p => p.classList.remove('on'));
+  const pg = DOM.get('pg-' + id);
+  if (pg) pg.classList.add('on');
+  document.querySelectorAll('.nb').forEach(b => b.classList.toggle('on', b.dataset.p === id));
+  const content = DOM.get('content');
+  if (content) content.scrollTop = 0;
+}
+
+function showSPg(id) {
+  document.querySelectorAll('#sApp .page').forEach(p => p.classList.remove('on'));
+  const pg = DOM.get('pg-' + id);
+  if (pg) pg.classList.add('on');
+  document.querySelectorAll('.nb').forEach(b => b.classList.toggle('on', b.dataset.p === id));
+  const content = DOM.get('content');
+  if (content) content.scrollTop = 0;
+}
+
+function buildTNav() {
+  const items = [
+    { id:'dash',        l:'Genel'      },
+    { id:'students',    l:'Ogrenciler' },
+    { id:'weekly',      l:'Haftalik'   },
+    { id:'leaderboard', l:'Liderlik'   },
+    { id:'questions',   l:'Sorular'    }
+  ];
+  DOM.setHtml('hNav', items.map(n =>
+    `<button class="nb${n.id==='dash'?' on':''}" data-p="${n.id}" onclick="tNav('${n.id}')">${n.l}</button>`
+  ).join(''));
+}
+
+function buildSNav() {
+  const items = [
+    { id:'sdash',  l:'Ana Sayfa'  },
+    { id:'sstats', l:'Performans' },
+    { id:'slb',    l:'Liderlik'   }
+  ];
+  DOM.setHtml('hNav', items.map(n =>
+    `<button class="nb${n.id==='sdash'?' on':''}" data-p="${n.id}" onclick="sNav('${n.id}')">${n.l}</button>`
+  ).join(''));
+}
+
+function tNav(id) {
+  if (!Auth.checkRole('teacher')) return;
+  showPg(id);
+  if      (id === 'dash')        Teacher.renderDash();
+  else if (id === 'students')    Teacher.renderSt();
+  else if (id === 'weekly')      Teacher.renderWk();
+  else if (id === 'leaderboard') Teacher.renderLb();
+  else if (id === 'questions')   Q.render();
+}
+
+function sNav(id) {
+  if (!Auth.checkRole('student')) return;
+  showSPg(id);
+  if      (id === 'sdash')  Student.renderDash();
+  else if (id === 'sstats') Student.renderPerf();
+  else if (id === 'slb')    Student.renderLb();
+}
+
+/* ════════════════════════════════════════════════════════
+  11. LOGIN
+════════════════════════════════════════════════════════ */
+let _loginRole = 'teacher';
+
+function pickRole(r, btn) {
+  _loginRole = r;
+  document.querySelectorAll('.rtab').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById('tlogin').style.display=r==='teacher'?'block':'none';
-  document.getElementById('slogin').style.display=r==='student'?'block':'none';
+  DOM.show('tlogin', r === 'teacher');
+  DOM.show('slogin', r === 'student');
   setLoginErr('');
 }
 
-function setLoginErr(msg){
-  const el=document.getElementById('loginErr');
-  if(el)el.textContent=msg;
+function setLoginErr(msg) { DOM.setText('loginErr', msg || ''); }
+
+function setLoginLoading(on) {
+  const btn = DOM.get('loginBtn');
+  if (!btn) return;
+  btn.disabled   = on;
+  btn.textContent = on ? 'Giris Yapiliyor...' : 'Giris Yap';
 }
 
-function setLoginLoading(on){
-  const btn=document.getElementById('loginBtn');
-  if(!btn)return;
-  btn.disabled=on;
-  btn.textContent=on?'Giris Yapiliyor...':'Giris Yap';
-}
-
-async function doLogin(){
+async function doLogin() {
   setLoginErr('');
-  if(!fbReady||!fbAuth){
+  if (!Auth.checkRateLimit()) return;
+  if (!FB.ready || !FB.auth) {
     setLoginErr('Firebase baglaniyor, lutfen bekleyin...');
-    setTimeout(doLogin,1200);
+    setTimeout(doLogin, 1200);
     return;
   }
+  if (_loginRole === 'teacher') {
+    await _loginTeacher();
+  } else {
+    await _loginStudent();
+  }
+}
 
-  if(_rl==='teacher'){
-    const email=document.getElementById('tuser').value.trim();
-    const pass=document.getElementById('tpass').value;
-    if(!email||!pass){setLoginErr('Email ve sifre giriniz!');return;}
-    setLoginLoading(true);
-    try{
-      const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
-      const uid=cred.user.uid;
-      /* Firestore'dan rol kontrol et */
-      let displayName=cred.user.displayName||email.split('@')[0];
-      try{
-        const snap=await db.collection('users').doc(uid).get();
-        if(snap.exists){
-          const d=snap.data();
-          if(d.role!=='teacher'){setLoginErr('Bu hesap ogretmen hesabi degil!');fbAuth.signOut();setLoginLoading(false);return;}
-          if(d.name)displayName=d.name;
-        }else{
-          /* users koleksiyonunda kayit yok - ilk giris, otomatik olustur */
-          await db.collection('users').doc(uid).set({role:'teacher',name:displayName,email:email,createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+async function _loginTeacher() {
+  const emailR = Validator.email(DOM.val('tuser'));
+  if (!emailR.ok) { setLoginErr(emailR.err); return; }
+  const pass = DOM.val('tpass');
+  if (!pass)       { setLoginErr('Sifre giriniz!'); return; }
+  setLoginLoading(true);
+  try {
+    const cred = await FB.auth.signInWithEmailAndPassword(emailR.val, pass);
+    const uid  = cred.user.uid;
+    let name   = cred.user.displayName || emailR.val.split('@')[0];
+    try {
+      const snap = await FB.db.collection('users').doc(uid).get();
+      if (snap.exists) {
+        const d = snap.data();
+        if (d.role !== 'teacher') {
+          setLoginErr('Bu hesap ogretmen hesabi degil!');
+          await FB.auth.signOut();
+          setLoginLoading(false);
+          return;
         }
-      }catch(_){}
-      S.role='teacher';
-      S.user={name:displayName,email:email,uid:uid};
-      enterApp();
-    }catch(e){
-      setLoginLoading(false);
-      if(e.code==='auth/user-not-found'||e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
-        setLoginErr('Email veya sifre hatali!');
-      }else if(e.code==='auth/invalid-email'){
-        setLoginErr('Gecersiz email adresi!');
-      }else if(e.code==='auth/too-many-requests'){
-        setLoginErr('Cok fazla deneme. Lutfen bekleyin.');
-      }else{
-        setLoginErr('Giris hatasi: '+e.code);
+        if (d.name) name = d.name;
+      } else {
+        await FB.db.collection('users').doc(uid).set({
+          role:'teacher', name, email:emailR.val,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
       }
-    }
-
-  }else{
-    /* Ogrenci girisi: numara@turkce7.com */
-    const num=String(document.getElementById('snum').value).trim();
-    const pass=document.getElementById('spass').value.trim();
-    if(!num){setLoginErr('Okul numaranizi giriniz!');return;}
-    if(!pass){setLoginErr('Sifrenizi giriniz!');return;}
-    setLoginLoading(true);
-    _doStudentLogin(num,pass);
+    } catch { /* Firestore erişim hatası - devam et */ }
+    S.role = 'teacher';
+    S.user = { name, email: emailR.val, uid };
+    enterApp();
+  } catch (e) {
+    setLoginLoading(false);
+    const map = {
+      'auth/user-not-found':    'Email veya sifre hatali!',
+      'auth/wrong-password':    'Email veya sifre hatali!',
+      'auth/invalid-credential':'Email veya sifre hatali!',
+      'auth/invalid-email':     'Gecersiz email adresi!',
+      'auth/too-many-requests': 'Cok fazla deneme. Lutfen bekleyin.'
+    };
+    setLoginErr(map[e.code] || ('Giris hatasi: ' + e.code));
   }
 }
 
-/* Ogrenci girisi ayri fonksiyon - ic ice try/catch sorununu onler */
-async function _doStudentLogin(num,pass){
-  const email=num+'@turkce7.com';
-  try{
-    const cred=await fbAuth.signInWithEmailAndPassword(email,pass);
-    await _loadStudentAndEnter(num,cred.user.uid);
-  }catch(e){
-    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'){
-      /* Ilk giris: Firestore'dan sifre kontrol et, dogru ise hesap ac */
-      await _firstTimeStudentLogin(num,pass,email);
-    }else if(e.code==='auth/wrong-password'){
-      setLoginErr('Sifre hatali!');setLoginLoading(false);
-    }else if(e.code==='auth/too-many-requests'){
-      setLoginErr('Cok fazla deneme. Lutfen bekleyin.');setLoginLoading(false);
-    }else{
-      setLoginErr('Giris hatasi: '+e.code);setLoginLoading(false);
+async function _loginStudent() {
+  const numR = Validator.studentId(DOM.val('snum'));
+  if (!numR.ok) { setLoginErr(numR.err); return; }
+  const pass = DOM.val('spass').trim();
+  if (!pass)   { setLoginErr('Sifre giriniz!'); return; }
+  setLoginLoading(true);
+  const email = numR.val + '@turkce7.com';
+  try {
+    const cred = await FB.auth.signInWithEmailAndPassword(email, pass);
+    await _loadStudentAndEnter(numR.val, cred.user.uid);
+  } catch (e) {
+    if (e.code === 'auth/user-not-found' || e.code === 'auth/invalid-credential') {
+      await _firstLoginStudent(numR.val, pass, email);
+    } else if (e.code === 'auth/wrong-password') {
+      setLoginErr('Sifre hatali!'); setLoginLoading(false);
+    } else if (e.code === 'auth/too-many-requests') {
+      setLoginErr('Cok fazla deneme. Lutfen bekleyin.'); setLoginLoading(false);
+    } else {
+      setLoginErr('Giris hatasi: ' + e.code); setLoginLoading(false);
     }
   }
 }
 
-async function _firstTimeStudentLogin(num,pass,email){
-  try{
-    const stuSnap=await db.collection('students').doc(num).get();
-    if(!stuSnap.exists){
+async function _firstLoginStudent(num, pass, email) {
+  try {
+    const stuSnap = await FB.db.collection('students').doc(num).get();
+    if (!stuSnap.exists) {
       setLoginErr('Bu numara kayitli degil! Ogretmeninize basvurun.');
-      setLoginLoading(false);return;
+      setLoginLoading(false); return;
     }
-    const stuData=stuSnap.data();
-    if(stuData.password!==pass){
-      setLoginErr('Sifre hatali!');setLoginLoading(false);return;
+    const stuData = stuSnap.data();
+    if (stuData.password !== pass) {
+      setLoginErr('Sifre hatali!'); setLoginLoading(false); return;
     }
-    /* Sifre dogru - Firebase Auth hesabi olustur */
-    const cred=await fbAuth.createUserWithEmailAndPassword(email,pass);
-    await db.collection('users').doc(cred.user.uid).set({
-      role:'student',studentId:+num,
-      name:stuData.name,class:stuData.class,email:email,
-      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    const cred = await FB.auth.createUserWithEmailAndPassword(email, pass);
+    await FB.db.collection('users').doc(cred.user.uid).set({
+      role:'student', studentId:+num,
+      name:stuData.name, class:stuData.class, email,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
-    await db.collection('students').doc(num).update({registered:true,uid:cred.user.uid});
-    await _loadStudentAndEnter(num,cred.user.uid);
-  }catch(e){
-    setLoginErr('Giris hatasi: '+(e.code||e.message));
+    await FB.db.collection('students').doc(num).update({ registered:true, uid:cred.user.uid });
+    await _loadStudentAndEnter(num, cred.user.uid);
+  } catch (e) {
+    setLoginErr('Giris hatasi: ' + (e.code || e.message));
     setLoginLoading(false);
   }
 }
 
-async function _loadStudentAndEnter(num,uid){
-  try{
-    const stuSnap=await db.collection('students').doc(num).get();
-    if(stuSnap.exists){
-      const fbStu=stuSnap.data();
-      const idx=S.students.findIndex(s=>String(s.id)===num);
-      if(idx>=0)S.students[idx]={...S.students[idx],...fbStu};
-      else S.students.push({id:+num,...fbStu});
+async function _loadStudentAndEnter(num, uid) {
+  try {
+    const stuSnap = await FB.db.collection('students').doc(num).get();
+    if (stuSnap.exists) {
+      const fbStu = stuSnap.data();
+      if (!fbStu.weekData) fbStu.weekData = mkWD();
+      const idx = S.students.findIndex(s => String(s.id) === num);
+      if (idx >= 0) S.students[idx] = fbStu;
+      else S.students.push(fbStu);
+      /* Quiz ilerlemesini geri yükle */
+      if (fbStu.quizProgress && !fbStu.quizProgress.done && fbStu.quizProgress.week) {
+        const qp = fbStu.quizProgress;
+        const qs = S.questions.filter(q => q.week === qp.week).slice(0, 100);
+        if (qs.length && qp.cur > 0)
+          S.quiz = { week:qp.week, questions:qs, cur:qp.cur, correct:qp.correct||0, wrong:qp.wrong||0, done:false };
+      }
     }
-  }catch(e){ console.warn('loadStudent:',e); }
-  const stuLocal=S.students.find(s=>String(s.id)===num);
-  if(!stuLocal){
+  } catch (e) { console.warn('[loadStudentAndEnter]', e); }
+
+  const stuLocal = S.students.find(s => String(s.id) === num);
+  if (!stuLocal) {
     setLoginErr('Ogrenci verisi bulunamadi!');
-    fbAuth.signOut();setLoginLoading(false);return;
+    await FB.auth.signOut();
+    setLoginLoading(false);
+    return;
   }
-  S.role='student';S.user=stuLocal;
+  S.role = 'student';
+  S.user = stuLocal;
   enterApp();
 }
 
-/* ROL KORUMASI */
-function _checkRole(required){
-  if(!S.role||!S.user){doLogout();return false;}
-  if(S.role!==required){toast('Erisim reddedildi!','err');return false;}
-  return true;
-}
-
-function enterApp(){
+function enterApp() {
   setLoginLoading(false);
-  /* Rol doğrulama - eksik veya hatalı rol çıkış yaptırır */
-  if(!S.role||!S.user){doLogout();return;}
-  const ls=document.getElementById('loginScreen');
-  if(ls)ls.style.display='none';
-  const app=document.getElementById('app');
-  if(app)app.classList.add('vis');
-  $set('hName',S.user.name||'');
-  const av=document.getElementById('hAv');
-  if(av)av.textContent=(S.user.name||'?')[0].toUpperCase();
-  netUpdate();
-  if(S.role==='teacher'){
-    const ta=document.getElementById('tApp');if(ta)ta.style.display='block';
-    const sa=document.getElementById('sApp');if(sa)sa.style.display='none';
-    buildTNav();showPg('dash');renderDash();
-  }else if(S.role==='student'){
-    const ta=document.getElementById('tApp');if(ta)ta.style.display='none';
-    const sa=document.getElementById('sApp');if(sa)sa.style.display='block';
-    buildSNav();showSPg('sdash');renderSDash();
-  }else{
-    /* Bilinmeyen rol - güvenli çıkış */
-    doLogout();return;
+  /* Rol guard — kritik güvenlik noktası */
+  if (!S.role || !S.user) { Auth.logout(); return; }
+  if (S.role !== 'teacher' && S.role !== 'student') { Auth.logout(); return; }
+
+  DOM.show('loginScreen', false);
+  DOM.addClass('app', 'vis');
+  DOM.setText('hName', S.user.name || '');
+  const av = DOM.get('hAv');
+  if (av) av.textContent = (S.user.name || '?')[0].toUpperCase();
+  Net.update();
+
+  if (S.role === 'teacher') {
+    DOM.show('tApp', true);
+    DOM.show('sApp', false);
+    buildTNav();
+    showPg('dash');
+    Teacher.renderDash();
+  } else {
+    DOM.show('tApp', false);
+    DOM.show('sApp', true);
+    buildSNav();
+    showSPg('sdash');
+    Student.renderDash();
   }
-  if(online&&fbReady)syncFromFirebase();
+  if (Net.online && FB.ready) FB.sync();
 }
 
-async function doLogout(){
-  try{if(fbAuth)await fbAuth.signOut();}catch(_){}
-  resetState();
-  location.reload();
+async function doLogout() {
+  await Auth.logout();
 }
 
-/* ═══════════════════════════════
-   SIFRE DEGISTIR
-═══════════════════════════════ */
-let _cpTarget=null;
-function openChangePass(){
-  _cpTarget=S.role==='teacher'?'teacher':S.user.id;
-  document.getElementById('mCPInfo').textContent=S.role==='teacher'?'OGRETMEN SIFRESI':S.user.name.toUpperCase()+' #'+S.user.id;
-  document.getElementById('cpOld').value='';document.getElementById('cpNew').value='';document.getElementById('cpNew2').value='';
-  openMo('mChangePass');
-}
-function openChangePassSt(id){
-  _cpTarget=id;
-  const s=S.students.find(x=>x.id===id);
-  document.getElementById('mCPInfo').textContent=s?s.name.toUpperCase()+' #'+s.id:'';
-  document.getElementById('cpOld').value='';document.getElementById('cpNew').value='';document.getElementById('cpNew2').value='';
-  openMo('mChangePass');
-}
-async function saveChangePass(){
-  const old=document.getElementById('cpOld').value;
-  const nw=document.getElementById('cpNew').value.trim();
-  const nw2=document.getElementById('cpNew2').value.trim();
-  if(!nw||nw.length<4){toast('En az 4 karakter!','err');return;}
-  if(nw!==nw2){toast('Sifreler eslesmiyor!','err');return;}
-  if(!fbReady||!fbAuth){toast('Firebase bagli degil!','err');return;}
+/* ════════════════════════════════════════════════════════
+  12. ŞİFRE DEĞİŞTİR
+════════════════════════════════════════════════════════ */
+let _cpTarget = null;
 
-  try{
-    const user=fbAuth.currentUser;
-    if(!user){toast('Oturum bulunamadi!','err');return;}
-    /* Mevcut sifre ile yeniden dogrula */
-    const cred=firebase.auth.EmailAuthProvider.credential(user.email,old);
-    await user.reauthenticateWithCredential(cred);
+function openChangePass() {
+  _cpTarget = S.role === 'teacher' ? 'teacher' : S.user.id;
+  DOM.setText('mCPInfo', S.role === 'teacher' ? 'OGRETMEN SIFRESI' : S.user.name.toUpperCase() + ' #' + S.user.id);
+  ['cpOld','cpNew','cpNew2'].forEach(id => DOM.setVal(id, ''));
+  UI.openModal('mChangePass');
+}
+
+function openChangePassSt(id) {
+  _cpTarget = id;
+  const s = S.students.find(x => x.id === id);
+  DOM.setText('mCPInfo', s ? s.name.toUpperCase() + ' #' + s.id : '');
+  ['cpOld','cpNew','cpNew2'].forEach(id => DOM.setVal(id, ''));
+  UI.openModal('mChangePass');
+}
+
+async function saveChangePass() {
+  const old  = DOM.val('cpOld');
+  const nw   = DOM.val('cpNew').trim();
+  const nw2  = DOM.val('cpNew2').trim();
+  const pwR  = Validator.password(nw, 4);
+  if (!pwR.ok)       { UI.toast(pwR.err, 'err'); return; }
+  if (nw !== nw2)    { UI.toast('Yeni sifreler eslesmiyuor!', 'err'); return; }
+  if (!FB.ready || !FB.auth) { UI.toast('Firebase bagli degil!', 'err'); return; }
+  try {
+    const user = FB.auth.currentUser;
+    if (!user) { UI.toast('Oturum bulunamadi!', 'err'); return; }
+    const credential = firebase.auth.EmailAuthProvider.credential(user.email, old);
+    await user.reauthenticateWithCredential(credential);
     await user.updatePassword(nw);
-
-    if(_cpTarget!=='teacher'){
-      /* Ogrenci local sifresini de guncelle */
-      const s=S.students.find(x=>x.id===_cpTarget);
-      if(s){s.password=nw;persist();}
-      /* Firestore'da da guncelle */
-      try{await db.collection('students').doc(String(_cpTarget)).update({password:nw});}catch(_){}
+    if (_cpTarget !== 'teacher') {
+      const s = S.students.find(x => x.id === _cpTarget);
+      if (s) { s.password = nw; }
+      try {
+        await FB.db.collection('students').doc(String(_cpTarget)).update({
+          password: nw, updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      } catch { /* Firestore yetki sorunu */ }
+      persist();
     }
-    toast('Sifre Firebasede guncellendi');
-    closeMo('mChangePass');
-  }catch(e){
-    if(e.code==='auth/wrong-password'||e.code==='auth/invalid-credential'){
-      toast('Mevcut sifre yanlis!','err');
-    }else{
-      toast('Sifre guncellenemedi: '+e.code,'err');
-    }
+    UI.toast('Sifre guncellendi');
+    UI.closeModal('mChangePass');
+  } catch (e) {
+    const map = {
+      'auth/wrong-password':     'Mevcut sifre yanlis!',
+      'auth/invalid-credential': 'Mevcut sifre yanlis!'
+    };
+    UI.toast(map[e.code] || ('Sifre guncellenemedi: ' + e.code), 'err');
   }
 }
 
-/* ═══════════════════════════════
-   ONAY MODALI
-═══════════════════════════════ */
-function confirmDeleteSt(id){const s=S.students.find(x=>x.id===id);if(!s)return;confirmDelete('st',id,s.name);}
-function confirmDelete(type,id,name){
-  document.getElementById('mConfirmTitle').textContent='Silme Onayi';
-  document.getElementById('mConfirmMsg').textContent=name+' silinsin mi? Bu islem geri alinamaz!';
-  document.getElementById('mConfirmOk').onclick=()=>{
-    closeMo('mConfirm');
-    if(type==='st')deleteSt(id);
-    else if(type==='q'){S.questions=S.questions.filter(x=>x.id!==id);persist();renderQ();toast('Soru silindi','err');}
-  };
-  openMo('mConfirm');
-}
-function confirmAction(msg,btnLabel,cb){
-  document.getElementById('mConfirmTitle').textContent='Onay';
-  document.getElementById('mConfirmMsg').textContent=msg;
-  const btn=document.getElementById('mConfirmOk');
-  btn.textContent=btnLabel;btn.style.background='rgba(28,94,58,.4)';btn.style.borderColor='rgba(61,166,104,.5)';
-  btn.onclick=()=>{closeMo('mConfirm');btn.style.background='';btn.style.borderColor='';btn.textContent='Evet, Sil';cb();};
-  openMo('mConfirm');
+/* ════════════════════════════════════════════════════════
+  13. YARDIMCI FONKSİYONLAR
+════════════════════════════════════════════════════════ */
+function curW()  { for (let w = 1; w <= 12; w++) if (!S.locks[w].locked) return w; return 1; }
+function avg(arr){ return arr.length ? Math.round(arr.reduce((a,b)=>a+b,0)/arr.length) : 0; }
+function sc(s)   { return s>=80?'var(--jade4)':s>=60?'var(--gold3)':s>0?'#ff9898':'var(--ivory4)'; }
+function stAvg(s){ return avg(Object.values(s.weekData||{}).filter(w=>w.completed).map(w=>w.score)); }
+function stTotal(s){ return Object.values(s.weekData||{}).reduce((a,w)=>a+w.total,0); }
+function stDone(s) { return Object.values(s.weekData||{}).filter(w=>w.completed).length; }
+
+function pager(page, total, onPrev, onNext, label) {
+  if (total <= 1) return `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${label}</span>`;
+  return `<button class="btn btn-sm" onclick="${onPrev}" ${page===0?'disabled':''}>&#9664;</button>`
+       + `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4);letter-spacing:2px">${page+1}/${total} (${label})</span>`
+       + `<button class="btn btn-sm" onclick="${onNext}" ${page===total-1?'disabled':''}>&#9654;</button>`;
 }
 
-/* ═══════════════════════════════
-   NAV
-═══════════════════════════════ */
-function buildTNav(){
-  const nav=[
-    {id:'dash',l:'Genel'},
-    {id:'students',l:'Ogrenciler'},
-    {id:'weekly',l:'Haftalik'},
-    {id:'leaderboard',l:'Liderlik'},
-    {id:'questions',l:'Sorular'}
-  ];
-  document.getElementById('hNav').innerHTML=nav.map(n=>`<button class="nb${n.id==='dash'?' on':''}" data-p="${n.id}" onclick="tNav('${n.id}')">${n.l}</button>`).join('');
-}
-function buildSNav(){
-  const nav=[
-    {id:'sdash',l:'Ana Sayfa'},
-    {id:'sstats',l:'Performans'},
-    {id:'slb',l:'Liderlik'}
-  ];
-  document.getElementById('hNav').innerHTML=nav.map(n=>`<button class="nb${n.id==='sdash'?' on':''}" data-p="${n.id}" onclick="sNav('${n.id}')">${n.l}</button>`).join('');
-}
-function showPg(id){document.querySelectorAll('#tApp .page').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id)?.classList.add('on');document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.p===id));document.getElementById('content').scrollTop=0;}
-function showSPg(id){document.querySelectorAll('#sApp .page').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id)?.classList.add('on');document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.dataset.p===id));document.getElementById('content').scrollTop=0;}
-function tNav(id){if(!_checkRole('teacher'))return;showPg(id);if(id==='dash')renderDash();else if(id==='students')renderSt();else if(id==='weekly')renderWk();else if(id==='leaderboard')renderLb();else if(id==='questions')renderQ();}
-function sNav(id){if(!_checkRole('student'))return;showSPg(id);if(id==='sdash')renderSDash();else if(id==='sstats')renderSPerf();else if(id==='slb')renderSLb();}
+/* ════════════════════════════════════════════════════════
+  14. TEACHER MODULE
+════════════════════════════════════════════════════════ */
+const Teacher = {
 
-/* ═══════════════════════════════
-   HELPERS
-═══════════════════════════════ */
-
-/* NULL-SAFE SELECTOR */
-function $(id){const el=document.getElementById(id);if(!el)console.warn('Element bulunamadi: #'+id);return el;}
-function $set(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
-function $html(id,val){const el=document.getElementById(id);if(el)el.innerHTML=val;}
-function $show(id,show){const el=document.getElementById(id);if(el)el.style.display=show?'':'none';}
-
-function curW(){for(let w=1;w<=12;w++)if(!S.locks[w].locked)return w;return 1;}
-function avg(arr){return arr.length?Math.round(arr.reduce((a,b)=>a+b,0)/arr.length):0;}
-function sc(s){return s>=80?'var(--jade4)':s>=60?'var(--gold3)':s>0?'#ff9898':'var(--ivory4)';}
-function stAvg(s){const sc2=Object.values(s.weekData).filter(w=>w.completed).map(w=>w.score);return avg(sc2);}
-function stTotal(s){return Object.values(s.weekData).reduce((a,w)=>a+w.total,0);}
-function stDone(s){return Object.values(s.weekData).filter(w=>w.completed).length;}
-
-/* ═══════════════════════════════
-   TEACHER DASHBOARD
-═══════════════════════════════ */
-function renderDash(){
-  const st=S.students,cw=curW();
-  const tQ=st.reduce((a,x)=>a+stTotal(x),0);
-  const act=st.filter(x=>stDone(x)>0).length;
-  const allSc=st.flatMap(x=>Object.values(x.weekData).filter(w=>w.completed).map(w=>w.score));
-  const avgSc=avg(allSc);
-  document.getElementById('dStats').innerHTML=
-    `<div class="sc"><div class="sc-n">135</div><div class="sc-l">Toplam Ogrenci</div></div>`+
-    `<div class="sc"><div class="sc-n">${act}</div><div class="sc-l">Aktif Ogrenci</div></div>`+
-    `<div class="sc"><div class="sc-n">${tQ.toLocaleString('tr-TR')}</div><div class="sc-l">Cozulen Soru</div></div>`+
-    `<div class="sc"><div class="sc-n" style="color:${sc(avgSc)}">%${avgSc}</div><div class="sc-l">Sinif Ortalamasi</div></div>`;
-  let wg='';
-  for(let w=1;w<=12;w++){
-    const lk=S.locks[w],dn=st.filter(s=>s.weekData[w]?.completed).length;
-    const cl=lk.locked?'locked':(w===cw?'aw':'open');
-    wg+=`<div class="wc ${cl}" onclick="toggleLock(${w})"><span class="wc-lk">${lk.locked?'🔒':'🔓'}</span><div class="wc-n">${w}</div><div class="wc-tp">${TOPICS[w-1].substring(0,8)}</div><div class="wc-st" style="color:${lk.locked?'#ff7070':'var(--jade4)'}">${lk.locked?'Kilitli':dn+'/135'}</div></div>`;
-  }
-  document.getElementById('dWeek').innerHTML=wg;
-  const tops=[...st].filter(s=>s.weekData[cw]?.completed).sort((a,b)=>b.weekData[cw].score-a.weekData[cw].score).slice(0,8);
-  document.getElementById('dTop').innerHTML=tops.length
-    ?tops.map((s,i)=>`<div class="brow"><div class="blbl">${['🥇','🥈','🥉','4.','5.','6.','7.','8.'][i]} ${s.name}</div><div class="btrack"><div class="bfill" style="width:${s.weekData[cw].score}%"></div></div><div class="bval">%${s.weekData[cw].score}</div></div>`).join('')
-    :'<div style="color:var(--ivory4);font-size:13px">Bu hafta henuz tamamlayan yok.</div>';
-  document.getElementById('dTopics').innerHTML=TOPICS.map(t=>{
-    const scores=st.flatMap(s=>Object.values(s.weekData).filter(w=>w.completed).map(w=>w.score));
-    const a=avg(scores);
-    return`<div class="brow"><div class="blbl">${t}</div><div class="btrack"><div class="bfill" style="width:${a}%"></div></div><div class="bval">%${a}</div></div>`;
-  }).join('');
-}
-function toggleLock(w){S.locks[w].locked=!S.locks[w].locked;persist();renderDash();toast('Hafta '+w+' '+(S.locks[w].locked?'kilitlend':'acildi'));}
-
-/* ═══════════════════════════════
-   STUDENTS
-═══════════════════════════════ */
-let stPage=0;
-const ST_PER_PAGE=20;
-
-function renderSt(q='',cls=''){
-  let list=S.students;
-  if(q)list=list.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||String(s.id).includes(q));
-  if(cls)list=list.filter(s=>s.class===cls);
-  /* Sayfalama */
-  const total=Math.ceil(list.length/ST_PER_PAGE)||1;
-  if(stPage>=total)stPage=total-1;
-  if(stPage<0)stPage=0;
-  const slice=list.slice(stPage*ST_PER_PAGE,(stPage+1)*ST_PER_PAGE);
-  $html('stList',slice.length
-    ?slice.map(s=>{
-      const a=stAvg(s),cnt=stDone(s);
-      return`<div class="strow" onclick="openStDet(${s.id})"><div class="stav">${s.name[0]}</div><div class="stinfo"><div class="stname">${s.name}</div><div class="stmeta">${s.class} · #${s.id} · ${cnt} hafta</div></div><div class="stscore" style="color:${sc(a)}">${a?'%'+a:'—'}</div></div>`;
-    }).join('')
-    :'<div style="color:var(--ivory4);font-size:13px;padding:20px">Ogrenci bulunamadi.</div>'
-  );
-  /* Pager */
-  const pager=document.getElementById('stPager');
-  if(pager){
-    if(total>1){
-      pager.innerHTML=
-        `<button class="btn btn-sm" onclick="stPage=Math.max(0,stPage-1);renderSt()" ${stPage===0?'disabled':''}>&#9664;</button>`+
-        `<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4);letter-spacing:2px">${stPage+1}/${total} (${list.length} ogrenci)</span>`+
-        `<button class="btn btn-sm" onclick="stPage=Math.min(${total-1},stPage+1);renderSt()" ${stPage===total-1?'disabled':''}>&#9654;</button>`;
-    }else{
-      pager.innerHTML=`<span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${list.length} ogrenci</span>`;
+  renderDash() {
+    const st = S.students, cw = curW();
+    const tQ   = st.reduce((a,x) => a+stTotal(x), 0);
+    const act  = st.filter(x => stDone(x)>0).length;
+    const allSc = st.flatMap(x => Object.values(x.weekData||{}).filter(w=>w.completed).map(w=>w.score));
+    const avgSc = avg(allSc);
+    DOM.setHtml('dStats',
+      `<div class="sc"><div class="sc-n">${st.length}</div><div class="sc-l">Toplam Ogrenci</div></div>`+
+      `<div class="sc"><div class="sc-n">${act}</div><div class="sc-l">Aktif Ogrenci</div></div>`+
+      `<div class="sc"><div class="sc-n">${tQ.toLocaleString('tr-TR')}</div><div class="sc-l">Cozulen Soru</div></div>`+
+      `<div class="sc"><div class="sc-n" style="color:${sc(avgSc)}">%${avgSc}</div><div class="sc-l">Sinif Ortalamasi</div></div>`
+    );
+    let wg = '';
+    for (let w = 1; w <= 12; w++) {
+      const lk = S.locks[w];
+      const dn = st.filter(s => s.weekData && s.weekData[w]?.completed).length;
+      const cl = lk.locked ? 'locked' : (w===cw ? 'aw' : 'open');
+      wg += `<div class="wc ${cl}" onclick="Teacher.toggleLock(${w})">`
+          + `<span class="wc-lk">${lk.locked?'🔒':'🔓'}</span>`
+          + `<div class="wc-n">${w}</div>`
+          + `<div class="wc-tp">${CFG.TOPICS[w-1].substring(0,8)}</div>`
+          + `<div class="wc-st" style="color:${lk.locked?'#ff7070':'var(--jade4)'}">${lk.locked?'Kilitli':dn+'/'+st.length}</div>`
+          + `</div>`;
     }
-  }
-}
-function previewStId(){
-  const n=document.getElementById('nSN').value.trim();
-  const p=document.getElementById('stPreview');
-  if(!n){p.style.display='none';return;}
-  const newId=Math.max(...S.students.map(s=>s.id),100)+1;
-  const pw=document.getElementById('nSP').value||String(newId);
-  p.style.display='block';
-  document.getElementById('prevId').textContent=newId;
-  document.getElementById('prevName').textContent=n;
-  document.getElementById('prevPass').textContent=pw;
-}
-function sanitizeName(s){return s.replace(/<[^>]*>/g,'').replace(/[^a-zA-ZÀ-ɏ\s\-\.]/g,'').trim().substring(0,60);}
+    DOM.setHtml('dWeek', wg);
+    const tops = [...st].filter(s=>s.weekData&&s.weekData[cw]?.completed)
+      .sort((a,b)=>b.weekData[cw].score-a.weekData[cw].score).slice(0,8);
+    DOM.setHtml('dTop', tops.length
+      ? tops.map((s,i)=>`<div class="brow"><div class="blbl">${['🥇','🥈','🥉','4.','5.','6.','7.','8.'][i]} ${s.name}</div><div class="btrack"><div class="bfill" style="width:${s.weekData[cw].score}%"></div></div><div class="bval">%${s.weekData[cw].score}</div></div>`).join('')
+      : '<div style="color:var(--ivory4);font-size:13px">Bu hafta henuz tamamlayan yok.</div>'
+    );
+    DOM.setHtml('dTopics', CFG.TOPICS.map(t => {
+      const scores = st.flatMap(s=>Object.values(s.weekData||{}).filter(w=>w.completed).map(w=>w.score));
+      const a = avg(scores);
+      return `<div class="brow"><div class="blbl">${t}</div><div class="btrack"><div class="bfill" style="width:${a}%"></div></div><div class="bval">%${a}</div></div>`;
+    }).join(''));
+  },
 
-async function saveSt(){
-  const raw=(document.getElementById('nSN')||{value:''}).value.trim();
-  const n=sanitizeName(raw);
-  if(!n||n.length<2){toast('Gecerli ad soyad giriniz (min 2 karakter)!','err');return;}
-  const cls=(document.getElementById('nSC')||{value:'7-A'}).value;
-  if(!['7-A','7-B','7-C'].includes(cls)){toast('Gecersiz sube secimi!','err');return;}
-  const newId=Math.max(...S.students.map(s=>s.id),100)+1;
-  const pw=(document.getElementById('nSP')||{value:''}).value.trim()||String(newId);
-  if(pw.length<4){toast('Sifre en az 4 karakter olmali!','err');return;}
-  const wd={};
-  for(let w=1;w<=12;w++)wd[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
-  const newStu={id:newId,name:n,class:cls,password:pw,weekData:wd};
-  S.students.push(newStu);
-  /* Firestore'a kaydet - Auth KULLANMA (ogretmen oturumu kesilir) */
-  /* Ogrenci ilk giriste numara@turkce7.com + sifre ile kendi hesabini acar */
-  if(fbReady&&db){
-    try{
-      await db.collection('students').doc(String(newId)).set({
-        id:newId,name:n,class:cls,password:pw,weekData:wd,
-        email:String(newId)+'@turkce7.com',
-        registered:false,
-        updatedAt:firebase.firestore.FieldValue.serverTimestamp()
-      });
-      toast(n+' eklendi. Numara:'+newId+' Sifre:'+pw);
-    }catch(e){
-      console.warn('Firestore saveSt:',e);
-      toast(n+' local olarak eklendi #'+newId);
-    }
-  }else{
-    toast(n+' eklendi #'+newId);
-  }
-  persist();
-  closeMo('mAddSt');
-  renderSt();
-  document.getElementById('nSN').value='';
-  document.getElementById('nSP').value='';
-  document.getElementById('stPreview').style.display='none';
-}
-function openStDet(id){
-  const s=S.students.find(x=>x.id===id);if(!s)return;
-  document.getElementById('mStN').textContent=s.name+' · #'+s.id+' · '+s.class;
-  const scores=Object.values(s.weekData).filter(w=>w.completed).map(w=>w.score);
-  document.getElementById('mStC').innerHTML=
-    `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">`+
-    `<div class="sc"><div class="sc-n">${stDone(s)}</div><div class="sc-l">Tamamlanan</div></div>`+
-    `<div class="sc"><div class="sc-n">${avg(scores)?'%'+avg(scores):'—'}</div><div class="sc-l">Ortalama</div></div>`+
-    `<div class="sc"><div class="sc-n">${stTotal(s)}</div><div class="sc-l">Top. Soru</div></div></div>`+
-    Array.from({length:12},(_,i)=>{
-      const w=i+1,lk=S.locks[w].locked,wd=s.weekData[w];
-      return`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">`+
-        `<div style="font-family:var(--ff-d);font-size:18px;font-weight:900;color:var(--gold-a55);width:28px">${w}</div>`+
-        `<div style="flex:1"><div style="font-size:13px;color:var(--ivory2)">${TOPICS[i]}</div>`+
-        (wd.completed?`<div class="perfbar" style="margin-top:5px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`:'')+
-        `</div>${lk?'<span class="badge br">Kilitli</span>':wd.completed?`<span class="badge bj">%${wd.score}</span>`:'<span class="badge by">Bekliyor</span>'}</div>`;
-    }).join('')+
-    `<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">`+
-    `<button class="btn btn-p btn-sm" onclick="openChangePassSt(${id})">Sifre</button>`+
-    `<button class="btn btn-r btn-sm" onclick="resetSt(${id})">Sifirla</button>`+
-    `<button class="btn btn-r btn-sm" onclick="confirmDeleteSt(${id})">Sil</button></div>`;
-  openMo('mStDet');
-}
-function resetSt(id){
-  const s=S.students.find(x=>x.id===id);if(!s)return;
-  confirmAction(s.name+' icin tum veriler sifirlansin mi?','Evet, Sifirla',()=>{
-    for(let w=1;w<=12;w++)s.weekData[w]={completed:false,score:0,total:0,correct:0,wrong:0,ts:null};
-    persist();closeMo('mStDet');renderSt();toast('Veriler sifirland');
-  });
-}
-function deleteSt(id){
-  const s=S.students.find(x=>x.id===id);if(!s)return;
-  S.students=S.students.filter(x=>x.id!==id);
-  persist();closeMo('mStDet');renderSt();toast(s.name+' silindi','err');
-}
+  toggleLock(w) {
+    S.locks[w].locked = !S.locks[w].locked;
+    persist();
+    this.renderDash();
+    UI.toast('Hafta ' + w + ' ' + (S.locks[w].locked ? 'kilitlend 🔒' : 'acildi 🔓'));
+  },
 
-/* ═══════════════════════════════
-   HAFTALIK SONUCLAR
-═══════════════════════════════ */
-function renderWk(cls='7-A', wk=0){
-  const sts=S.students.filter(s=>s.class===cls);
-  if(!sts.length){document.getElementById('wkTable').innerHTML='<div style="color:var(--ivory4);padding:20px">Ogrenci yok.</div>';return;}
+  /* ÖĞRENCI LİSTESİ — PAGINATION ile */
+  renderSt(q, cls) {
+    if (q   !== undefined) S.ui.stQuery = q;
+    if (cls !== undefined) { S.ui.stCls = cls; S.ui.stPage = 0; }
+    let list = S.students;
+    if (S.ui.stQuery) list = list.filter(s =>
+      s.name.toLowerCase().includes(S.ui.stQuery.toLowerCase()) || String(s.id).includes(S.ui.stQuery)
+    );
+    if (S.ui.stCls) list = list.filter(s => s.class === S.ui.stCls);
+    const total = Math.ceil(list.length / CFG.stuPerPage) || 1;
+    if (S.ui.stPage >= total) S.ui.stPage = total - 1;
+    const slice = list.slice(S.ui.stPage * CFG.stuPerPage, (S.ui.stPage+1) * CFG.stuPerPage);
+    DOM.setHtml('stList', slice.length
+      ? slice.map(s => {
+          const a = stAvg(s), cnt = stDone(s);
+          return `<div class="strow" onclick="Teacher.openStDet(${s.id})">`
+               + `<div class="stav">${(s.name||'?')[0]}</div>`
+               + `<div class="stinfo"><div class="stname">${s.name}</div><div class="stmeta">${s.class} · #${s.id} · ${cnt} hafta</div></div>`
+               + `<div class="stscore" style="color:${sc(a)}">${a?'%'+a:'—'}</div></div>`;
+        }).join('')
+      : '<div style="color:var(--ivory4);font-size:13px;padding:20px">Ogrenci bulunamadi.</div>'
+    );
+    DOM.setHtml('stPager', pager(
+      S.ui.stPage, total,
+      `S.ui.stPage=Math.max(0,S.ui.stPage-1);Teacher.renderSt()`,
+      `S.ui.stPage=Math.min(${total-1},S.ui.stPage+1);Teacher.renderSt()`,
+      list.length + ' ogrenci'
+    ));
+  },
 
-  if(wk===0||!wk){
-    /* Tum haftalarin ozeti - 6 hafta goster */
-    let h=`<div class="card"><div class="wres-wrap"><div class="wres-hdr"><div>OGRENCI</div>`;
-    for(let w=1;w<=6;w++)h+=`<div>H${w}</div>`;
-    h+=`</div>`;
-    sts.forEach(s=>{
-      h+=`<div class="wres-row"><div class="wres-name">${s.name}</div>`;
-      for(let w=1;w<=6;w++){
-        const wd=s.weekData[w],lk=S.locks[w].locked;
-        h+=`<div class="wres-cell">${lk?'🔒':wd.completed?`<span style="color:${sc(wd.score)}">%${wd.score}</span>`:'—'}</div>`;
+  previewStId() {
+    const n = DOM.val('nSN').trim();
+    const p = DOM.get('stPreview');
+    if (!n) { if(p) p.style.display='none'; return; }
+    const newId = Math.max(...S.students.map(s=>s.id), 100) + 1;
+    const pw = DOM.val('nSP') || String(newId);
+    if (p) p.style.display = 'block';
+    DOM.setText('prevId', newId);
+    DOM.setText('prevName', n);
+    DOM.setText('prevPass', pw);
+  },
+
+  async saveSt() {
+    /* Validation — Validator katmanı */
+    const nameR = Validator.name(DOM.val('nSN'));
+    if (!nameR.ok) { UI.toast(nameR.err, 'err'); return; }
+    const clsR = Validator.cls(DOM.val('nSC'));
+    if (!clsR.ok) { UI.toast(clsR.err, 'err'); return; }
+    const rawPw = DOM.val('nSP').trim();
+    const newId = Math.max(...S.students.map(s=>s.id), 100) + 1;
+    const pw = rawPw || String(newId);
+    const pwR = Validator.password(pw, 4);
+    if (!pwR.ok) { UI.toast(pwR.err, 'err'); return; }
+    const wd = mkWD();
+    const newStu = { id:newId, name:nameR.val, class:clsR.val, password:pwR.val, weekData:wd };
+    S.students.push(newStu);
+    if (FB.ready && FB.db) {
+      try {
+        await FB.db.collection('students').doc(String(newId)).set({
+          ...newStu,
+          email: String(newId) + '@turkce7.com',
+          registered: false,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        UI.toast(nameR.val + ' eklendi! #' + newId + ' Sifre: ' + pwR.val);
+      } catch (e) {
+        console.warn('[saveSt]', e);
+        UI.toast(nameR.val + ' local olarak eklendi #' + newId, 'info');
       }
-      h+=`</div>`;
+    } else {
+      UI.toast(nameR.val + ' eklendi #' + newId);
+    }
+    persist();
+    UI.closeModal('mAddSt');
+    this.renderSt();
+    DOM.setVal('nSN', ''); DOM.setVal('nSP', '');
+    const prev = DOM.get('stPreview');
+    if (prev) prev.style.display = 'none';
+  },
+
+  openStDet(id) {
+    const s = S.students.find(x => x.id === id);
+    if (!s) return;
+    DOM.setText('mStN', s.name + ' · #' + s.id + ' · ' + s.class);
+    const scores = Object.values(s.weekData||{}).filter(w=>w.completed).map(w=>w.score);
+    DOM.setHtml('mStC',
+      `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px">`+
+      `<div class="sc"><div class="sc-n">${stDone(s)}</div><div class="sc-l">Tamamlanan</div></div>`+
+      `<div class="sc"><div class="sc-n">${avg(scores)?'%'+avg(scores):'—'}</div><div class="sc-l">Ortalama</div></div>`+
+      `<div class="sc"><div class="sc-n">${stTotal(s)}</div><div class="sc-l">Top. Soru</div></div></div>`+
+      Array.from({length:12},(_,i)=>{
+        const w=i+1, lk=S.locks[w].locked, wd=(s.weekData||{})[w]||{};
+        return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">`
+             + `<div style="font-family:var(--ff-d);font-size:18px;font-weight:900;color:var(--gold-a55);width:28px">${w}</div>`
+             + `<div style="flex:1"><div style="font-size:13px;color:var(--ivory2)">${CFG.TOPICS[i]}</div>`
+             + (wd.completed?`<div class="perfbar" style="margin-top:5px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`:'')
+             + `</div>${lk?'<span class="badge br">Kilitli</span>':wd.completed?`<span class="badge bj">%${wd.score}</span>`:'<span class="badge by">Bekliyor</span>'}</div>`;
+      }).join('')+
+      `<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">`+
+      `<button class="btn btn-p btn-sm" onclick="openChangePassSt(${id})">Sifre</button>`+
+      `<button class="btn btn-r btn-sm" onclick="Teacher.resetSt(${id})">Sifirla</button>`+
+      `<button class="btn btn-r btn-sm" onclick="Teacher.confirmDelSt(${id})">Sil</button></div>`
+    );
+    UI.openModal('mStDet');
+  },
+
+  resetSt(id) {
+    const s = S.students.find(x=>x.id===id);
+    if (!s) return;
+    UI.confirm('Onay', s.name+' verilerini sifirla?', 'Evet, Sifirla', () => {
+      s.weekData = mkWD();
+      persist(); UI.closeModal('mStDet'); this.renderSt(); UI.toast('Veriler sifirland');
+    }, false);
+  },
+
+  confirmDelSt(id) {
+    const s = S.students.find(x=>x.id===id);
+    if (!s) return;
+    UI.confirm('Silme Onayi', s.name+' silinsin mi?', 'Evet, Sil', () => {
+      S.students = S.students.filter(x=>x.id!==id);
+      if (FB.ready && FB.db) {
+        FB.db.collection('students').doc(String(id)).delete().catch(()=>{});
+      }
+      persist(); UI.closeModal('mStDet'); this.renderSt(); UI.toast(s.name+' silindi','err');
     });
-    h+=`</div></div>`;
+  },
 
-    /* 2. kart: hafta 7-12 */
-    h+=`<div class="card" style="margin-top:0"><div class="wres-wrap"><div class="wres-hdr"><div>OGRENCI</div>`;
-    for(let w=7;w<=12;w++)h+=`<div>H${w}</div>`;
-    h+=`</div>`;
-    sts.forEach(s=>{
-      h+=`<div class="wres-row"><div class="wres-name">${s.name}</div>`;
-      for(let w=7;w<=12;w++){
-        const wd=s.weekData[w],lk=S.locks[w].locked;
-        h+=`<div class="wres-cell">${lk?'🔒':wd.completed?`<span style="color:${sc(wd.score)}">%${wd.score}</span>`:'—'}</div>`;
+  renderWk(cls, wk) {
+    if (cls !== undefined) S.ui.wkCls  = cls;
+    if (wk  !== undefined) S.ui.wkWeek = wk;
+    const sts = S.students.filter(s=>s.class===S.ui.wkCls);
+    if (!sts.length) { DOM.setHtml('wkTable','<div style="color:var(--ivory4);padding:20px">Ogrenci yok.</div>'); return; }
+    const wkVal = S.ui.wkWeek;
+    if (!wkVal) {
+      let h = '';
+      for (let half = 0; half < 2; half++) {
+        const start=half*6+1, end=start+5;
+        h += `<div class="card"><div class="wres-wrap"><div class="wres-hdr"><div>OGRENCI</div>`;
+        for (let w=start;w<=end;w++) h += `<div>H${w}</div>`;
+        h += `</div>`;
+        sts.forEach(s => {
+          h += `<div class="wres-row"><div class="wres-name">${s.name}</div>`;
+          for (let w=start;w<=end;w++) {
+            const wd=(s.weekData||{})[w], lk=S.locks[w].locked;
+            h += `<div class="wres-cell">${lk?'🔒':wd&&wd.completed?`<span style="color:${sc(wd.score)}">%${wd.score}</span>`:'—'}</div>`;
+          }
+          h += `</div>`;
+        });
+        h += `</div></div>`;
       }
-      h+=`</div>`;
+      DOM.setHtml('wkTable', h);
+    } else {
+      const lk = S.locks[wkVal].locked;
+      let h = `<div class="card"><div style="font-family:var(--ff-d);font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:14px">HAFTA ${wkVal} · ${CFG.TOPICS[wkVal-1].toUpperCase()}</div>`;
+      if (lk) {
+        h += '<div style="color:var(--ivory4);font-size:13px">Bu hafta kilitli.</div>';
+      } else {
+        const done    = sts.filter(s=>s.weekData&&s.weekData[wkVal]&&s.weekData[wkVal].completed);
+        const notDone = sts.filter(s=>!s.weekData||!s.weekData[wkVal]||!s.weekData[wkVal].completed);
+        h += `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">`
+           + `<div class="sc"><div class="sc-n">${done.length}</div><div class="sc-l">Tamamladi</div></div>`
+           + `<div class="sc"><div class="sc-n">${notDone.length}</div><div class="sc-l">Tamamlamadi</div></div>`
+           + `<div class="sc"><div class="sc-n" style="color:${sc(avg(done.map(s=>s.weekData[wkVal].score)))}">%${avg(done.map(s=>s.weekData[wkVal].score))}</div><div class="sc-l">Ortalama</div></div></div>`;
+        [...done].sort((a,b)=>b.weekData[wkVal].score-a.weekData[wkVal].score).forEach((s,i)=>{
+          h+=`<div class="brow"><div class="blbl">${i+1}. ${s.name}</div><div class="btrack"><div class="bfill" style="width:${s.weekData[wkVal].score}%"></div></div><div class="bval">%${s.weekData[wkVal].score}</div></div>`;
+        });
+        if (notDone.length) {
+          h+=`<div style="font-family:var(--ff-d);font-size:8px;letter-spacing:2px;color:var(--ivory4);margin:12px 0 8px">TAMAMLAMAYANLAR (${notDone.length})</div>`;
+          h+=notDone.map(s=>`<div style="font-size:13px;color:var(--ivory4);padding:4px 0;border-bottom:1px solid var(--border)">${s.name}</div>`).join('');
+        }
+      }
+      DOM.setHtml('wkTable', h+'</div>');
+    }
+  },
+
+  renderLb() {
+    let list = S.ui.lbFilter==='all' ? S.students : S.students.filter(s=>s.class===S.ui.lbFilter);
+    list = [...list].sort((a,b)=>stAvg(b)-stAvg(a));
+    const maxAvg = stAvg(list[0]) || 1;
+    DOM.setHtml('lbList', list.length ? list.map((s,i)=>{
+      const a=stAvg(s),d=stDone(s);
+      const rc=i===0?'gold':i===1?'silver':i===2?'bronze':'normal';
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
+      return `<div class="lb-row">`
+           + `<div class="lb-rank ${rc}">${medal}</div>`
+           + `<div class="lb-info"><div class="lb-name">${s.name}</div><div class="lb-meta">${s.class} · #${s.id} · ${d} hafta</div></div>`
+           + `<div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-fill" style="width:${Math.round(a/maxAvg*100)}%"></div></div></div>`
+           + `<div class="lb-score" style="color:${sc(a)}">${a?'%'+a:'—'}</div></div>`;
+    }).join('') : '<div style="color:var(--ivory4);padding:20px">Kayit yok.</div>');
+  },
+
+  setLbFilter(f, btn) {
+    S.ui.lbFilter = f;
+    document.querySelectorAll('#lbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
+    if (btn) btn.classList.add('on');
+    this.renderLb();
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+  15. QUESTIONS MODULE — PAGINATION + ASYNC FIREBASE
+════════════════════════════════════════════════════════ */
+let editQ = null;
+
+const Q = {
+  render(query, week) {
+    if (query !== undefined) { S.ui.qQuery = query; S.ui.qPage = 0; }
+    if (week  !== undefined) { S.ui.qWeek  = week;  S.ui.qPage = 0; }
+    let list = S.questions;
+    if (S.ui.qQuery) list = list.filter(x =>
+      x.text.toLowerCase().includes(S.ui.qQuery.toLowerCase()) ||
+      x.topic.toLowerCase().includes(S.ui.qQuery.toLowerCase())
+    );
+    if (S.ui.qWeek) list = list.filter(x => x.week === S.ui.qWeek);
+    DOM.setText('qCount', S.questions.length + ' SORU BANKADA');
+    const total = Math.ceil(list.length / CFG.qPerPage) || 1;
+    if (S.ui.qPage >= total) S.ui.qPage = total - 1;
+    const slice = list.slice(S.ui.qPage * CFG.qPerPage, (S.ui.qPage+1) * CFG.qPerPage);
+    DOM.setHtml('qList', slice.length
+      ? slice.map(q =>
+          `<div class="qitem"><div class="qi-meta">`
+        + `<span>HAFTA ${q.week}</span><span>·</span><span>${q.topic}</span>`
+        + `<span style="margin-left:auto;color:var(--jade4)">Cevap: ${['A','B','C','D'][q.answer]}</span>`
+        + `<button class="btn btn-r btn-sm" onclick="event.stopPropagation();Q.confirmDel(${q.id})" style="padding:2px 8px;font-size:9px">Sil</button>`
+        + `</div><div onclick="Q.edit(${q.id})" style="cursor:pointer">`
+        + `<div class="qi-txt">${q.text}</div>`
+        + `<div class="omini-grid" style="margin-top:8px">${q.options.map((o,i)=>
+            `<div class="omini" style="background:${i===q.answer?'rgba(28,94,58,.25)':'rgba(0,0,0,.2)'};border:1px solid ${i===q.answer?'rgba(61,166,104,.4)':'var(--border)'}"><span style="font-family:var(--ff-d);font-size:9px;color:${i===q.answer?'var(--jade4)':'var(--gold2)'}">${['A','B','C','D'][i]}</span> ${o}</div>`
+          ).join('')}</div></div></div>`
+        ).join('')
+      : '<div style="color:var(--ivory4);font-size:13px;padding:20px">Soru bulunamadi.</div>'
+    );
+    DOM.setHtml('qPager', pager(
+      S.ui.qPage, total,
+      `S.ui.qPage=Math.max(0,S.ui.qPage-1);Q.render()`,
+      `S.ui.qPage=Math.min(${total-1},S.ui.qPage+1);Q.render()`,
+      list.length + ' soru'
+    ));
+  },
+
+  edit(id) {
+    const q = S.questions.find(x=>x.id===id);
+    if (!q) return;
+    editQ = q;
+    DOM.setText('mQT', 'Soru Duzenle');
+    DOM.setVal('nQW', q.week);
+    document.querySelectorAll('#mQ .ans-btn').forEach(b=>b.classList.toggle('on',+b.dataset.v===q.answer));
+    DOM.setVal('nQAn', q.answer);
+    DOM.setVal('nQTp', q.topic);
+    DOM.setVal('nQTx', q.text);
+    ['A','B','C','D'].forEach((l,i)=>DOM.setVal('nQ'+l, q.options[i]));
+    UI.openModal('mQ');
+  },
+
+  resetForm() {
+    DOM.setText('mQT', 'Soru Ekle');
+    DOM.setVal('nQTx','');
+    ['A','B','C','D'].forEach(l=>DOM.setVal('nQ'+l,''));
+    document.querySelectorAll('#mQ .ans-btn').forEach((b,i)=>b.classList.toggle('on',i===0));
+    DOM.setVal('nQAn','0');
+  },
+
+  pickAns(btn) {
+    document.querySelectorAll('#mQ .ans-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    DOM.setVal('nQAn', btn.dataset.v);
+  },
+
+  async save(addNew) {
+    /* Validation — Validator katmanı */
+    const txR = Validator.questionText(DOM.val('nQTx'));
+    if (!txR.ok) { UI.toast(txR.err,'err'); return; }
+    const rawOpts = ['A','B','C','D'].map(l=>DOM.val('nQ'+l));
+    const optsR = Validator.questionOptions(rawOpts);
+    if (!optsR.ok) { UI.toast(optsR.err,'err'); return; }
+    const wR = Validator.week(DOM.val('nQW'));
+    if (!wR.ok) { UI.toast(wR.err,'err'); return; }
+    const an = parseInt(DOM.val('nQAn'),10);
+    if (isNaN(an)||an<0||an>3) { UI.toast('Gecerli dogru cevap secin!','err'); return; }
+    const tp = DOM.val('nQTp');
+
+    if (editQ) {
+      Object.assign(editQ, { text:txR.val, options:optsR.val, answer:an, week:wR.val, topic:tp });
+      UI.toast('Soru guncellendi');
+      editQ = null;
+    } else {
+      S.questions.push({ id:Date.now(), week:wR.val, topic:tp, text:txR.val, options:optsR.val, answer:an });
+      UI.toast('Soru eklendi');
+    }
+    /* Firebase'e async yaz */
+    if (FB.ready && FB.db) {
+      try {
+        await FB.db.collection('config').doc('main').set(
+          { questions:S.questions, updatedAt:firebase.firestore.FieldValue.serverTimestamp() },
+          { merge:true }
+        );
+      } catch (e) { console.warn('[Q.save]', e); }
+    }
+    persist();
+    S.ui.qPage = 0;
+    this.render();
+    if (addNew) this.resetForm(); else UI.closeModal('mQ');
+  },
+
+  confirmDel(id) {
+    UI.confirm('Silme Onayi','Bu soru silinsin mi?','Evet, Sil',async()=>{
+      S.questions = S.questions.filter(x=>x.id!==id);
+      if (FB.ready && FB.db) {
+        try {
+          await FB.db.collection('config').doc('main').set(
+            { questions:S.questions, updatedAt:firebase.firestore.FieldValue.serverTimestamp() },
+            { merge:true }
+          );
+        } catch (e) { console.warn('[Q.delete]',e); }
+      }
+      persist(); this.render(); UI.toast('Soru silindi','err');
     });
-    h+=`</div></div>`;
-    document.getElementById('wkTable').innerHTML=h;
-  }else{
-    /* Tek hafta detayi */
-    const lk=S.locks[wk].locked;
-    let h=`<div class="card"><div style="font-family:var(--ff-d);font-size:10px;color:var(--gold);letter-spacing:3px;margin-bottom:14px">HAFTA ${wk} · ${TOPICS[wk-1].toUpperCase()}</div>`;
-    if(lk){
-      h+=`<div style="color:var(--ivory4);font-size:13px">Bu hafta kilitli.</div>`;
-    }else{
-      const done=sts.filter(s=>s.weekData[wk].completed);
-      const notDone=sts.filter(s=>!s.weekData[wk].completed);
-      h+=`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">`;
-      h+=`<div class="sc"><div class="sc-n">${done.length}</div><div class="sc-l">Tamamladi</div></div>`;
-      h+=`<div class="sc"><div class="sc-n">${notDone.length}</div><div class="sc-l">Tamamlamadi</div></div>`;
-      h+=`<div class="sc"><div class="sc-n" style="color:${sc(avg(done.map(s=>s.weekData[wk].score)))}">%${avg(done.map(s=>s.weekData[wk].score))}</div><div class="sc-l">Ortalama</div></div>`;
-      h+=`</div>`;
-      h+=`<div style="font-family:var(--ff-d);font-size:8px;letter-spacing:2px;color:var(--gold);margin-bottom:8px">SIRALAMASI</div>`;
-      [...done].sort((a,b)=>b.weekData[wk].score-a.weekData[wk].score).forEach((s,i)=>{
-        h+=`<div class="brow"><div class="blbl">${i+1}. ${s.name}</div><div class="btrack"><div class="bfill" style="width:${s.weekData[wk].score}%"></div></div><div class="bval">%${s.weekData[wk].score}</div></div>`;
-      });
-      if(notDone.length){
-        h+=`<div style="font-family:var(--ff-d);font-size:8px;letter-spacing:2px;color:var(--ivory4);margin:12px 0 8px">TAMAMLAMAYANLAR (${notDone.length})</div>`;
-        h+=notDone.map(s=>`<div style="font-size:13px;color:var(--ivory4);padding:4px 0;border-bottom:1px solid var(--border)">${s.name}</div>`).join('');
+  }
+};
+
+/* ════════════════════════════════════════════════════════
+  16. STUDENT MODULE
+════════════════════════════════════════════════════════ */
+const Student = {
+  renderDash() {
+    const s = S.user;
+    DOM.setText('sGreet', 'Hos geldin, ' + s.name.split(' ')[0] + '!');
+    const wk   = Object.values(s.weekData||{});
+    const comp = wk.filter(w=>w.completed).length;
+    const tot  = wk.reduce((a,w)=>a+w.total,0);
+    const avgSc= avg(wk.filter(w=>w.completed).map(w=>w.score));
+    DOM.setHtml('sStats',
+      `<div class="sc"><div class="sc-n">${comp}</div><div class="sc-l">Tamamlanan</div></div>`+
+      `<div class="sc"><div class="sc-n">${tot}</div><div class="sc-l">Cozulen Soru</div></div>`+
+      `<div class="sc"><div class="sc-n" style="color:${sc(avgSc)}">${avgSc?'%'+avgSc:'—'}</div><div class="sc-l">Ortalama</div></div>`+
+      `<div class="sc"><div class="sc-n">${12-comp}</div><div class="sc-l">Kalan Hafta</div></div>`
+    );
+    let html = '';
+    for (let w=1;w<=12;w++) {
+      const lk=(S.locks[w]||{}).locked, wd=(s.weekData||{})[w]||{};
+      let cls='swcard', ic='Cozulmemis', sc2='var(--ivory3)', scN='';
+      if (lk)          { cls='swcard lk'; ic='Kilitli'; }
+      else if(wd.completed){ cls='swcard dn'; ic='Tamamlandi · '+wd.correct+'D/'+wd.wrong+'Y'; sc2='var(--jade4)'; scN='%'+wd.score; }
+      html += `<div class="${cls}" onclick="Student.selWeek(${w})">`
+            + `<div class="sw-num2">${w}</div>`
+            + `<div class="sw-info"><div class="sw-topic">${CFG.TOPICS[w-1]}</div>`
+            + `<div class="sw-status" style="color:${sc2}">${ic}</div>`
+            + (wd.completed?`<div class="perfbar" style="margin-top:7px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`:'')
+            + `</div><div class="sw-score2" style="color:${sc(wd.score)}">${scN}</div></div>`;
+    }
+    DOM.setHtml('sWeekList', html);
+    const st = DOM.get('sStart2');
+    if (st) {
+      const hasResume = S.quiz && S.quiz.week===S.selWeek && S.quiz.cur>0 && !S.quiz.done;
+      if (S.selWeek && !((S.locks[S.selWeek]||{}).locked) && !((s.weekData||{})[S.selWeek]||{}).completed) {
+        st.style.display = 'flex';
+        DOM.setText('sWkInfo', hasResume
+          ? 'KALDIGI YERDEN DEVAM · Soru '+(S.quiz.cur+1)+'/'+S.quiz.questions.length
+          : 'HAFTA '+S.selWeek+' · 100 SORU');
+      } else {
+        st.style.display = 'none';
       }
     }
-    h+=`</div>`;
-    document.getElementById('wkTable').innerHTML=h;
-  }
-}
+  },
 
-/* ═══════════════════════════════
-   LEADERBOARD (Teacher)
-═══════════════════════════════ */
-/* _lbFilter -> S.ui.lbFilter */
-function setLbFilter(f,btn){
-  S.ui.lbFilter=f;
-  document.querySelectorAll('#lbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderLb();
-}
-function renderLb(){
-  let list=S.ui.lbFilter==='all'?S.students:S.students.filter(s=>s.class===S.ui.lbFilter);
-  list=[...list].sort((a,b)=>stAvg(b)-stAvg(a));
-  const maxAvg=stAvg(list[0])||1;
-  document.getElementById('lbList').innerHTML=list.length?list.map((s,i)=>{
-    const a=stAvg(s),d=stDone(s);
-    const rankCls=i===0?'gold':i===1?'silver':i===2?'bronze':'normal';
-    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
-    return`<div class="lb-row">`+
-      `<div class="lb-rank ${rankCls}">${medal}</div>`+
-      `<div class="lb-info"><div class="lb-name">${s.name}</div><div class="lb-meta">${s.class} · #${s.id} · ${d} hafta</div></div>`+
-      `<div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-fill" style="width:${Math.round(a/maxAvg*100)}%"></div></div><div style="font-family:var(--ff-d);font-size:8px;color:var(--ivory4);text-align:right;margin-top:2px">${d>0?d+' H':''}</div></div>`+
-      `<div class="lb-score" style="color:${sc(a)}">${a?'%'+a:'—'}</div>`+
-      `</div>`;
-  }).join(''):'<div style="color:var(--ivory4);padding:20px">Kayit yok.</div>';
-}
+  selWeek(w) {
+    const lk=(S.locks[w]||{}).locked, wd=((S.user||{}).weekData||{})[w]||{};
+    if (lk)          { UI.toast('Bu hafta kilitli.','err'); return; }
+    if (wd.completed){ UI.toast('Hafta '+w+' tamamlandi — %'+wd.score,'info'); return; }
+    S.selWeek = w;
+    this.renderDash();
+  },
 
-/* ═══════════════════════════════
-   LEADERBOARD (Student)
-═══════════════════════════════ */
-/* _sLbFilter -> S.ui.sLbFilter */
-function setSLbFilter(f,btn){
-  S.ui.sLbFilter=f;
-  document.querySelectorAll('#sLbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  renderSLb();
-}
-function renderSLb(){
-  let list=S.ui.sLbFilter==='all'?S.students:S.students.filter(s=>s.class===S.ui.sLbFilter);
-  list=[...list].sort((a,b)=>stAvg(b)-stAvg(a));
-  const myIdx=list.findIndex(s=>s.id===S.user.id);
-  const maxAvg=stAvg(list[0])||1;
-  document.getElementById('sLbList').innerHTML=list.length?list.map((s,i)=>{
-    const a=stAvg(s),d=stDone(s);
-    const isMe=s.id===S.user.id;
-    const rankCls=i===0?'gold':i===1?'silver':i===2?'bronze':'normal';
-    const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
-    return`<div class="lb-row" style="${isMe?'border-color:var(--gold-a55);background:rgba(200,148,31,.08);':''}">`+
-      `<div class="lb-rank ${rankCls}">${medal}</div>`+
-      `<div class="lb-info"><div class="lb-name">${isMe?'<strong>'+s.name+' (Sen)</strong>':s.name}</div><div class="lb-meta">${s.class} · ${d} hafta</div></div>`+
-      `<div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-fill" style="width:${Math.round(a/maxAvg*100)}%"></div></div></div>`+
-      `<div class="lb-score" style="color:${sc(a)}">${a?'%'+a:'—'}</div>`+
-      `</div>`;
-  }).join(''):'';
-  if(myIdx>=0){
-    const myRank=myIdx+1;
-    const myA=stAvg(S.user);
-    const summary=document.createElement('div');
-    summary.style.cssText='font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold2);padding:12px 0;margin-bottom:12px;border-bottom:1px solid var(--border);text-align:center;';
-    summary.textContent='Siralaniz: '+myRank+' / '+list.length+' · Ortalama: %'+myA;
-    document.getElementById('sLbList').insertBefore(summary,document.getElementById('sLbList').firstChild);
-  }
-}
+  renderPerf() {
+    const s = S.user;
+    DOM.setHtml('sPerf', Array.from({length:12},(_,i)=>{
+      const w=i+1, lk=(S.locks[w]||{}).locked, wd=(s.weekData||{})[w]||{};
+      return `<div class="card" style="margin-bottom:10px">`
+           + `<div style="display:flex;justify-content:space-between;align-items:center${wd.completed?';margin-bottom:14px':''}"><div>`
+           + `<div style="font-family:var(--ff-d);font-size:10px;color:var(--gold3);letter-spacing:2px">HAFTA ${w}</div>`
+           + `<div style="font-size:15px;color:var(--ivory2)">${CFG.TOPICS[i]}</div></div>`
+           + (lk?'<span class="badge br">Kilitli</span>':wd.completed?`<span class="badge bj">%${wd.score}</span>`:'<span class="badge by">Bekliyor</span>')
+           + `</div>`
+           + (wd.completed
+              ?`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center">`
+               +`<div><div style="font-family:var(--ff-d);font-size:22px;color:${sc(wd.score)}">%${wd.score}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">PUAN</div></div>`
+               +`<div><div style="font-family:var(--ff-d);font-size:22px;color:var(--jade4)">${wd.correct}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">DOGRU</div></div>`
+               +`<div><div style="font-family:var(--ff-d);font-size:22px;color:#ff9898">${wd.wrong}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">YANLIS</div></div>`
+               +`<div><div style="font-family:var(--ff-d);font-size:22px;color:var(--gold3)">${wd.total}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">TOPLAM</div></div>`
+               +`</div><div class="perfbar" style="margin-top:12px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`
+              :'') + '</div>';
+    }).join(''));
+  },
 
-/* ═══════════════════════════════
-   QUESTIONS
-═══════════════════════════════ */
-let editQ=null;
-function renderQ(q='',wk=0){
-  let list=S.questions;
-  if(q)list=list.filter(x=>x.text.toLowerCase().includes(q.toLowerCase())||x.topic.toLowerCase().includes(q.toLowerCase()));
-  if(wk)list=list.filter(x=>x.week===wk);
-  document.getElementById('qCount').textContent=S.questions.length+' SORU BANKADA';
-  const pg=10,total=Math.ceil(list.length/pg);
-  if(S.ui.qPage>=total)S.ui.qPage=Math.max(0,total-1);
-  const slice=list.slice(S.ui.S.ui.qPage*pg,(qPage+1)*pg);
-  document.getElementById('qList').innerHTML=slice.length
-    ?slice.map(q=>`<div class="qitem"><div class="qi-meta"><span>HAFTA ${q.week}</span><span>·</span><span>${q.topic}</span><span style="margin-left:auto;color:var(--jade4)">Cevap: ${['A','B','C','D'][q.answer]}</span><button class="btn btn-r btn-sm" onclick="event.stopPropagation();confirmDelete('q',${q.id},'Bu soru')" style="padding:2px 8px;font-size:9px">Sil</button></div><div onclick="editQItem(${q.id})" style="cursor:pointer"><div class="qi-txt">${q.text}</div><div class="omini-grid" style="margin-top:8px">${q.options.map((o,i)=>`<div class="omini" style="background:${i===q.answer?'rgba(28,94,58,.25)':'rgba(0,0,0,.2)'};border:1px solid ${i===q.answer?'rgba(61,166,104,.4)':'var(--border)'}"><span style="font-family:var(--ff-d);font-size:9px;color:${i===q.answer?'var(--jade4)':'var(--gold2)'}">${['A','B','C','D'][i]}</span> ${o}</div>`).join('')}</div></div></div>`).join('')
-    :'<div style="color:var(--ivory4);font-size:13px;padding:20px">Soru bulunamadi.</div>';
-  document.getElementById('qPager').innerHTML=total>1
-    ?`<button class="btn btn-sm" onclick="S.ui.qPage=Math.max(0,S.ui.qPage-1);renderQ()" ${S.ui.qPage===0?'disabled':''}>Onceki</button><span style="font-family:var(--ff-d);font-size:9px;color:var(--ivory4)">${S.ui.qPage+1}/${total}</span><button class="btn btn-sm" onclick="S.ui.qPage=Math.min(${total-1},(S.ui.qPage+1));renderQ()" ${S.ui.qPage===total-1?'disabled':''}>Sonraki</button>`:'';
-}
-function editQItem(id){
-  const q=S.questions.find(x=>x.id===id);if(!q)return;
-  editQ=q;document.getElementById('mQT').textContent='Soru Duzenle';
-  document.getElementById('nQW').value=q.week;
-  document.querySelectorAll('#mQ .ans-btn').forEach(b=>b.classList.toggle('on',+b.dataset.v===q.answer));
-  document.getElementById('nQAn').value=q.answer;document.getElementById('nQTp').value=q.topic;
-  document.getElementById('nQTx').value=q.text;
-  ['A','B','C','D'].forEach((l,i)=>document.getElementById('nQ'+l).value=q.options[i]);
-  openMo('mQ');
-}
-function resetQForm(){document.getElementById('mQT').textContent='Soru Ekle';document.getElementById('nQTx').value='';['A','B','C','D'].forEach(l=>document.getElementById('nQ'+l).value='');document.querySelectorAll('#mQ .ans-btn').forEach((b,i)=>b.classList.toggle('on',i===0));document.getElementById('nQAn').value='0';}
-function pickAns(btn){document.querySelectorAll('#mQ .ans-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('nQAn').value=btn.dataset.v;}
-async function saveQ(addNew){
-  const tx=(document.getElementById('nQTx')||{value:''}).value.trim();
-  if(!tx||tx.length<5){toast('Soru metni en az 5 karakter olmali!','err');return;}
-  const opts=['A','B','C','D'].map(l=>(document.getElementById('nQ'+l)||{value:''}).value.trim());
-  if(opts.some(o=>!o)){toast('Tum sik alanlari doldurunuz!','err');return;}
-  const dupOpts=opts.filter((o,i)=>opts.indexOf(o)!==i);
-  if(dupOpts.length){toast('Sik seçenekler birbirinden farkli olmali!','err');return;}
-  const an=+(document.getElementById('nQAn')||{value:'0'}).value;
-  const w=+(document.getElementById('nQW')||{value:'1'}).value;
-  const tp=(document.getElementById('nQTp')||{value:''}).value;
-  if(!w||w<1||w>12){toast('Gecerli hafta secin!','err');return;}
-  if(editQ){
-    Object.assign(editQ,{text:tx,options:opts,answer:an,week:w,topic:tp});
-    toast('Soru guncellendi');editQ=null;
-  }else{
-    S.questions.push({id:Date.now(),week:w,topic:tp,text:tx,options:opts,answer:an});
-    toast('Soru eklendi');
-  }
-  /* Firebase'e direkt yaz */
-  if(fbReady&&db){
-    try{
-      await db.collection('config').doc('main').set(
-        {questions:S.questions,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},
-        {merge:true}
-      );
-    }catch(e){console.warn('saveQ Firebase:',e);}
-  }
-  persist();S.ui.qPage=0;renderQ();
-  if(addNew)resetQForm();else closeMo('mQ');
-}
+  renderLb() {
+    let list = S.ui.sLbFilter==='all' ? S.students : S.students.filter(s=>s.class===S.ui.sLbFilter);
+    list = [...list].sort((a,b)=>stAvg(b)-stAvg(a));
+    const myIdx  = list.findIndex(s=>s.id===S.user.id);
+    const maxAvg = stAvg(list[0])||1;
+    const rows   = list.map((s,i)=>{
+      const a=stAvg(s),d=stDone(s),isMe=s.id===S.user.id;
+      const rc=i===0?'gold':i===1?'silver':i===2?'bronze':'normal';
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
+      return `<div class="lb-row" style="${isMe?'border-color:var(--gold-a55);background:rgba(200,148,31,.08);':''}">`
+           + `<div class="lb-rank ${rc}">${medal}</div>`
+           + `<div class="lb-info"><div class="lb-name">${isMe?'<strong>'+s.name+' (Sen)</strong>':s.name}</div><div class="lb-meta">${s.class} · ${d} hafta</div></div>`
+           + `<div class="lb-bar-wrap"><div class="lb-bar"><div class="lb-fill" style="width:${Math.round(a/maxAvg*100)}%"></div></div></div>`
+           + `<div class="lb-score" style="color:${sc(a)}">${a?'%'+a:'—'}</div></div>`;
+    }).join('');
+    const summary = myIdx>=0
+      ? `<div style="font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--gold2);padding:12px 0;margin-bottom:12px;border-bottom:1px solid var(--border);text-align:center">Siralaniz: ${myIdx+1} / ${list.length} · Ortalama: %${stAvg(S.user)}</div>`
+      : '';
+    DOM.setHtml('sLbList', summary + rows);
+  },
 
-/* ═══════════════════════════════
-   STUDENT DASHBOARD
-═══════════════════════════════ */
-function renderSDash(){
-  const s=S.user;
-  document.getElementById('sGreet').textContent='Hos geldin, '+s.name.split(' ')[0]+'!';
-  const wk=Object.values(s.weekData),comp=wk.filter(w=>w.completed).length,tot=wk.reduce((a,w)=>a+w.total,0),avgSc=avg(wk.filter(w=>w.completed).map(w=>w.score));
-  document.getElementById('sStats').innerHTML=
-    `<div class="sc"><div class="sc-n">${comp}</div><div class="sc-l">Tamamlanan</div></div>`+
-    `<div class="sc"><div class="sc-n">${tot}</div><div class="sc-l">Cozulen Soru</div></div>`+
-    `<div class="sc"><div class="sc-n" style="color:${sc(avgSc)}">${avgSc?'%'+avgSc:'—'}</div><div class="sc-l">Ortalama</div></div>`+
-    `<div class="sc"><div class="sc-n">${12-comp}</div><div class="sc-l">Kalan Hafta</div></div>`;
-  let html='';
-  for(let w=1;w<=12;w++){
-    const lk=S.locks[w].locked,wd=s.weekData[w];
-    let cls='swcard',ic='Cozulmemis',sc2='var(--ivory3)',scN='';
-    if(lk){cls='swcard lk';ic='Kilitli';}
-    else if(wd.completed){cls='swcard dn';ic='Tamamlandi · '+wd.correct+'D/'+wd.wrong+'Y';sc2='var(--jade4)';scN='%'+wd.score;}
-    html+=`<div class="${cls}" onclick="selWeek(${w})"><div class="sw-num2">${w}</div><div class="sw-info"><div class="sw-topic">${TOPICS[w-1]}</div><div class="sw-status" style="color:${sc2}">${ic}</div>${wd.completed?`<div class="perfbar" style="margin-top:7px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`:''}</div><div class="sw-score2" style="color:${sc(wd.score)}">${scN}</div></div>`;
+  setSLbFilter(f, btn) {
+    S.ui.sLbFilter = f;
+    document.querySelectorAll('#sLbFilters .lb-filter-btn').forEach(b=>b.classList.remove('on'));
+    if (btn) btn.classList.add('on');
+    this.renderLb();
   }
-  document.getElementById('sWeekList').innerHTML=html;
-  const st=document.getElementById('sStart2');
-  if(S.selWeek&&!S.locks[S.selWeek].locked&&!s.weekData[S.selWeek].completed){
-    st.style.display='flex';
-    const devam=S.quiz&&S.quiz.week===S.selWeek&&S.quiz.cur>0&&!S.quiz.done;
-    document.getElementById('sWkInfo').textContent=devam?('KALDIGI YERDEN DEVAM - Soru '+(S.quiz.cur+1)+'/'+S.quiz.questions.length):('HAFTA '+S.selWeek+' - 100 SORU');
-  }else st.style.display='none';
-}
-function selWeek(w){
-  const lk=S.locks[w].locked,wd=S.user.weekData[w];
-  if(lk){toast('Bu hafta kilitli.','err');return;}
-  if(wd.completed){toast('Hafta '+w+' tamamlandi — %'+wd.score,'info');return;}
-  S.selWeek=w;renderSDash();
-}
+};
 
-/* ═══════════════════════════════
-   QUIZ
-═══════════════════════════════ */
-let _sel=null;
-function startQuiz(){
-  const w=S.selWeek;
-  /* Ayni hafta devam eden quiz var mi? */
-  if(S.quiz&&S.quiz.week===w&&S.quiz.cur>0&&!S.quiz.done){
-    toast('Kaldigi yerden devam ediliyor: Soru '+(S.quiz.cur+1),'info');
-    _sel=null;
+/* ════════════════════════════════════════════════════════
+  17. QUIZ MODULE
+════════════════════════════════════════════════════════ */
+let _sel = null;
+
+const Quiz = {
+  start() {
+    const w = S.selWeek;
+    /* Devam eden quiz var mı? */
+    if (S.quiz && S.quiz.week===w && S.quiz.cur>0 && !S.quiz.done) {
+      UI.toast('Kaldigi yerden devam ediliyor: Soru '+(S.quiz.cur+1), 'info');
+      _sel = null;
+      this._showQuiz(w);
+      this.renderQ();
+      return;
+    }
+    const qs = S.questions.filter(q=>q.week===w).slice(0,100);
+    if (!qs.length) { UI.toast('Soru bulunamadi!','err'); return; }
+    S.quiz = { week:w, questions:qs, cur:0, correct:0, wrong:0, done:false };
+    _sel = null;
+    persist();
+    this._showQuiz(w);
+    this.renderQ();
+  },
+
+  _showQuiz(w) {
     showSPg('quiz');
-    document.getElementById('qzBadge').textContent='HAFTA '+w;
-    document.getElementById('qzTitle').textContent=TOPICS[w-1];
-    document.getElementById('qzRes').style.display='none';
-    document.getElementById('qzArea').style.display='block';
-    renderQz();
-    return;
+    DOM.setText('qzBadge',  'HAFTA '+w);
+    DOM.setText('qzTitle',  CFG.TOPICS[w-1]);
+    DOM.show('qzRes',  false);
+    const area = DOM.get('qzArea');
+    if (area) area.style.display = 'block';
+  },
+
+  renderQ() {
+    const qz = S.quiz;
+    if (!qz) return;
+    if (qz.cur >= qz.questions.length) { this.finish(); return; }
+    const q   = qz.questions[qz.cur];
+    const pct = Math.round(qz.cur/qz.questions.length*100);
+    DOM.setText('qzProg', 'SORU '+(qz.cur+1)+' / '+qz.questions.length);
+    DOM.setText('qzOk',  qz.correct);
+    DOM.setText('qzBad', qz.wrong);
+    const bar = DOM.get('qzBar');
+    if (bar) bar.style.width = pct+'%';
+    _sel = null;
+    DOM.setHtml('qzArea',
+      `<div class="qbox"><div class="qnum">SORU ${qz.cur+1} <span>· ${q.topic}</span></div><div class="qtxt">${q.text}</div>`+
+      `<div class="opts">${q.options.map((o,i)=>`<div class="opt" id="op${i}" onclick="Quiz.pickOpt(${i},${q.answer})"><div class="oletter">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div></div>`+
+      `<div style="text-align:right;margin-top:12px"><button class="btn btn-p" id="nxtBtn" style="display:none;padding:11px 28px" onclick="Quiz.next()">${qz.cur+1>=qz.questions.length?'Testi Bitir':'Sonraki Soru'}</button></div>`
+    );
+  },
+
+  pickOpt(i, correct) {
+    if (_sel !== null) return;
+    _sel = i;
+    const opts = document.querySelectorAll('.opt');
+    if (opts[i]) opts[i].classList.add('sel');
+    setTimeout(() => {
+      if (opts[correct]) opts[correct].classList.add('correct');
+      if (i !== correct) {
+        if (opts[i]) { opts[i].classList.remove('sel'); opts[i].classList.add('wrong'); }
+        S.quiz.wrong++;
+      } else {
+        S.quiz.correct++;
+      }
+      const btn = DOM.get('nxtBtn');
+      if (btn) btn.style.display = 'inline-flex';
+    }, 380);
+  },
+
+  next() {
+    S.quiz.cur++;
+    /* Her 10 soruda Firebase'e ara kayıt */
+    if (S.quiz.cur % 10 === 0 && Net.online && FB.ready && FB.db && S.user && S.user.id) {
+      FB.db.collection('students').doc(String(S.user.id)).set(
+        { quizProgress:{ week:S.quiz.week, cur:S.quiz.cur, correct:S.quiz.correct, wrong:S.quiz.wrong, done:false } },
+        { merge:true }
+      ).catch(()=>{});
+    }
+    persist();
+    this.renderQ();
+  },
+
+  async finish() {
+    const qz    = S.quiz;
+    const score = Math.round(qz.correct/qz.questions.length*100);
+    S.user.weekData = S.user.weekData || mkWD();
+    S.user.weekData[qz.week] = { completed:true, score, correct:qz.correct, wrong:qz.wrong, total:qz.questions.length, ts:Date.now() };
+    S.quiz = { ...qz, done:true };
+    await persist();
+    if (Net.online && FB.ready && FB.db && S.user && S.user.id) {
+      try {
+        await FB.db.collection('students').doc(String(S.user.id)).set(
+          { weekData:S.user.weekData, quizProgress:null, updatedAt:firebase.firestore.FieldValue.serverTimestamp() },
+          { merge:true }
+        );
+      } catch (e) { console.warn('[Quiz.finish]',e); }
+    }
+    const area = DOM.get('qzArea');
+    if (area) area.style.display = 'none';
+    DOM.show('qzRes', true);
+    const msg = score>=90?'Olaganustu! 🏆':score>=80?'Harika! 🎉':score>=70?'Cok Iyi! 🌟':score>=60?'Iyi Is! 👍':'Devam Et! 💪';
+    DOM.setHtml('qzRes',
+      `<div class="rscreen">`+
+      `<div class="rcircle"><div class="rscore">${score}</div><div class="rlbl">PUAN</div></div>`+
+      `<div style="font-family:var(--ff-d);font-size:18px;letter-spacing:3px;margin-bottom:6px">${msg}</div>`+
+      `<div style="font-family:var(--ff-d);font-size:9px;letter-spacing:3px;color:var(--ivory4);margin-bottom:20px">HAFTA ${qz.week} · ${CFG.TOPICS[qz.week-1].toUpperCase()}</div>`+
+      `<div class="rgrid"><div><div class="ri-n" style="color:var(--jade4)">${qz.correct}</div><div class="ri-l">DOGRU</div></div><div><div class="ri-n" style="color:#ff9898">${qz.wrong}</div><div class="ri-l">YANLIS</div></div><div><div class="ri-n" style="color:var(--gold3)">${qz.questions.length}</div><div class="ri-l">TOPLAM</div></div></div>`+
+      `<div style="margin:18px auto;max-width:280px"><div style="display:flex;height:7px;border-radius:4px;overflow:hidden;gap:1px"><div style="background:var(--jade2);width:${score}%;border-radius:4px 0 0 4px"></div><div style="background:var(--ruby);flex:1;border-radius:0 4px 4px 0"></div></div><div style="display:flex;justify-content:space-between;font-family:var(--ff-d);font-size:8px;color:var(--ivory4);margin-top:4px"><span>%${score} DOGRU</span><span>%${100-score} YANLIS</span></div></div>`+
+      `<button class="btn btn-j" style="padding:13px 36px;font-size:10px;letter-spacing:3px" onclick="Quiz.backHome()">Ana Sayfaya Don</button></div>`
+    );
+  },
+
+  backHome() {
+    S.selWeek = null;
+    if (S.quiz && S.quiz.done) S.quiz = null;
+    showSPg('sdash');
+    Student.renderDash();
   }
-  const qs=S.questions.filter(q=>q.week===w).slice(0,100);
-  if(!qs.length){toast('Soru bulunamadi!','err');return;}
-  S.quiz={week:w,questions:qs,cur:0,correct:0,wrong:0,done:false};
-  _sel=null;persist();
-  showSPg('quiz');
-  document.getElementById('qzBadge').textContent='HAFTA '+w;
-  document.getElementById('qzTitle').textContent=TOPICS[w-1];
-  document.getElementById('qzRes').style.display='none';
-  document.getElementById('qzArea').style.display='block';
-  renderQz();
-}
-function renderQz(){
-  const qz=S.quiz;
-  if(qz.cur>=qz.questions.length){finishQuiz();return;}
-  const q=qz.questions[qz.cur];
-  const pct=Math.round(qz.cur/qz.questions.length*100);
-  document.getElementById('qzProg').textContent='SORU '+(qz.cur+1)+' / '+qz.questions.length;
-  document.getElementById('qzBar').style.width=pct+'%';
-  document.getElementById('qzOk').textContent=qz.correct;
-  document.getElementById('qzBad').textContent=qz.wrong;
-  _sel=null;
-  document.getElementById('qzArea').innerHTML=
-    `<div class="qbox"><div class="qnum">SORU ${qz.cur+1} <span>· ${q.topic}</span></div><div class="qtxt">${q.text}</div><div class="opts">${q.options.map((o,i)=>`<div class="opt" id="op${i}" onclick="pickOpt(${i},${q.answer})"><div class="oletter">${['A','B','C','D'][i]}</div>${o}</div>`).join('')}</div></div>`+
-    `<div style="text-align:right;margin-top:12px"><button class="btn btn-p" id="nxtBtn" style="display:none;padding:11px 28px" onclick="nextQz()">${qz.cur+1>=qz.questions.length?'Testi Bitir':'Sonraki Soru'}</button></div>`;
-}
-function pickOpt(i,correct){
-  if(_sel!==null)return;
-  _sel=i;
-  document.querySelectorAll('.opt')[i].classList.add('sel');
-  setTimeout(()=>{
-    document.querySelectorAll('.opt')[correct].classList.add('correct');
-    if(i!==correct){document.querySelectorAll('.opt')[i].classList.remove('sel');document.querySelectorAll('.opt')[i].classList.add('wrong');S.quiz.wrong++;}
-    else S.quiz.correct++;
-    document.getElementById('nxtBtn').style.display='inline-flex';
-  },380);
-}
-function nextQz(){S.quiz.cur++;persist();renderQz();}
+};
 
-async function finishQuiz(){
-  const qz=S.quiz;
-  const score=Math.round(qz.correct/qz.questions.length*100);
-  S.user.weekData[qz.week]={completed:true,score,correct:qz.correct,wrong:qz.wrong,total:qz.questions.length,ts:Date.now()};
-  S.quiz={...S.quiz,done:true};
-  await persist();
-  if(online&&fbReady&&db){
-    try{await db.collection('students').doc(String(S.user.id)).set({weekData:S.user.weekData,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});}catch(e){}
-  }
-  document.getElementById('qzArea').style.display='none';
-  const rs=document.getElementById('qzRes');rs.style.display='block';
-  const msg=score>=90?'Olaganustu! 🏆':score>=80?'Harika! 🎉':score>=70?'Cok Iyi! 🌟':score>=60?'Iyi Is! 👍':'Devam Et! 💪';
-  rs.innerHTML=
-    `<div class="rscreen">`+
-    `<div class="rcircle"><div class="rscore">${score}</div><div class="rlbl">PUAN</div></div>`+
-    `<div style="font-family:var(--ff-d);font-size:18px;letter-spacing:3px;margin-bottom:6px">${msg}</div>`+
-    `<div style="font-family:var(--ff-d);font-size:9px;letter-spacing:3px;color:var(--ivory4);margin-bottom:20px">HAFTA ${qz.week} · ${TOPICS[qz.week-1].toUpperCase()}</div>`+
-    `<div class="rgrid">`+
-    `<div><div class="ri-n" style="color:var(--jade4)">${qz.correct}</div><div class="ri-l">DOGRU</div></div>`+
-    `<div><div class="ri-n" style="color:#ff9898">${qz.wrong}</div><div class="ri-l">YANLIS</div></div>`+
-    `<div><div class="ri-n" style="color:var(--gold3)">${qz.questions.length}</div><div class="ri-l">TOPLAM</div></div>`+
-    `</div>`+
-    `<div style="margin:18px auto;max-width:280px"><div style="display:flex;height:7px;border-radius:4px;overflow:hidden;gap:1px"><div style="background:var(--jade2);width:${score}%;border-radius:4px 0 0 4px"></div><div style="background:var(--ruby);flex:1;border-radius:0 4px 4px 0"></div></div><div style="display:flex;justify-content:space-between;font-family:var(--ff-d);font-size:8px;color:var(--ivory4);margin-top:4px"><span>%${score} DOGRU</span><span>%${100-score} YANLIS</span></div></div>`+
-    `<button class="btn btn-j" style="padding:13px 36px;font-size:10px;letter-spacing:3px" onclick="backHome()">Ana Sayfaya Don</button>`+
-    `</div>`;
-}
-function backHome(){S.selWeek=null;if(S.quiz&&S.quiz.done)S.quiz=null;showSPg('sdash');renderSDash();}
+/* ════════════════════════════════════════════════════════
+  18. APP INIT
+════════════════════════════════════════════════════════ */
+let _appStarted = false;
 
-/* ═══════════════════════════════
-   STUDENT PERF
-═══════════════════════════════ */
-function renderSPerf(){
-  const s=S.user;
-  document.getElementById('sPerf').innerHTML=Array.from({length:12},(_,i)=>{
-    const w=i+1,lk=S.locks[w].locked,wd=s.weekData[w];
-    return`<div class="card" style="margin-bottom:10px">`+
-      `<div style="display:flex;justify-content:space-between;align-items:center${wd.completed?';margin-bottom:14px':''}"><div>`+
-      `<div style="font-family:var(--ff-d);font-size:10px;color:var(--gold3);letter-spacing:2px">HAFTA ${w}</div>`+
-      `<div style="font-size:15px;color:var(--ivory2)">${TOPICS[i]}</div></div>`+
-      (lk?'<span class="badge br">Kilitli</span>':wd.completed?`<span class="badge bj">%${wd.score}</span>`:'<span class="badge by">Bekliyor</span>')+
-      `</div>`+
-      (wd.completed
-        ?`<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center">`+
-          `<div><div style="font-family:var(--ff-d);font-size:22px;color:${sc(wd.score)}">%${wd.score}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">PUAN</div></div>`+
-          `<div><div style="font-family:var(--ff-d);font-size:22px;color:var(--jade4)">${wd.correct}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">DOGRU</div></div>`+
-          `<div><div style="font-family:var(--ff-d);font-size:22px;color:#ff9898">${wd.wrong}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">YANLIS</div></div>`+
-          `<div><div style="font-family:var(--ff-d);font-size:22px;color:var(--gold3)">${wd.total}</div><div style="font-family:var(--ff-d);font-size:7px;letter-spacing:2px;color:var(--ivory4)">TOPLAM</div></div>`+
-          `</div><div class="perfbar" style="margin-top:12px"><div class="pb-ok" style="width:${wd.correct}%"></div><div class="pb-bad" style="width:${wd.wrong}%"></div><div class="pb-rem"></div></div>`
-        :'')+'</div>';
-  }).join('');
+async function startApp() {
+  if (_appStarted) return;
+  _appStarted = true;
+  DOM.show('loader', true);
+  Net.update();
+  FB.init();
+  try { await openIDB(); } catch { /* IDB desteklenmiyor */ }
+  await restoreData();
+  setTimeout(() => {
+    DOM.addClass('loader', 'gone');
+    setTimeout(() => {
+      DOM.show('loader', false);
+      DOM.addClass('loginScreen', 'vis');
+    }, 600);
+  }, 1400);
 }
 
-/* ═══════════════════════════════
-   KEYBOARD
-═══════════════════════════════ */
+window.addEventListener('DOMContentLoaded', () => startApp());
 
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')document.querySelectorAll('.mo.on').forEach(m=>m.classList.remove('on'));
-  if(e.key==='Enter'&&document.getElementById('loginScreen').classList.contains('vis'))doLogin();
+/* ════════════════════════════════════════════════════════
+  19. KEYBOARD
+════════════════════════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape')
+    document.querySelectorAll('.mo.on').forEach(m => m.classList.remove('on'));
+  if (e.key === 'Enter' && DOM.get('loginScreen')?.classList.contains('vis'))
+    doLogin();
 });
+
+/* ════════════════════════════════════════════════════════
+  20. GLOBAL WRAPPERS (HTML onclick bağlantıları için)
+════════════════════════════════════════════════════════ */
+function openMo(id)     { UI.openModal(id); }
+function closeMo(id)    { UI.closeModal(id); }
+function fbPushConfig() { FB.pushConfig(); }
+function toggleLock(w)  { Teacher.toggleLock(w); }
+function renderSt(q,cls){ Teacher.renderSt(q,cls); }
+function openStDet(id)  { Teacher.openStDet(id); }
+function renderWk(cls,wk){ Teacher.renderWk(cls,wk); }
+function setLbFilter(f,btn){ Teacher.setLbFilter(f,btn); }
+function setSLbFilter(f,btn){ Student.setSLbFilter(f,btn); }
+function previewStId()  { Teacher.previewStId(); }
+function saveSt()       { Teacher.saveSt(); }
+function renderQ(q,w)   { Q.render(q,w); }
+function saveQ(addNew)  { Q.save(addNew); }
+function pickAns(btn)   { Q.pickAns(btn); }
+function startQuiz()    { Quiz.start(); }
+function backHome()     { Quiz.backHome(); }
+function renderSDash()  { Student.renderDash(); }
+function renderSPerf()  { Student.renderPerf(); }
+function renderSLb()    { Student.renderLb(); }
+function selWeek(w)     { Student.selWeek(w); }
+
 </script>
 
+<!-- ADMIN BUTTON -->
+<button onclick="adminGiris()">Admin Giriş</button>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel" style="display:none;padding:20px;">
+  <h2>Admin Panel</h2>
+
+  <input id="ogrenciAd" placeholder="Öğrenci Adı">
+  <input id="ogrenciNo" placeholder="Numara">
+  <button onclick="ogrenciEkle()">Ekle</button>
+
+  <h3>Öğrenciler</h3>
+  <ul id="ogrenciListe"></ul>
+
+  <hr>
+  <h3>Toplu Öğrenci Ekle</h3>
+  <textarea id="topluVeri" rows="8" placeholder="Ad,Numara"></textarea><br>
+  <button onclick="topluEkle()">Toplu Ekle</button>
+</div>
+
 <script>
-// ROLE SYSTEM (SECURE)
-let currentUserRole = null;
+const db = firebase.firestore();
 
-auth.onAuthStateChanged(async (user)=>{
+function adminGiris(){
+  firebase.auth().signInWithEmailAndPassword("admin@gmail.com","123456")
+  .then(()=>{
+    console.log("giriş ok");
+    document.getElementById("adminPanel").style.display = "block";
+    ogrencileriGetir();
+  })
+  .catch(err=>{
+    alert(err.message);
+  });
+}
+
+firebase.auth().onAuthStateChanged(user=>{
   if(user){
-    const doc = await db.collection("users").doc(user.uid).get();
-    currentUserRole = doc.data()?.role;
-
-    if(currentUserRole === "teacher"){
-      document.getElementById("adminPanel")?.removeAttribute("hidden");
-    }
+    document.getElementById("adminPanel").style.display = "block";
   }
 });
 
-// SAFE ADD WITH ROLE CHECK
-async function addQuestionSecure(btn){
-  if(currentUserRole !== "teacher"){
-    alert("Yetkin yok!");
-    return;
-  }
+function ogrenciEkle(){
+  const ad = document.getElementById("ogrenciAd").value;
+  const no = document.getElementById("ogrenciNo").value;
 
-  try{
-    btn.disabled = true;
+  db.collection("ogrenciler").add({ad,no}).then(()=>{
+    ogrencileriGetir();
+  });
+}
 
-    const text = document.getElementById("qText")?.value || "";
-    const options = [...document.querySelectorAll(".opt")].map(i=>i.value.trim()).filter(Boolean);
-    const correct = Number(document.getElementById("correct")?.value);
+function ogrencileriGetir(){
+  const liste = document.getElementById("ogrenciListe");
+  if(!liste) return;
+  liste.innerHTML = "";
 
-    if(!text || options.length < 2){
-      alert("Eksik veri");
-      return;
-    }
-
-    if(correct >= options.length){
-      alert("Doğru index hatalı");
-      return;
-    }
-
-    await db.collection("questions").add({
-      text,
-      options,
-      correct,
-      createdAt: new Date()
+  db.collection("ogrenciler").get().then(snap=>{
+    snap.forEach(doc=>{
+      const d = doc.data();
+      const li = document.createElement("li");
+      li.innerHTML = d.ad + " - " + d.no +
+      ` <button onclick="sil('${doc.id}')">Sil</button>`;
+      liste.appendChild(li);
     });
+  });
+}
 
-    alert("Eklendi");
+function sil(id){
+  db.collection("ogrenciler").doc(id).delete().then(()=>{
+    ogrencileriGetir();
+  });
+}
 
-  }catch(e){
-    alert("Hata: " + e.message);
-  }finally{
-    btn.disabled = false;
-  }
+function topluEkle(){
+  const veri = document.getElementById("topluVeri").value.split("\n");
+  veri.forEach(v=>{
+    const p = v.split(",");
+    if(p.length>=2){
+      db.collection("ogrenciler").add({
+        ad:p[0].trim(),
+        no:p[1].trim()
+      });
+    }
+  });
+  alert("bitti");
+  ogrencileriGetir();
 }
 </script>
 
