@@ -2287,6 +2287,170 @@ function topluEkle(){
   ogrencileriGetir();
 }
 </script>
+<div style="padding:20px; border:2px solid red; margin-top:20px;">
+  <h2>🔥 TOPLU 135 ÖĞRENCİ EKLE</h2>
+
+  <textarea id="topluVeri" rows="10" style="width:100%;" placeholder="Ad,Numara
+Ali,1001
+Veli,1002"></textarea>
+
+  <br><br>
+  <button onclick="topluEkle()" style="padding:10px;">TOPLU EKLE</button>
+</div>
+
+<!-- ===== FIXED ADMIN PANEL + BULK ===== -->
+<div id="fixedPanel" style="display:none;position:fixed;bottom:0;left:0;width:100%;background:#fff;border-top:3px solid #000;padding:15px;z-index:9999;">
+  <h3>ADMIN PANEL (FIXED)</h3>
+
+  <input id="f_ad" placeholder="Ad">
+  <input id="f_no" placeholder="Numara">
+  <button onclick="f_ekle()">Ekle</button>
+
+  <h4>Toplu 135 Öğrenci</h4>
+  <textarea id="f_toplu" rows="6" style="width:100%;" placeholder="Ali,1001"></textarea>
+  <button onclick="f_topluEkle()">Toplu Ekle</button>
+</div>
+
+<script>
+function showFixed(){
+ document.getElementById("fixedPanel").style.display="block";
+}
+
+firebase.auth().onAuthStateChanged(user=>{
+ if(user){ showFixed(); }
+});
+
+function f_ekle(){
+ const ad=document.getElementById("f_ad").value;
+ const no=document.getElementById("f_no").value;
+ db.collection("ogrenciler").add({ad,no});
+}
+
+function f_topluEkle(){
+ const rows=document.getElementById("f_toplu").value.split("\n");
+ rows.forEach(r=>{
+  const p=r.split(",");
+  if(p.length>=2){
+   db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
+  }
+ });
+ alert("Toplu bitti");
+}
+</script>
+
+
+<script>
+// FORCE PANEL SHOW AFTER LOGIN
+function forcePanel(){
+  let p = document.getElementById("adminPanel") || document.getElementById("panel") || document.getElementById("fixedPanel");
+  if(p){ p.style.display = "block"; }
+}
+
+// override login
+function adminGiris(){
+ firebase.auth().signInWithEmailAndPassword("admin@gmail.com","123456")
+ .then(()=>{
+   console.log("login ok");
+   forcePanel();
+   if(typeof ogrencileriGetir==="function"){ogrencileriGetir();}
+ })
+ .catch(e=>alert(e.message));
+}
+
+// ALWAYS SHOW AFTER AUTH
+firebase.auth().onAuthStateChanged(user=>{
+ if(user){ forcePanel(); }
+});
+
+// GUARANTEED BULK UI
+window.addEventListener("load", ()=>{
+ let div = document.createElement("div");
+ div.innerHTML = `
+ <div style="position:fixed;right:10px;top:10px;background:#fff;border:2px solid black;padding:10px;z-index:9999;">
+   <h4>135 EKLE</h4>
+   <textarea id="superToplu" rows="6" style="width:200px;" placeholder="Ali,1001"></textarea><br>
+   <button onclick="superTopluEkle()">EKLE</button>
+ </div>`;
+ document.body.appendChild(div);
+});
+
+function superTopluEkle(){
+ let rows=document.getElementById("superToplu").value.split("\n");
+ rows.forEach(r=>{
+  let p=r.split(",");
+  if(p.length>=2){
+    db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
+  }
+ });
+ alert("tamam");
+}
+</script>
+
+
+<!-- ===== TEK TEMİZ PANEL ===== -->
+<div id="tekPanel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+background:#fff;padding:20px;border:2px solid #000;z-index:9999;width:300px;max-height:90vh;overflow:auto;">
+<h3>ÖĞRETMEN PANELİ</h3>
+
+<input id="t_ad" placeholder="Ad">
+<input id="t_no" placeholder="Numara">
+<button onclick="t_ekle()">Ekle</button>
+
+<h4>Öğrenciler</h4>
+<ul id="t_liste"></ul>
+
+<h4>135 Öğrenci Toplu</h4>
+<textarea id="t_toplu" rows="6" style="width:100%;" placeholder="Ali,1001"></textarea>
+<button onclick="t_topluEkle()">Toplu Ekle</button>
+</div>
+
+<script>
+function acPanel(){
+ document.getElementById("tekPanel").style.display="block";
+}
+
+firebase.auth().onAuthStateChanged(user=>{
+ if(user){ acPanel(); t_getir(); }
+});
+
+function t_ekle(){
+ let ad=document.getElementById("t_ad").value;
+ let no=document.getElementById("t_no").value;
+ if(!ad||!no) return;
+ db.collection("ogrenciler").add({ad,no}).then(t_getir);
+}
+
+function t_getir(){
+ let l=document.getElementById("t_liste");
+ if(!l) return;
+ l.innerHTML="";
+ db.collection("ogrenciler").get().then(s=>{
+  s.forEach(d=>{
+   let li=document.createElement("li");
+   let data=d.data();
+   li.innerHTML=data.ad+"-"+data.no+
+   ` <button onclick="t_sil('${d.id}')">Sil</button>`;
+   l.appendChild(li);
+  });
+ });
+}
+
+function t_sil(id){
+ db.collection("ogrenciler").doc(id).delete().then(t_getir);
+}
+
+function t_topluEkle(){
+ let rows=document.getElementById("t_toplu").value.split("\n");
+ rows.forEach(r=>{
+  let p=r.split(",");
+  if(p.length>=2){
+    db.collection("ogrenciler").add({ad:p[0].trim(),no:p[1].trim()});
+  }
+ });
+ alert("135 ekleme tamam");
+ t_getir();
+}
+</script>
 
 </body>
 </html>
