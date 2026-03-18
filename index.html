@@ -353,6 +353,16 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   .lcard-frame{padding:28px 14px 20px;}
 }
 
+/* ── SITE LINK KARTI ── */
+.site-link-card{display:flex;align-items:center;gap:14px;padding:16px 18px;margin-bottom:14px;background:linear-gradient(135deg,rgba(28,94,58,.18),rgba(14,6,6,.7));border:1px solid rgba(61,166,104,.35);border-radius:var(--r2);text-decoration:none;transition:all .22s var(--ease);}
+.site-link-card:hover{border-color:rgba(61,166,104,.65);transform:translateY(-1px);}
+.site-link-card:active{transform:scale(.98);}
+.site-link-icon{width:44px;height:44px;border-radius:var(--r2);background:rgba(28,94,58,.35);border:1px solid rgba(61,166,104,.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.site-link-info{flex:1;min-width:0;}
+.site-link-title{font-family:var(--ff-d);font-size:13px;font-weight:600;color:var(--ivory);letter-spacing:1px;}
+.site-link-sub{font-family:var(--ff-d);font-size:9px;letter-spacing:2px;color:var(--jade4);opacity:.8;margin-top:3px;}
+.site-link-arrow{font-size:24px;color:var(--jade3);opacity:.7;flex-shrink:0;font-family:var(--ff-d);}
+
 /* ── YÖNETİM PANELİ ── */
 .admin-overlay{position:fixed;inset:0;z-index:600;background:var(--obsidian);display:none;flex-direction:column;overflow:hidden;}
 .admin-overlay.vis{display:flex;}
@@ -461,6 +471,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       <div class="hdr-uname" id="hName"></div>
       <div class="hdr-av" id="hAv"></div>
       <button class="hdr-logout" id="adminBtn" onclick="openAdmin()" title="Yönetim Paneli" style="font-size:15px;display:none">⚙️</button>
+      <a id="siteBtn" href="https://hayrihoca.netlify.app" target="_blank" rel="noopener" class="hdr-logout" title="Hayri Hoca Sitesi" style="font-size:15px;display:none;text-decoration:none">🌐</a>
       <button class="hdr-logout" onclick="openChangePass()" title="Şifre" style="font-size:15px">🔑</button>
       <button class="hdr-logout" onclick="doLogout()">⏻</button>
     </div>
@@ -573,6 +584,17 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
           <div class="sstart-info" id="sWkInfo"></div>
           <button class="btn btn-j" style="padding:13px 28px;font-size:11px;letter-spacing:3px" onclick="startQuiz()">▶ Teste Başla</button>
         </div>
+
+        <!-- Hayri Hoca Site Kartı -->
+        <a href="https://hayrihoca.netlify.app" target="_blank" rel="noopener" class="site-link-card">
+          <div class="site-link-icon">🌐</div>
+          <div class="site-link-info">
+            <div class="site-link-title">Hayri Hoca'nın Sitesi</div>
+            <div class="site-link-sub">hayrihoca.netlify.app</div>
+          </div>
+          <div class="site-link-arrow">›</div>
+        </a>
+
         <div id="sWeekList"></div>
       </div>
 
@@ -1722,6 +1744,8 @@ function enterApp() {
   } else {
     DOM.show('tApp', false);
     DOM.show('sApp', true);
+    const _sb = document.getElementById('siteBtn');
+    if (_sb) _sb.style.display = '';
     buildSNav();
     showSPg('sdash');
     Student.renderDash();
