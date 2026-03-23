@@ -2329,7 +2329,6 @@ function addToSyncQueue(op) {
 async function persist() {
   const snapshot = {
     students:  S.students,
-    questions: S.questions,
     locks:     S.locks,
     quiz:      S.quiz,
     lastSync:  Date.now()
@@ -2356,7 +2355,7 @@ async function restoreData() {
   }
   if (d) {
     if (d.students  && d.students.length)  S.students  = d.students;
-    if (d.questions && d.questions.length) S.questions = d.questions;
+    /* questions artık QB_W'dan buildQs() ile üretiliyor, cache'den yüklenmiyor */
     if (d.locks)     S.locks = d.locks;
     if (d.quiz && d.quiz.week && !d.quiz.done) S.quiz = d.quiz;
     if (d.lastSync)  updateSyncTime(d.lastSync);
@@ -2498,7 +2497,6 @@ const FB = {
       const cfgBatch = this.db.batch();
       cfgBatch.set(this.db.collection('config').doc('main'), {
         locks:     data.locks,
-        questions: data.questions,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
       await cfgBatch.commit();
@@ -2532,7 +2530,7 @@ const FB = {
       if (cfgSnap.exists) {
         const cfg = cfgSnap.data();
         if (cfg.locks) S.locks = cfg.locks;
-        if (cfg.questions && cfg.questions.length) S.questions = cfg.questions;
+        /* questions Firebase'den yüklenmiyor, QB_W'dan üretiliyor */
       }
       /* Öğrenciler */
       const stSnap = await this.db.collection('students').get();
